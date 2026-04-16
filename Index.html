@@ -4,122 +4,108 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KALÉ — OKR & Activity Tracker</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
-  .topbar{background:#0F6E56;color:#fff;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
-  .brand{display:flex;align-items:center;gap:12px;}
-  .brand-logo{width:38px;height:38px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#9FE1CB;}
-  .brand-name{font-size:17px;font-weight:700;}
-  .brand-sub{font-size:11px;opacity:.75;margin-top:2px;}
-  .topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-  .topbar-right button{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;}
-  .topbar-right button:hover{background:rgba(255,255,255,.25);}
-  .sp-status{font-size:11px;padding:4px 10px;border-radius:12px;font-weight:600;}
-  .sp-connected{background:#E1F5EE;color:#0F6E56;}
-  .sp-disconnected{background:#FCEBEB;color:#A32D2D;}
-  .sp-loading{background:#FFF3CD;color:#BA7517;}
-
-  .tabs-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:0 24px;display:flex;gap:0;overflow-x:auto;}
-  .tab{padding:13px 18px;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:#666;white-space:nowrap;}
-  .tab.active{border-bottom-color:#0F6E56;color:#0F6E56;font-weight:600;}
-  .tab:hover:not(.active){background:#f5f7fa;}
-
-  .main{padding:20px 24px;max-width:1100px;margin:0 auto;}
-  .panel{display:none;}.panel.active{display:block;}
-
-  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-  .metric{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e8e8;}
-  .metric-label{font-size:11px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;}
-  .metric-value{font-size:24px;font-weight:700;color:#222;}
-  .metric-sub{font-size:11px;color:#aaa;margin-top:2px;}
-
-  .card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 20px;margin-bottom:14px;}
-  .card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-  .card-title{font-size:14px;font-weight:700;color:#222;}
-
-  .badge{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:600;display:inline-block;}
-  .badge-green{background:#E1F5EE;color:#0F6E56;}
-  .badge-blue{background:#E6F1FB;color:#185FA5;}
-  .badge-amber{background:#FFF3CD;color:#BA7517;}
-  .badge-red{background:#FCEBEB;color:#A32D2D;}
-  .badge-gray{background:#F1F1F1;color:#555;}
-  .badge-purple{background:#EEEDFE;color:#3C3489;}
-
-  .field-label{font-size:12px;color:#666;margin-bottom:4px;font-weight:600;}
-  .field-hint{font-size:11px;color:#aaa;margin-top:3px;}
-  .field-row{margin-bottom:12px;}
-  input[type=text],input[type=date],input[type=number],select,textarea{
-    width:100%;font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:8px 10px;
-    background:#fff;color:#222;outline:none;}
-  input:focus,select:focus,textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(29,158,117,.15);}
-  textarea{height:64px;resize:vertical;}
-  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-  .form-grid .field-row{margin-bottom:0;}
-
-  button.btn{padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #ccc;background:#fff;color:#333;font-weight:600;}
-  button.btn-primary{background:#0F6E56;border-color:#0F6E56;color:#fff;}
-  button.btn-primary:hover{background:#085041;}
-  button.btn-export{background:#185FA5;border-color:#185FA5;color:#fff;}
-  button.btn-export:hover{background:#0C447C;}
-  button.btn:hover{background:#f5f5f5;}
-  .btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
-
-  .section-lbl{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px;}
-
-  .okr-obj{border-left:3px solid #185FA5;padding-left:12px;margin-bottom:16px;}
-  .okr-title{font-size:13px;font-weight:700;color:#222;margin-bottom:6px;}
-  .kr-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-  .kr-label{font-size:12px;color:#666;flex:1;min-width:0;}
-  .prog-wrap{width:100px;height:6px;background:#eee;border-radius:3px;overflow:hidden;flex-shrink:0;}
-  .prog-fill{height:100%;border-radius:3px;}
-  .kr-pct{font-size:12px;font-weight:700;width:34px;text-align:right;flex-shrink:0;}
-  input[type=range]{width:80px;flex-shrink:0;}
-
-  .task-card{border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:10px;}
-  .task-name{font-size:13px;font-weight:700;color:#222;margin-bottom:4px;}
-  .task-okr-ref{font-size:11px;color:#185FA5;margin-bottom:6px;}
-  .task-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
-  .avance-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
-  .avance-block .avance-label{font-size:11px;color:#888;margin-bottom:3px;}
-  .avance-num{font-size:15px;font-weight:700;color:#222;}
-  .avance-bar-wrap{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:3px;}
-  .avance-bar{height:100%;border-radius:3px;}
-  .gap-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;display:inline-block;margin-top:6px;}
-
-  .cons-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0f0;}
-  .cons-row:last-child{border-bottom:none;}
-  .av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;}
-  .ci{flex:1;min-width:0;}
-  .cn{font-size:13px;font-weight:700;}
-  .cs{font-size:11px;color:#888;}
-  .score-bar-wrap{width:80px;height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:3px;}
-  .score-bar-fill{height:100%;border-radius:3px;}
-
-  .add-btn{width:100%;padding:9px;border:1px dashed #ccc;border-radius:8px;font-size:13px;color:#888;cursor:pointer;background:transparent;margin-top:8px;}
-  .add-btn:hover{background:#f9f9f9;}
-
-  .sp-config-banner{background:#FFF3CD;border:1px solid #f0c040;border-radius:8px;padding:14px 18px;margin-bottom:18px;}
-  .sp-config-banner h3{font-size:13px;font-weight:700;color:#BA7517;margin-bottom:6px;}
-  .sp-config-banner p{font-size:12px;color:#7a5a00;line-height:1.6;}
-  .sp-input-row{display:flex;gap:8px;margin-top:10px;}
-  .sp-input-row input{flex:1;font-size:13px;border:1px solid #ccc;border-radius:6px;padding:7px 10px;}
-  .sp-sync-bar{background:#E1F5EE;border:1px solid #9FE1CB;border-radius:8px;padding:10px 16px;margin-bottom:14px;display:none;font-size:12px;color:#0F6E56;display:flex;align-items:center;gap:8px;}
-
-  .export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:6px;}
-  .export-card{border:1px solid #e8e8e8;border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:all .15s;}
-  .export-card:hover{border-color:#0F6E56;background:#F0FAF6;}
-  .export-icon{width:44px;height:44px;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:20px;}
-  .export-title{font-size:13px;font-weight:700;color:#222;margin-bottom:4px;}
-  .export-desc{font-size:11px;color:#888;line-height:1.5;}
-  .export-btn{margin-top:10px;width:100%;padding:7px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;border:none;}
-
-  @media(max-width:600px){
-    .metrics{grid-template-columns:1fr 1fr;}
-    .form-grid{grid-template-columns:1fr;}
-    .export-grid{grid-template-columns:1fr;}
-    .avance-row{grid-template-columns:1fr;}
-  }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
+.topbar{background:#0F6E56;color:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand-logo{width:36px;height:36px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#9FE1CB;}
+.brand-name{font-size:16px;font-weight:700;}
+.brand-sub{font-size:11px;opacity:.7;margin-top:1px;}
+.topbar-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.topbar-btn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 13px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600;}
+.topbar-btn:hover{background:rgba(255,255,255,.25);}
+.fb-badge{font-size:11px;padding:4px 10px;border-radius:10px;font-weight:700;}
+.fb-ok{background:#E1F5EE;color:#0F6E56;}
+.fb-err{background:#FCEBEB;color:#A32D2D;}
+.fb-load{background:#FFF3CD;color:#BA7517;}
+.tabs-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:0 24px;display:flex;overflow-x:auto;position:sticky;top:60px;z-index:99;}
+.tab{padding:13px 15px;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:#888;white-space:nowrap;font-weight:600;}
+.tab.active{border-bottom-color:#0F6E56;color:#0F6E56;}
+.tab:hover:not(.active){background:#f9f9f9;}
+.main{padding:20px 24px;max-width:1080px;margin:0 auto;}
+.panel{display:none;}.panel.active{display:block;}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.metric{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e8e8;}
+.metric-label{font-size:11px;color:#888;margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;}
+.metric-value{font-size:24px;font-weight:700;color:#222;}
+.metric-sub{font-size:11px;color:#aaa;margin-top:2px;}
+.card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 20px;margin-bottom:14px;}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.card-title{font-size:14px;font-weight:700;color:#222;}
+.badge{font-size:11px;padding:3px 9px;border-radius:12px;font-weight:600;display:inline-block;}
+.badge-green{background:#E1F5EE;color:#0F6E56;}
+.badge-blue{background:#E6F1FB;color:#185FA5;}
+.badge-amber{background:#FFF3CD;color:#BA7517;}
+.badge-red{background:#FCEBEB;color:#A32D2D;}
+.badge-gray{background:#F1F1F1;color:#555;}
+.field-label{font-size:12px;color:#555;margin-bottom:4px;font-weight:700;}
+.field-hint{font-size:11px;color:#aaa;margin-top:3px;}
+.field-row{margin-bottom:12px;}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],select,textarea{width:100%;font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:8px 10px;background:#fff;color:#222;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-grid .field-row{margin-bottom:0;}
+.btn{padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #ccc;background:#fff;color:#333;font-weight:600;}
+.btn-primary{background:#0F6E56;border-color:#0F6E56;color:#fff;}
+.btn-primary:hover{background:#085041;}
+.btn-danger{background:#A32D2D;border-color:#A32D2D;color:#fff;}
+.btn-danger:hover{background:#791F1F;}
+.btn:hover:not(.btn-primary):not(.btn-danger){background:#f5f5f5;}
+.btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
+.section-lbl{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px;}
+.add-btn{width:100%;padding:9px;border:1px dashed #ccc;border-radius:8px;font-size:13px;color:#888;cursor:pointer;background:transparent;margin-top:8px;}
+.add-btn:hover{background:#f9f9f9;}
+.okr-card{border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;margin-bottom:10px;}
+.okr-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;}
+.okr-card-title{font-size:13px;font-weight:700;color:#222;flex:1;}
+.okr-card-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.kr-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.kr-label{font-size:12px;color:#555;flex:1;min-width:0;}
+.prog-wrap{width:90px;height:6px;background:#eee;border-radius:3px;overflow:hidden;flex-shrink:0;}
+.prog-fill{height:100%;border-radius:3px;}
+.kr-pct{font-size:12px;font-weight:700;width:34px;text-align:right;flex-shrink:0;color:#222;}
+input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
+.cons-card{border:1px solid #e8e8e8;border-radius:10px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;}
+.cons-avatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0;}
+.cons-info{flex:1;min-width:0;}
+.cons-name{font-size:14px;font-weight:700;color:#222;}
+.cons-detail{font-size:12px;color:#888;margin-top:2px;}
+.task-card{border:1px solid #e8e8e8;border-radius:8px;padding:12px 14px;margin-bottom:10px;}
+.task-name{font-size:13px;font-weight:700;color:#222;margin-bottom:4px;}
+.task-okr-ref{font-size:11px;color:#185FA5;margin-bottom:6px;}
+.task-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;}
+.avance-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+.avance-label{font-size:11px;color:#888;margin-bottom:3px;}
+.avance-num{font-size:15px;font-weight:700;color:#222;}
+.avance-bar-wrap{height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:3px;}
+.avance-bar{height:100%;border-radius:3px;}
+.gap-tag{font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;display:inline-block;margin-top:4px;}
+.score-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0f0;}
+.score-row:last-child{border-bottom:none;}
+.score-bar-wrap{width:80px;height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:3px;}
+.score-bar-fill{height:100%;border-radius:3px;}
+.export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.export-card{border:1px solid #e8e8e8;border-radius:10px;padding:16px;text-align:center;}
+.export-card:hover{border-color:#0F6E56;background:#F0FAF6;}
+.export-icon{width:44px;height:44px;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.export-title{font-size:13px;font-weight:700;color:#222;margin-bottom:4px;}
+.export-desc{font-size:11px;color:#888;line-height:1.5;}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:200;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:#fff;border-radius:12px;padding:24px 28px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;}
+.modal-title{font-size:16px;font-weight:700;color:#0F6E56;margin-bottom:16px;}
+.saving-toast{position:fixed;bottom:20px;right:20px;background:#0F6E56;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:600;z-index:300;display:none;}
+@media(max-width:640px){
+  .metrics{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .export-grid{grid-template-columns:1fr;}
+  .avance-row{grid-template-columns:1fr;}
+  .cons-card{flex-wrap:wrap;}
+}
 </style>
 </head>
 <body>
@@ -133,15 +119,16 @@
     </div>
   </div>
   <div class="topbar-right">
-    <span id="sp-status-badge" class="sp-status sp-disconnected">Sin conectar</span>
-    <button onclick="showPanel('export')">Exportar</button>
-    <button onclick="syncSharePoint()" id="sync-btn">Sincronizar SharePoint</button>
+    <span class="fb-badge fb-load" id="fb-badge">Conectando...</span>
+    <button class="topbar-btn" onclick="exportExcel()">Exportar Excel</button>
+    <button class="topbar-btn" onclick="showPanel('export',null)">Reporte</button>
   </div>
 </div>
 
 <div class="tabs-bar">
   <div class="tab active" onclick="showPanel('dashboard',this)">Dashboard</div>
-  <div class="tab" onclick="showPanel('okrs',this)">Crear OKRs</div>
+  <div class="tab" onclick="showPanel('consultores',this)">Consultores</div>
+  <div class="tab" onclick="showPanel('okrs',this)">OKRs</div>
   <div class="tab" onclick="showPanel('link',this)">Vincular tareas</div>
   <div class="tab" onclick="showPanel('tasks',this)">Panel de tareas</div>
   <div class="tab" onclick="showPanel('score',this)">Score de valor</div>
@@ -150,211 +137,240 @@
 
 <div class="main">
 
-  <!-- ── DASHBOARD ── -->
-  <div class="panel active" id="panel-dashboard">
-    <div id="sp-banner" class="sp-config-banner">
-      <h3>Conectar con SharePoint</h3>
-      <p>Ingresa la URL de tu sitio SharePoint y el nombre del archivo Excel (KALE_OKR_Tracker.xlsx) para sincronizar datos en tiempo real con tu equipo.</p>
-      <div class="sp-input-row">
-        <input type="text" id="sp-site-url" placeholder="https://tuempresa.sharepoint.com/sites/KALE" value="">
-        <input type="text" id="sp-file-name" placeholder="KALE_OKR_Tracker.xlsx" value="KALE_OKR_Tracker.xlsx" style="max-width:240px;">
-        <button class="btn btn-primary" onclick="connectSharePoint()">Conectar</button>
-      </div>
-    </div>
-
-    <div class="metrics">
-      <div class="metric"><div class="metric-label">Consultores</div><div class="metric-value" id="m-cons">4</div><div class="metric-sub">activos en Q2</div></div>
-      <div class="metric"><div class="metric-label">OKRs creados</div><div class="metric-value" id="m-okrs">0</div><div class="metric-sub">este periodo</div></div>
-      <div class="metric"><div class="metric-label">Tareas activas</div><div class="metric-value" id="m-tasks">0</div><div class="metric-sub">vinculadas a OKR</div></div>
-      <div class="metric"><div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">de valor</div></div>
-    </div>
-
-    <div class="card">
-      <div class="card-header"><span class="card-title">Actividad reciente</span><span class="badge badge-green">MS Teams · General</span></div>
-      <div id="activity-feed" style="font-size:13px;color:#aaa;padding:8px 0;">Sin actividad registrada aún.</div>
-    </div>
-    <div class="card">
-      <div class="card-header"><span class="card-title">Alertas de desvío</span></div>
-      <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:8px 0;">Sin alertas activas.</div>
-    </div>
+<!-- DASHBOARD -->
+<div class="panel active" id="panel-dashboard">
+  <div class="metrics">
+    <div class="metric"><div class="metric-label">Consultores</div><div class="metric-value" id="m-cons">—</div><div class="metric-sub">registrados</div></div>
+    <div class="metric"><div class="metric-label">OKRs activos</div><div class="metric-value" id="m-okrs">—</div><div class="metric-sub">este periodo</div></div>
+    <div class="metric"><div class="metric-label">Tareas vinculadas</div><div class="metric-value" id="m-tasks">—</div><div class="metric-sub">a un OKR</div></div>
+    <div class="metric"><div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">de valor</div></div>
   </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Actividad reciente</span><span class="badge badge-green">KALÉ · Q2 2026</span></div>
+    <div id="activity-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Alertas de desvío</span></div>
+    <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+  </div>
+</div>
 
-  <!-- ── CREAR OKRs ── -->
-  <div class="panel" id="panel-okrs">
-    <div class="card">
-      <div class="card-header"><span class="card-title">Nuevo objetivo (OKR)</span></div>
-      <div class="field-row"><div class="field-label">Objetivo</div><input type="text" id="okr-obj" placeholder="Ej: Incrementar satisfacción del cliente en proyectos activos"></div>
-      <div class="form-grid">
-        <div class="field-row"><div class="field-label">Consultor responsable</div>
-          <select id="okr-owner"><option value="">— seleccionar —</option><option>KALÉ Admin</option><option>Consultor A</option><option>Consultor B</option><option>Consultor C</option></select>
-        </div>
-        <div class="field-row"><div class="field-label">Periodo</div>
-          <select id="okr-period"><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option></select>
-        </div>
-      </div>
-      <div class="section-lbl">Key Results</div>
-      <div id="kr-inputs">
-        <div class="form-grid field-row" style="align-items:flex-end;">
-          <div><div class="field-label">KR 1</div><input type="text" placeholder="Ej: NPS ≥ 70 en encuesta mensual"></div>
-          <div><div class="field-label">Meta %</div><input type="number" placeholder="100" min="0" max="100"></div>
-        </div>
-      </div>
-      <button class="add-btn" onclick="addKRInput()">+ Agregar otro Key Result</button>
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="saveOKR()">Guardar OKR</button>
-        <button class="btn" onclick="clearOKRForm()">Limpiar</button>
+<!-- CONSULTORES -->
+<div class="panel" id="panel-consultores">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Equipo KALÉ</span>
+      <button class="btn btn-primary" onclick="openConsModal()">+ Nuevo consultor</button>
+    </div>
+    <div id="cons-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div>
+</div>
+
+<!-- OKRs -->
+<div class="panel" id="panel-okrs">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Objetivos y Key Results</span>
+      <button class="btn btn-primary" onclick="openOKRModal()">+ Nuevo OKR</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+      <select id="filter-okr-owner" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
+        <option value="">Todos los consultores</option>
+      </select>
+      <select id="filter-okr-period" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
+        <option value="">Todos los periodos</option>
+        <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
+      </select>
+    </div>
+    <div id="okr-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div>
+</div>
+
+<!-- VINCULAR TAREAS -->
+<div class="panel" id="panel-link">
+  <div class="card">
+    <div class="card-header"><span class="card-title" id="link-form-title">Nueva tarea vinculada</span></div>
+    <div class="field-row"><div class="field-label">Nombre de la tarea</div><input type="text" id="t-name" placeholder="Ej: Análisis de brecha cliente Bancolombia"></div>
+    <div class="form-grid">
+      <div class="field-row"><div class="field-label">Consultor</div><select id="t-owner"><option value="">— seleccionar —</option></select></div>
+      <div class="field-row"><div class="field-label">Prioridad</div>
+        <select id="t-prio"><option value="Alta">Alta</option><option value="Media" selected>Media</option><option value="Baja">Baja</option></select>
       </div>
     </div>
-    <div class="section-lbl">OKRs registrados</div>
-    <div id="okr-list"><p style="font-size:13px;color:#aaa;padding:8px 0;">Aún no hay OKRs creados.</p></div>
-  </div>
-
-  <!-- ── VINCULAR TAREAS ── -->
-  <div class="panel" id="panel-link">
-    <div class="card">
-      <div class="card-header"><span class="card-title">Vincular tarea a OKR</span></div>
-      <div class="field-row"><div class="field-label">Nombre de la tarea</div><input type="text" id="t-name" placeholder="Ej: Análisis de brecha cliente Bancolombia"></div>
+    <div class="form-grid">
+      <div class="field-row"><div class="field-label">OKR vinculado</div><select id="t-okr" onchange="populateKRSelect()"><option value="">— seleccionar OKR —</option></select></div>
+      <div class="field-row"><div class="field-label">Key Result</div><select id="t-kr"><option value="">— seleccionar KR —</option></select></div>
+    </div>
+    <div class="form-grid">
+      <div class="field-row"><div class="field-label">Fecha de creación</div><input type="date" id="t-created" oninput="calcExpected()"></div>
+      <div class="field-row"><div class="field-label">Fecha límite</div><input type="date" id="t-due" oninput="calcExpected()"></div>
+    </div>
+    <div style="background:#f9fafb;border:1px solid #e8e8e8;border-radius:8px;padding:14px;margin-bottom:12px;">
+      <div class="section-lbl" style="margin-top:0;">Estado y avance</div>
       <div class="form-grid">
-        <div class="field-row"><div class="field-label">Consultor</div>
-          <select id="t-owner"><option value="">— seleccionar —</option><option>KALÉ Admin</option><option>Consultor A</option><option>Consultor B</option><option>Consultor C</option></select>
+        <div class="field-row"><div class="field-label">Estado actual</div>
+          <select id="t-estado">
+            <option value="Pendiente Inicio">Pendiente Inicio</option>
+            <option value="En Progreso">En Progreso</option>
+            <option value="Bloqueado">Bloqueado</option>
+            <option value="Finalizada">Finalizada</option>
+          </select>
         </div>
-        <div class="field-row"><div class="field-label">Prioridad</div>
-          <select id="t-prio"><option value="Alta">Alta</option><option value="Media" selected>Media</option><option value="Baja">Baja</option></select>
+        <div class="field-row"><div class="field-label">Avance actual (%)</div>
+          <input type="number" id="t-avance" min="0" max="100" placeholder="0" oninput="calcExpected()">
+          <div class="field-hint">Diligenciado por el consultor</div>
         </div>
       </div>
-      <div class="form-grid">
-        <div class="field-row"><div class="field-label">OKR vinculado</div>
-          <select id="t-okr" onchange="populateKRSelect()"><option value="">— seleccionar OKR —</option></select>
-        </div>
-        <div class="field-row"><div class="field-label">Key Result específico</div>
-          <select id="t-kr"><option value="">— seleccionar KR —</option></select>
-        </div>
-      </div>
-      <div class="form-grid">
-        <div class="field-row"><div class="field-label">Fecha de creación</div><input type="date" id="t-created" oninput="calcExpected()"></div>
-        <div class="field-row"><div class="field-label">Fecha límite</div><input type="date" id="t-due" oninput="calcExpected()"></div>
-      </div>
-
-      <div style="background:#f9fafb;border:1px solid #e8e8e8;border-radius:8px;padding:14px;margin-bottom:12px;">
-        <div class="section-lbl" style="margin-top:0;">Estado y avance</div>
-        <div class="form-grid">
-          <div class="field-row">
-            <div class="field-label">Estado actual</div>
-            <select id="t-estado">
-              <option value="Pendiente Inicio">Pendiente Inicio</option>
-              <option value="En Progreso">En Progreso</option>
-              <option value="Bloqueado">Bloqueado</option>
-              <option value="Finalizada">Finalizada</option>
-            </select>
+      <div class="field-row" style="margin-bottom:0;">
+        <div class="field-label">Avance esperado a hoy (automático)</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
+          <div style="flex:1;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;">
+            <div id="exp-bar" style="height:100%;border-radius:4px;background:#185FA5;width:0%;transition:width .3s;"></div>
           </div>
-          <div class="field-row">
-            <div class="field-label">Avance actual (%)</div>
-            <input type="number" id="t-avance" min="0" max="100" placeholder="0" oninput="calcExpected()">
-            <div class="field-hint">Diligenciado por el consultor</div>
-          </div>
+          <span id="exp-pct" style="font-size:14px;font-weight:700;min-width:38px;color:#222;">—</span>
         </div>
-        <div class="field-row" style="margin-bottom:0;">
-          <div class="field-label">Avance esperado a hoy (automático)</div>
-          <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
-            <div style="flex:1;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;">
-              <div id="exp-bar" style="height:100%;border-radius:4px;background:#185FA5;width:0%;transition:width .3s;"></div>
-            </div>
-            <span id="exp-pct" style="font-size:14px;font-weight:700;min-width:38px;">—</span>
-          </div>
-          <div id="exp-hint" class="field-hint">Completa las fechas para calcular</div>
-        </div>
-      </div>
-
-      <div id="gap-preview" style="display:none;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;"></div>
-
-      <div class="btn-row">
-        <button class="btn btn-primary" onclick="saveTask()">Vincular y guardar</button>
-        <button class="btn" onclick="clearTaskForm()">Limpiar</button>
+        <div id="exp-hint" class="field-hint">Completa las fechas para calcular</div>
       </div>
     </div>
-
-    <div class="section-lbl">Tareas vinculadas</div>
-    <div id="linked-list"><p style="font-size:13px;color:#aaa;">Aún no hay tareas vinculadas.</p></div>
-  </div>
-
-  <!-- ── PANEL DE TAREAS ── -->
-  <div class="panel" id="panel-tasks">
-    <div class="card">
-      <div class="card-header">
-        <span class="card-title">Tareas activas</span>
-        <select id="filter-cons" onchange="renderTasks()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
-          <option value="">Todos los consultores</option>
-          <option>KALÉ Admin</option><option>Consultor A</option><option>Consultor B</option><option>Consultor C</option>
-        </select>
-      </div>
-      <div id="task-list"><p style="font-size:13px;color:#aaa;">Sin tareas registradas.</p></div>
+    <div id="gap-preview" style="display:none;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;"></div>
+    <input type="hidden" id="t-edit-id">
+    <div class="btn-row">
+      <button class="btn btn-primary" id="t-save-btn" onclick="saveTask()">Vincular y guardar</button>
+      <button class="btn" onclick="clearTaskForm()">Limpiar</button>
     </div>
   </div>
+  <div class="section-lbl">Tareas vinculadas</div>
+  <div id="linked-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+</div>
 
-  <!-- ── SCORE ── -->
-  <div class="panel" id="panel-score">
-    <div class="card">
-      <div class="card-header"><span class="card-title">Score de valor por consultor</span><span class="badge badge-blue">Q2 · 2026</span></div>
-      <div id="score-list"><p style="font-size:13px;color:#aaa;">Registra OKRs y tareas para ver el score.</p></div>
+<!-- PANEL DE TAREAS -->
+<div class="panel" id="panel-tasks">
+  <div class="card">
+    <div class="card-header">
+      <span class="card-title">Tareas activas</span>
+      <select id="filter-cons-task" onchange="renderTasks()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
+        <option value="">Todos los consultores</option>
+      </select>
     </div>
-    <div class="card">
-      <div class="card-header"><span class="card-title">Fórmula</span></div>
-      <div style="font-size:13px;color:#666;line-height:1.8;">
-        <strong>Score</strong> = (avance real prom. tareas vinculadas) × 60% + (KRs con progreso &gt; 0 ÷ total KRs) × 40%<br>
-        <span style="font-size:11px;color:#aaa;">Desvío &gt; 20 pts activa alerta automática en el dashboard.</span>
+    <div id="task-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div>
+</div>
+
+<!-- SCORE -->
+<div class="panel" id="panel-score">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Score de valor por consultor</span><span class="badge badge-blue">Q2 · 2026</span></div>
+    <div id="score-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div>
+  <div class="card">
+    <div class="card-header"><span class="card-title">Fórmula de valor</span></div>
+    <div style="font-size:13px;color:#666;line-height:1.9;">
+      <strong>Score</strong> = (avance real promedio tareas vinculadas) × 60% + (KRs con progreso &gt; 0 ÷ total KRs) × 40%<br>
+      <span style="font-size:11px;color:#aaa;">Desvío &gt; 20 pts entre avance esperado y real activa alerta en el dashboard.</span>
+    </div>
+  </div>
+</div>
+
+<!-- EXPORTAR -->
+<div class="panel" id="panel-export">
+  <div class="card">
+    <div class="card-header"><span class="card-title">Distribuir al equipo</span></div>
+    <div class="export-grid">
+      <div class="export-card">
+        <div class="export-icon" style="background:#E6F1FB;">🔗</div>
+        <div class="export-title">Link directo</div>
+        <div class="export-desc">Copia el link para compartir en el canal General de Teams.</div>
+        <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="copyLink()">Copiar link</button>
+      </div>
+      <div class="export-card">
+        <div class="export-icon" style="background:#E1F5EE;">📊</div>
+        <div class="export-title">Exportar a Excel</div>
+        <div class="export-desc">Descarga un Excel con Consultores, OKRs y Actividades.</div>
+        <button class="btn" style="width:100%;margin-top:12px;background:#185FA5;border-color:#185FA5;color:#fff;" onclick="exportExcel()">Descargar Excel</button>
+      </div>
+      <div class="export-card">
+        <div class="export-icon" style="background:#EEEDFE;">📋</div>
+        <div class="export-title">Reporte semanal</div>
+        <div class="export-desc">Snapshot del estado actual: OKRs, avance y alertas.</div>
+        <button class="btn" style="width:100%;margin-top:12px;background:#534AB7;border-color:#534AB7;color:#fff;" onclick="generateReport()">Generar reporte</button>
       </div>
     </div>
   </div>
-
-  <!-- ── EXPORTAR ── -->
-  <div class="panel" id="panel-export">
-    <div class="card">
-      <div class="card-header"><span class="card-title">Distribuir panel al equipo</span></div>
-      <p style="font-size:13px;color:#666;margin-bottom:16px;">Elige cómo compartir el tracker con los consultores de KALÉ.</p>
-      <div class="export-grid">
-
-        <div class="export-card" onclick="">
-          <div class="export-icon" style="background:#E6F1FB;">🔗</div>
-          <div class="export-title">Link directo al panel</div>
-          <div class="export-desc">Genera un link para abrir este panel desde el navegador o desde Teams. El consultor actualiza sus tareas en tiempo real.</div>
-          <button class="export-btn btn btn-primary" onclick="copyPanelLink()" style="margin-top:10px;">Copiar link</button>
-        </div>
-
-        <div class="export-card">
-          <div class="export-icon" style="background:#E1F5EE;">📊</div>
-          <div class="export-title">Excel por consultor</div>
-          <div class="export-desc">Descarga la plantilla Excel pre-estructurada para subir al SharePoint. El panel la lee automáticamente al sincronizar.</div>
-          <button class="export-btn btn btn-export" onclick="downloadExcel()" style="margin-top:10px;">Descargar Excel</button>
-        </div>
-
-        <div class="export-card">
-          <div class="export-icon" style="background:#EEEDFE;">📋</div>
-          <div class="export-title">Reporte semanal</div>
-          <div class="export-desc">Genera un snapshot del estado actual: OKRs, avance real vs esperado, score por consultor y alertas.</div>
-          <button class="export-btn" style="background:#534AB7;color:#fff;border:none;padding:7px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-top:10px;width:100%;" onclick="generateReport()">Generar reporte</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:4px;">
-      <div class="card-header"><span class="card-title">Instrucciones para el equipo</span></div>
-      <div style="font-size:13px;color:#555;line-height:1.8;">
-        <strong>Opción 1 — Link web:</strong> Comparte el link en el canal General de Teams. Cada consultor lo abre, selecciona su nombre y actualiza sus tareas.<br>
-        <strong>Opción 2 — Excel:</strong> Sube el archivo <code>KALE_OKR_Tracker.xlsx</code> al SharePoint en <em>Documentos &gt; KALÉ</em>. Los consultores lo editan directamente. El panel sincroniza al hacer clic en "Sincronizar SharePoint".<br>
-        <strong>Opción 3 — Reporte:</strong> El líder genera el reporte los lunes y lo publica en Teams.
-      </div>
-    </div>
-
-    <div id="report-output" style="display:none;" class="card">
-      <div class="card-header"><span class="card-title">Reporte semanal KALÉ</span><span id="report-date" class="badge badge-gray"></span></div>
-      <div id="report-body"></div>
-    </div>
+  <div id="report-output" style="display:none;" class="card">
+    <div class="card-header"><span class="card-title">Reporte semanal KALÉ</span><span id="report-date" class="badge badge-gray"></span></div>
+    <div id="report-body"></div>
   </div>
+</div>
 
 </div><!-- /main -->
 
+<!-- MODAL CONSULTOR -->
+<div class="modal-bg" id="modal-cons-bg">
+  <div class="modal">
+    <div class="modal-title" id="modal-cons-title">Nuevo consultor</div>
+    <div class="field-row"><div class="field-label">Nombre completo</div><input type="text" id="c-name" placeholder="Ej: Andrés Mora"></div>
+    <div class="field-row"><div class="field-label">Correo electrónico</div><input type="email" id="c-email" placeholder="andres@empresa.com"></div>
+    <div class="field-row"><div class="field-label">WhatsApp</div><input type="tel" id="c-wa" placeholder="+57 300 000 0000"></div>
+    <div class="field-row"><div class="field-label">Rol</div>
+      <select id="c-rol">
+        <option value="Consultor Senior">Consultor Senior</option>
+        <option value="Consultor">Consultor</option>
+        <option value="Consultor Junior">Consultor Junior</option>
+        <option value="Admin">Admin</option>
+      </select>
+    </div>
+    <input type="hidden" id="c-edit-id">
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveCons()">Guardar</button>
+      <button class="btn" onclick="closeConsModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL OKR -->
+<div class="modal-bg" id="modal-okr-bg">
+  <div class="modal">
+    <div class="modal-title" id="modal-okr-title">Nuevo OKR</div>
+    <div class="field-row"><div class="field-label">Objetivo</div><input type="text" id="okr-obj" placeholder="Ej: Incrementar satisfacción del cliente"></div>
+    <div class="form-grid">
+      <div class="field-row"><div class="field-label">Consultor responsable</div><select id="okr-owner"><option value="">— seleccionar —</option></select></div>
+      <div class="field-row"><div class="field-label">Periodo</div>
+        <select id="okr-period"><option>Q1 · 2026</option><option selected>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option></select>
+      </div>
+    </div>
+    <div class="section-lbl">Key Results</div>
+    <div id="kr-inputs">
+      <div class="form-grid field-row" style="align-items:flex-end;">
+        <div><div class="field-label">KR 1</div><input type="text" placeholder="Ej: NPS ≥ 70 en encuesta mensual"></div>
+        <div><div class="field-label">Meta %</div><input type="number" placeholder="100" min="0" max="100"></div>
+      </div>
+    </div>
+    <button class="add-btn" onclick="addKRInput()">+ Agregar otro Key Result</button>
+    <input type="hidden" id="okr-edit-id">
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="saveOKR()">Guardar OKR</button>
+      <button class="btn" onclick="closeOKRModal()">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="saving-toast" id="toast">Guardado en Firebase ✓</div>
+
 <script>
-const S = { okrs:[], tasks:[], krCount:1, spUrl:'', spFile:'KALE_OKR_Tracker.xlsx', spConnected:false };
+// ══ FIREBASE CONFIG ══════════════════════════════════════
+const firebaseConfig = {
+  apiKey: "AIzaSyD3A_1YoyZovfi_-iaGqH2HPgknX8B3wik",
+  authDomain: "kale-tracker.firebaseapp.com",
+  projectId: "kale-tracker",
+  storageBucket: "kale-tracker.firebasestorage.app",
+  messagingSenderId: "270091177841",
+  appId: "1:270091177841:web:5ddb0cf54f2f47e12a70d0"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ══ STATE (cache local) ══════════════════════════════════
+const S = { consultores:[], okrs:[], tasks:[], krCount:1 };
 
 const ESTADO_CFG = {
   'Pendiente Inicio':{cls:'badge-gray'},
@@ -362,114 +378,260 @@ const ESTADO_CFG = {
   'Bloqueado':       {cls:'badge-red'},
   'Finalizada':      {cls:'badge-green'}
 };
+const AV_COLORS=['#E6F1FB','#E1F5EE','#FFF3CD','#EEEDFE','#FAECE7'];
+const TX_COLORS=['#185FA5','#0F6E56','#BA7517','#3C3489','#993C1D'];
+function avatarBg(n){return AV_COLORS[n.charCodeAt(0)%AV_COLORS.length];}
+function avatarTx(n){return TX_COLORS[n.charCodeAt(0)%TX_COLORS.length];}
+function initials(n){return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
 
-// ── Navigation ──────────────────────────────────────────
-function showPanel(id, el) {
+// ══ TOAST ════════════════════════════════════════════════
+function showToast(msg='Guardado ✓'){
+  const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block';
+  setTimeout(()=>t.style.display='none',2500);
+}
+
+// ══ FIREBASE LISTENERS (tiempo real) ════════════════════
+function initListeners(){
+  const badge=document.getElementById('fb-badge');
+  badge.className='fb-badge fb-ok'; badge.textContent='Firebase conectado';
+
+  db.collection('consultores').orderBy('name').onSnapshot(snap=>{
+    S.consultores=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderConsList(); refreshAllConsSelects(); updateMetrics();
+  });
+
+  db.collection('okrs').orderBy('createdAt','desc').onSnapshot(snap=>{
+    S.okrs=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderOKRList(); updateMetrics(); renderScore(); renderAlerts();
+  });
+
+  db.collection('tareas').orderBy('createdAt','desc').onSnapshot(snap=>{
+    S.tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
+    renderLinked(); renderTasks(); updateMetrics(); renderScore(); renderAlerts();
+  });
+
+  db.collection('actividad').orderBy('ts','desc').limit(20).onSnapshot(snap=>{
+    const el=document.getElementById('activity-feed');
+    if(!snap.docs.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin actividad aún.</p>';return;}
+    el.innerHTML=snap.docs.map(d=>{
+      const a=d.data();
+      const t=a.ts?.toDate?a.ts.toDate():new Date();
+      const time=t.getHours()+':'+(t.getMinutes()<10?'0':'')+t.getMinutes();
+      return `<div style="padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:12px;color:#888;"><span style="color:#ccc;">${time}</span>  ${a.msg}</div>`;
+    }).join('');
+  });
+}
+
+function logActivity(msg){
+  db.collection('actividad').add({msg, ts:firebase.firestore.FieldValue.serverTimestamp()});
+}
+
+// ══ NAVIGATION ═══════════════════════════════════════════
+function showPanel(id,el){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
   if(el) el.classList.add('active');
-  else { document.querySelectorAll('.tab').forEach(t=>{ if(t.textContent.toLowerCase().includes(id.substring(0,5))) t.classList.add('active'); }); }
-  if(id==='link'){ populateOKRDropdown(); setTodayCreated(); }
-  if(id==='tasks') renderTasks();
+  if(id==='link'){populateConsSelect('t-owner'); populateOKRDropdown(); setTodayCreated();}
+  if(id==='tasks'){populateConsSelect('filter-cons-task'); renderTasks();}
   if(id==='score') renderScore();
-  if(id==='dashboard'){ updateMetrics(); renderAlerts(); }
+  if(id==='dashboard'){updateMetrics(); renderAlerts();}
+  if(id==='okrs'){populateConsSelect('filter-okr-owner'); renderOKRList();}
 }
 
-// ── SharePoint connection ────────────────────────────────
-function connectSharePoint() {
-  const url = document.getElementById('sp-site-url').value.trim();
-  const file = document.getElementById('sp-file-name').value.trim();
-  if(!url){ alert('Ingresa la URL de tu sitio SharePoint.'); return; }
-  S.spUrl = url; S.spFile = file; S.spConnected = false;
-  const badge = document.getElementById('sp-status-badge');
-  badge.className = 'sp-status sp-loading'; badge.textContent = 'Conectando…';
-  setTimeout(()=>{
-    S.spConnected = true;
-    badge.className = 'sp-status sp-connected'; badge.textContent = 'SharePoint conectado';
-    document.getElementById('sp-banner').style.display = 'none';
-    logActivity('SharePoint conectado: '+url);
-    updateMetrics();
-  }, 1800);
+// ══ HELPERS ══════════════════════════════════════════════
+function populateConsSelect(elId){
+  const sel=document.getElementById(elId); if(!sel) return;
+  const cur=sel.value;
+  sel.innerHTML='<option value="">— seleccionar —</option>';
+  S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});
+  sel.value=cur||'';
+}
+function refreshAllConsSelects(){
+  ['t-owner','filter-cons-task','filter-okr-owner'].forEach(id=>populateConsSelect(id));
+  const sel=document.getElementById('okr-owner');
+  if(sel){const cur=sel.value;sel.innerHTML='<option value="">— seleccionar —</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});sel.value=cur||'';}
+}
+function updateMetrics(){
+  document.getElementById('m-cons').textContent=S.consultores.length;
+  document.getElementById('m-okrs').textContent=S.okrs.length;
+  document.getElementById('m-tasks').textContent=S.tasks.filter(t=>t.okrId).length;
 }
 
-function syncSharePoint() {
-  if(!S.spConnected){ alert('Primero conecta tu SharePoint usando el banner del Dashboard.'); return; }
-  const btn = document.getElementById('sync-btn');
-  btn.textContent = 'Sincronizando…'; btn.disabled = true;
-  setTimeout(()=>{
-    btn.textContent = 'Sincronizar SharePoint'; btn.disabled = false;
-    logActivity('Sincronización con SharePoint completada. Hoja Actividades actualizada.');
-    renderTasks(); renderScore(); updateMetrics(); renderAlerts();
-  }, 2000);
+// ══ CONSULTORES ═══════════════════════════════════════════
+function openConsModal(id=null){
+  const e=id?S.consultores.find(c=>c.id===id):null;
+  document.getElementById('modal-cons-title').textContent=e?'Editar consultor':'Nuevo consultor';
+  document.getElementById('c-name').value=e?e.name:'';
+  document.getElementById('c-email').value=e?e.email:'';
+  document.getElementById('c-wa').value=e?e.wa:'';
+  document.getElementById('c-rol').value=e?e.rol:'Consultor';
+  document.getElementById('c-edit-id').value=e?e.id:'';
+  document.getElementById('modal-cons-bg').classList.add('open');
+}
+function closeConsModal(){document.getElementById('modal-cons-bg').classList.remove('open');}
+
+async function saveCons(){
+  const name=document.getElementById('c-name').value.trim();
+  const email=document.getElementById('c-email').value.trim();
+  const wa=document.getElementById('c-wa').value.trim();
+  const rol=document.getElementById('c-rol').value;
+  const editId=document.getElementById('c-edit-id').value;
+  if(!name){alert('El nombre es obligatorio.');return;}
+  const data={name,email,wa,rol,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(editId){
+    await db.collection('consultores').doc(editId).update(data);
+    logActivity(`Consultor actualizado: ${name}`);
+  } else {
+    data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('consultores').add(data);
+    logActivity(`Consultor creado: ${name} · ${rol}`);
+  }
+  closeConsModal(); showToast('Consultor guardado ✓');
 }
 
-// ── OKRs ────────────────────────────────────────────────
-let krCount = 1;
+function deleteCons(id){
+  const c=S.consultores.find(x=>x.id===id); if(!c) return;
+  if(!confirm(`¿Eliminar a "${c.name}"?`)) return;
+  db.collection('consultores').doc(id).delete();
+  logActivity(`Consultor eliminado: ${c.name}`);
+  showToast('Consultor eliminado');
+}
+
+function renderConsList(){
+  const el=document.getElementById('cons-list');
+  if(!S.consultores.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Aún no hay consultores.</p>';return;}
+  el.innerHTML=S.consultores.map(c=>`
+    <div class="cons-card">
+      <div class="cons-avatar" style="background:${avatarBg(c.name)};color:${avatarTx(c.name)};">${initials(c.name)}</div>
+      <div class="cons-info">
+        <div class="cons-name">${c.name}</div>
+        <div class="cons-detail">
+          <span class="badge badge-gray" style="margin-right:4px;">${c.rol||''}</span>
+          ${c.email?`<span>${c.email}</span>`:''}
+          ${c.wa?`<span style="margin-left:8px;">WA: ${c.wa}</span>`:''}
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-shrink:0;">
+        <button class="btn" style="font-size:12px;padding:5px 12px;" onclick="openConsModal('${c.id}')">Editar</button>
+        <button class="btn btn-danger" style="font-size:12px;padding:5px 12px;" onclick="deleteCons('${c.id}')">Eliminar</button>
+      </div>
+    </div>`).join('');
+}
+
+// ══ OKRs ══════════════════════════════════════════════════
+let krCount=1;
+function openOKRModal(id=null){
+  const e=id?S.okrs.find(o=>o.id===id):null;
+  document.getElementById('modal-okr-title').textContent=e?'Editar OKR':'Nuevo OKR';
+  document.getElementById('okr-obj').value=e?e.obj:'';
+  document.getElementById('okr-period').value=e?e.period:'Q2 · 2026';
+  document.getElementById('okr-edit-id').value=e?e.id:'';
+  const sel=document.getElementById('okr-owner');
+  sel.innerHTML='<option value="">— seleccionar —</option>';
+  S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});
+  sel.value=e?e.owner:'';
+  const kc=document.getElementById('kr-inputs'); kc.innerHTML=''; krCount=0;
+  const krs=e?e.krs:[{label:'',target:100}];
+  krs.forEach((kr,i)=>{
+    krCount++;
+    const d=document.createElement('div');
+    d.className='form-grid field-row'; d.style.alignItems='flex-end';
+    d.innerHTML=`<div><div class="field-label">KR ${i+1}</div><input type="text" value="${kr.label||''}" placeholder="Key Result ${i+1}"></div><div><div class="field-label">Meta %</div><input type="number" value="${kr.target||100}" min="0" max="100"></div>`;
+    kc.appendChild(d);
+  });
+  document.getElementById('modal-okr-bg').classList.add('open');
+}
+function closeOKRModal(){document.getElementById('modal-okr-bg').classList.remove('open');}
+
 function addKRInput(){
   krCount++;
-  const c = document.getElementById('kr-inputs');
-  const d = document.createElement('div');
-  d.className = 'form-grid field-row'; d.style.alignItems='flex-end';
-  d.innerHTML = `<div><div class="field-label">KR ${krCount}</div><input type="text" placeholder="Key Result ${krCount}"></div><div><div class="field-label">Meta %</div><input type="number" placeholder="100" min="0" max="100"></div>`;
+  const c=document.getElementById('kr-inputs');
+  const d=document.createElement('div');
+  d.className='form-grid field-row'; d.style.alignItems='flex-end';
+  d.innerHTML=`<div><div class="field-label">KR ${krCount}</div><input type="text" placeholder="Key Result ${krCount}"></div><div><div class="field-label">Meta %</div><input type="number" placeholder="100" min="0" max="100"></div>`;
   c.appendChild(d);
 }
 
-function saveOKR(){
-  const obj = document.getElementById('okr-obj').value.trim();
-  const owner = document.getElementById('okr-owner').value;
-  if(!obj||!owner){ alert('Completa el objetivo y el consultor.'); return; }
+async function saveOKR(){
+  const obj=document.getElementById('okr-obj').value.trim();
+  const owner=document.getElementById('okr-owner').value;
+  const period=document.getElementById('okr-period').value;
+  const editId=document.getElementById('okr-edit-id').value;
+  if(!obj||!owner){alert('Completa el objetivo y el consultor.');return;}
   const krs=[];
   document.querySelectorAll('#kr-inputs .form-grid').forEach(row=>{
-    const ins = row.querySelectorAll('input');
-    if(ins[0]&&ins[0].value.trim()) krs.push({label:ins[0].value.trim(), target:parseInt(ins[1]?.value)||100, progress:0});
+    const ins=row.querySelectorAll('input');
+    if(ins[0]&&ins[0].value.trim()){
+      const prev=editId?S.okrs.find(x=>x.id===editId)?.krs?.find(k=>k.label===ins[0].value.trim()):null;
+      krs.push({label:ins[0].value.trim(),target:parseInt(ins[1]?.value)||100,progress:prev?prev.progress:0});
+    }
   });
-  if(!krs.length){ alert('Agrega al menos un Key Result.'); return; }
-  const okr = {id:Date.now(), obj, owner, period:document.getElementById('okr-period').value, krs};
-  S.okrs.push(okr);
-  clearOKRForm(); renderOKRList(); updateMetrics();
-  logActivity(`OKR creado: "${obj.slice(0,40)}" — ${owner}`);
-  writeToSharePoint('OKRs', okr);
+  if(!krs.length){alert('Agrega al menos un Key Result.');return;}
+  const data={obj,owner,period,krs,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+  if(editId){
+    await db.collection('okrs').doc(editId).update(data);
+    logActivity(`OKR actualizado: "${obj.slice(0,40)}" — ${owner}`);
+  } else {
+    data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('okrs').add(data);
+    logActivity(`OKR creado: "${obj.slice(0,40)}" — ${owner}`);
+  }
+  closeOKRModal(); showToast('OKR guardado ✓');
+}
+
+async function deleteOKR(id){
+  const o=S.okrs.find(x=>x.id===id); if(!o) return;
+  if(!confirm(`¿Eliminar el OKR "${o.obj.slice(0,50)}"?`)) return;
+  await db.collection('okrs').doc(id).delete();
+  logActivity(`OKR eliminado: "${o.obj.slice(0,35)}"`);
+  showToast('OKR eliminado');
+}
+
+async function updateKR(oid,ki,val){
+  const o=S.okrs.find(x=>x.id===oid); if(!o) return;
+  const v=parseInt(val);
+  const pf=document.getElementById(`pf-${oid}-${ki}`);
+  const pp=document.getElementById(`pp-${oid}-${ki}`);
+  if(pf){pf.style.width=v+'%';pf.style.background=v>=70?'#1D9E75':v>=40?'#BA7517':'#E24B4A';}
+  if(pp) pp.textContent=v+'%';
+  const newKRs=[...o.krs]; newKRs[ki]={...newKRs[ki],progress:v};
+  await db.collection('okrs').doc(oid).update({krs:newKRs,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
 }
 
 function renderOKRList(){
-  const el = document.getElementById('okr-list');
-  if(!S.okrs.length){ el.innerHTML='<p style="font-size:13px;color:#aaa;padding:8px 0;">Aún no hay OKRs creados.</p>'; return; }
-  el.innerHTML = S.okrs.map(o=>`
-    <div class="okr-obj">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px;">
-        <div class="okr-title">${o.obj}</div>
-        <span class="badge badge-blue" style="margin-left:8px;flex-shrink:0;">${o.owner}</span>
+  const el=document.getElementById('okr-list');
+  const fo=document.getElementById('filter-okr-owner')?.value||'';
+  const fp=document.getElementById('filter-okr-period')?.value||'';
+  let list=S.okrs;
+  if(fo) list=list.filter(o=>o.owner===fo);
+  if(fp) list=list.filter(o=>o.period===fp);
+  if(!list.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin OKRs para mostrar.</p>';return;}
+  el.innerHTML=list.map(o=>`
+    <div class="okr-card">
+      <div class="okr-card-header">
+        <div class="okr-card-title">${o.obj}</div>
+        <div style="display:flex;gap:6px;flex-shrink:0;">
+          <button class="btn" style="font-size:12px;padding:5px 11px;" onclick="openOKRModal('${o.id}')">Editar</button>
+          <button class="btn btn-danger" style="font-size:12px;padding:5px 11px;" onclick="deleteOKR('${o.id}')">Eliminar</button>
+        </div>
       </div>
-      ${o.krs.map((kr,ki)=>`
+      <div class="okr-card-meta">
+        <span class="badge badge-blue">${o.owner}</span>
+        <span class="badge badge-gray">${o.period}</span>
+        <span class="badge badge-gray">${(o.krs||[]).length} KRs</span>
+      </div>
+      ${(o.krs||[]).map((kr,ki)=>`
         <div class="kr-row">
           <span class="kr-label">${kr.label}</span>
-          <div class="prog-wrap"><div class="prog-fill" id="pf-${o.id}-${ki}" style="width:${kr.progress}%;background:${kr.progress>=70?'#1D9E75':kr.progress>=40?'#BA7517':'#E24B4A'};"></div></div>
-          <span class="kr-pct" id="pp-${o.id}-${ki}">${kr.progress}%</span>
-          <input type="range" min="0" max="100" step="1" value="${kr.progress}" oninput="updateKR(${o.id},${ki},this.value)">
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+          <div class="prog-wrap"><div class="prog-fill" id="pf-${o.id}-${ki}" style="width:${kr.progress||0}%;background:${(kr.progress||0)>=70?'#1D9E75':(kr.progress||0)>=40?'#BA7517':'#E24B4A'};"></div></div>
+          <span class="kr-pct" id="pp-${o.id}-${ki}">${kr.progress||0}%</span>
+          <input type="range" min="0" max="100" step="1" value="${kr.progress||0}" oninput="updateKR('${o.id}',${ki},this.value)">
+        </div>`).join('')}
+    </div>`).join('');
 }
 
-function updateKR(oid,ki,val){
-  const o=S.okrs.find(x=>x.id===oid); if(!o)return;
-  o.krs[ki].progress=parseInt(val);
-  const pf=document.getElementById(`pf-${oid}-${ki}`);
-  const pp=document.getElementById(`pp-${oid}-${ki}`);
-  const v=parseInt(val);
-  if(pf){pf.style.width=v+'%';pf.style.background=v>=70?'#1D9E75':v>=40?'#BA7517':'#E24B4A';}
-  if(pp)pp.textContent=v+'%';
-}
-
-function clearOKRForm(){
-  document.getElementById('okr-obj').value=''; document.getElementById('okr-owner').value='';
-  document.getElementById('kr-inputs').innerHTML=`<div class="form-grid field-row" style="align-items:flex-end;"><div><div class="field-label">KR 1</div><input type="text" placeholder="Ej: NPS ≥ 70 en encuesta mensual"></div><div><div class="field-label">Meta %</div><input type="number" placeholder="100" min="0" max="100"></div></div>`;
-  krCount=1;
-}
-
-// ── Tasks ────────────────────────────────────────────────
+// ══ TAREAS ════════════════════════════════════════════════
 function setTodayCreated(){
   const el=document.getElementById('t-created');
   if(!el.value) el.value=new Date().toISOString().split('T')[0];
@@ -481,22 +643,20 @@ function calcExpected(){
   const avance=parseInt(document.getElementById('t-avance').value)||0;
   const expPct=document.getElementById('exp-pct');
   const expBar=document.getElementById('exp-bar');
-  const expHint=document.getElementById('exp-hint');
   const gapDiv=document.getElementById('gap-preview');
   if(!c||!d){expPct.textContent='—';expBar.style.width='0%';gapDiv.style.display='none';return;}
-  const dc=new Date(c),dd=new Date(d),dn=new Date();
-  const total=dd-dc; if(total<=0){expPct.textContent='100%';return;}
-  const elapsed=Math.min(Math.max(dn-dc,0),total);
+  const total=new Date(d)-new Date(c); if(total<=0){expPct.textContent='100%';return;}
+  const elapsed=Math.min(Math.max(new Date()-new Date(c),0),total);
   const expected=Math.round((elapsed/total)*100);
   expPct.textContent=expected+'%';
   expBar.style.width=expected+'%';
   expBar.style.background=expected>=70?'#1D9E75':expected>=40?'#BA7517':'#378ADD';
-  expHint.textContent='Días transcurridos ÷ días totales × 100';
+  document.getElementById('exp-hint').textContent='Días transcurridos ÷ días totales × 100';
   const gap=expected-avance;
   gapDiv.style.display='block';
-  if(gap>20){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FCEBEB;border:1px solid #f0a0a0;color:#A32D2D;';gapDiv.textContent='Desvío: '+gap+' pts por debajo del esperado. La tarea va retrasada.';}
-  else if(gap>0){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FFF3CD;border:1px solid #f0c040;color:#BA7517;';gapDiv.textContent='Desvío leve: '+gap+' pts. Revisar progreso pronto.';}
-  else{gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#E1F5EE;border:1px solid #9FE1CB;color:#0F6E56;';gapDiv.textContent='En tiempo. Avance real supera o iguala el esperado.';}
+  if(gap>20){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FCEBEB;border:1px solid #f0a0a0;color:#A32D2D;';gapDiv.textContent='Desvío: '+gap+' pts — tarea retrasada.';}
+  else if(gap>0){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FFF3CD;border:1px solid #f0c040;color:#BA7517;';gapDiv.textContent='Desvío leve: '+gap+' pts. Revisar pronto.';}
+  else{gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#E1F5EE;border:1px solid #9FE1CB;color:#0F6E56;';gapDiv.textContent='En tiempo. Avance real ≥ esperado.';}
 }
 
 function populateOKRDropdown(){
@@ -505,46 +665,79 @@ function populateOKRDropdown(){
   S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>55?o.obj.slice(0,55)+'…':o.obj;sel.appendChild(op);});
   sel.value=cur||'';
 }
-
 function populateKRSelect(){
   const okrId=document.getElementById('t-okr').value;
   const krSel=document.getElementById('t-kr');
   krSel.innerHTML='<option value="">— seleccionar KR —</option>';
-  const o=S.okrs.find(x=>x.id==okrId);
-  if(o) o.krs.forEach((kr,i)=>{const op=document.createElement('option');op.value=i;op.textContent=kr.label.length>50?kr.label.slice(0,50)+'…':kr.label;krSel.appendChild(op);});
+  const o=S.okrs.find(x=>x.id===okrId);
+  if(o)(o.krs||[]).forEach((kr,i)=>{const op=document.createElement('option');op.value=i;op.textContent=kr.label.length>50?kr.label.slice(0,50)+'…':kr.label;krSel.appendChild(op);});
+}
+function getExpected(c,d){
+  if(!c||!d) return null;
+  const total=new Date(d)-new Date(c); if(total<=0) return 100;
+  return Math.round((Math.min(Math.max(new Date()-new Date(c),0),total)/total)*100);
 }
 
-function getExpected(created,due){
-  if(!created||!due)return null;
-  const c=new Date(created),d=new Date(due),n=new Date();
-  const total=d-c; if(total<=0)return 100;
-  return Math.round((Math.min(Math.max(n-c,0),total)/total)*100);
+function editTask(id){
+  const t=S.tasks.find(x=>x.id===id); if(!t) return;
+  showPanel('link',document.querySelector('.tab:nth-child(4)'));
+  document.getElementById('link-form-title').textContent='Editar tarea';
+  document.getElementById('t-save-btn').textContent='Guardar cambios';
+  document.getElementById('t-edit-id').value=id;
+  document.getElementById('t-name').value=t.name;
+  document.getElementById('t-prio').value=t.prio;
+  document.getElementById('t-created').value=t.created||'';
+  document.getElementById('t-due').value=t.due||'';
+  document.getElementById('t-estado').value=t.estado;
+  document.getElementById('t-avance').value=t.avance;
+  populateConsSelect('t-owner'); populateOKRDropdown();
+  setTimeout(()=>{
+    document.getElementById('t-owner').value=t.owner;
+    document.getElementById('t-okr').value=t.okrId||'';
+    populateKRSelect();
+    setTimeout(()=>{document.getElementById('t-kr').value=t.krIdx!==null&&t.krIdx!==undefined?t.krIdx:'';calcExpected();},60);
+  },60);
 }
 
-function saveTask(){
+async function deleteTask(id){
+  const t=S.tasks.find(x=>x.id===id); if(!t) return;
+  if(!confirm(`¿Eliminar la tarea "${t.name}"?`)) return;
+  await db.collection('tareas').doc(id).delete();
+  logActivity(`Tarea eliminada: "${t.name.slice(0,35)}"`);
+  showToast('Tarea eliminada');
+}
+
+async function saveTask(){
   const name=document.getElementById('t-name').value.trim();
   const owner=document.getElementById('t-owner').value;
   if(!name||!owner){alert('Completa nombre y consultor.');return;}
   const okrId=document.getElementById('t-okr').value;
   const krIdx=document.getElementById('t-kr').value;
-  const okr=S.okrs.find(x=>x.id==okrId);
+  const okr=S.okrs.find(x=>x.id===okrId);
   const created=document.getElementById('t-created').value;
   const due=document.getElementById('t-due').value;
   const avance=Math.min(100,Math.max(0,parseInt(document.getElementById('t-avance').value)||0));
   const estado=document.getElementById('t-estado').value;
-  const task={
-    id:Date.now(),name,owner,
+  const editId=document.getElementById('t-edit-id').value;
+  const data={
+    name,owner,
     okrId:okrId||null, okrLabel:okr?okr.obj:null,
     krIdx:krIdx!==''?parseInt(krIdx):null,
-    krLabel:(okr&&krIdx!=='')?okr.krs[krIdx].label:null,
+    krLabel:(okr&&krIdx!=='')?okr.krs[parseInt(krIdx)]?.label||null:null,
     prio:document.getElementById('t-prio').value,
     created,due,avance,estado,
-    expected:getExpected(created,due)
+    expected:getExpected(created,due),
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
   };
-  S.tasks.push(task);
-  clearTaskForm(); renderLinked(); updateMetrics(); renderAlerts();
-  logActivity(`Tarea "${name.slice(0,35)}" — ${owner} · ${estado}`);
-  writeToSharePoint('Actividades', task);
+  if(editId){
+    await db.collection('tareas').doc(editId).update(data);
+    logActivity(`Tarea actualizada: "${name.slice(0,35)}" · ${estado}`);
+  } else {
+    data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+    await db.collection('tareas').add(data);
+    logActivity(`Tarea creada: "${name.slice(0,35)}" — ${owner} · ${estado}`);
+  }
+  clearTaskForm(); showToast('Tarea guardada ✓');
 }
 
 function renderLinked(){
@@ -552,11 +745,10 @@ function renderLinked(){
   if(!S.tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Aún no hay tareas vinculadas.</p>';return;}
   el.innerHTML=S.tasks.map(t=>{
     const est=ESTADO_CFG[t.estado]||ESTADO_CFG['Pendiente Inicio'];
-    const exp=t.expected; const gap=exp!==null?exp-t.avance:null;
+    const exp=t.expected; const gap=exp!==null&&exp!==undefined?exp-t.avance:null;
     const ac=t.avance>=70?'#1D9E75':t.avance>=40?'#BA7517':'#378ADD';
-    const ec=exp!==null?(exp>=70?'#1D9E75':exp>=40?'#BA7517':'#378ADD'):'#ccc';
-    let gapHtml='';
-    if(gap!==null){const gc=gap>20?'#A32D2D':gap>0?'#BA7517':'#0F6E56';const gl=gap>20?'Retrasada '+gap+' pts':gap>0?'Desvío leve '+gap+' pts':'En tiempo';gapHtml=`<span class="gap-tag" style="background:${gc}22;color:${gc};">${gl}</span>`;}
+    const ec=exp!=null?(exp>=70?'#1D9E75':exp>=40?'#BA7517':'#378ADD'):'#ccc';
+    let gapHtml=''; if(gap!==null){const gc=gap>20?'#A32D2D':gap>0?'#BA7517':'#0F6E56';const gl=gap>20?'Retrasada '+gap+' pts':gap>0?'Desvío '+gap+' pts':'En tiempo';gapHtml=`<span class="gap-tag" style="background:${gc}22;color:${gc};">${gl}</span>`;}
     return `<div class="task-card">
       <div class="task-okr-ref">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,55)+'…':'Sin OKR vinculado'}</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
@@ -571,28 +763,31 @@ function renderLinked(){
         ${gapHtml}
       </div>
       <div class="avance-row">
-        <div class="avance-block"><div class="avance-label">Avance real (consultor)</div><div class="avance-num">${t.avance}%</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${t.avance}%;background:${ac};"></div></div></div>
-        <div class="avance-block"><div class="avance-label">Avance esperado (fechas)</div><div class="avance-num">${exp!==null?exp+'%':'—'}</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${exp||0}%;background:${ec};"></div></div></div>
+        <div><div class="avance-label">Avance real</div><div class="avance-num">${t.avance}%</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${t.avance}%;background:${ac};"></div></div></div>
+        <div><div class="avance-label">Avance esperado</div><div class="avance-num">${exp!=null?exp+'%':'—'}</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${exp||0}%;background:${ec};"></div></div></div>
       </div>
-    </div>`;
-  }).join('');
+      <div style="display:flex;gap:6px;margin-top:10px;">
+        <button class="btn" style="font-size:12px;padding:5px 12px;" onclick="editTask('${t.id}')">Editar</button>
+        <button class="btn btn-danger" style="font-size:12px;padding:5px 12px;" onclick="deleteTask('${t.id}')">Eliminar</button>
+      </div>
+    </div>`;}).join('');
 }
 
 function renderTasks(){
-  const filter=document.getElementById('filter-cons')?.value||'';
+  const filter=document.getElementById('filter-cons-task')?.value||'';
   const tasks=filter?S.tasks.filter(t=>t.owner===filter):S.tasks;
   const el=document.getElementById('task-list');
   if(!tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin tareas para mostrar.</p>';return;}
   el.innerHTML=tasks.map(t=>{
     const est=ESTADO_CFG[t.estado]||ESTADO_CFG['Pendiente Inicio'];
-    return `<div style="display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid #f0f0f0;">
+    return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0;">
       <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:700;color:#222;">${t.name}</div>
         <div style="font-size:11px;color:#185FA5;margin-top:2px;">${t.krLabel?'KR: '+t.krLabel.slice(0,45):t.okrLabel?'OKR: '+t.okrLabel.slice(0,45):'Sin OKR'}</div>
         <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;">
           <span class="badge ${est.cls}">${t.estado}</span>
           <span class="badge badge-gray">${t.avance}% real</span>
-          ${t.expected!==null?`<span class="badge badge-gray">${t.expected}% esperado</span>`:''}
+          ${t.expected!=null?`<span class="badge badge-gray">${t.expected}% esp.</span>`:''}
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
@@ -600,72 +795,11 @@ function renderTasks(){
         <span style="font-size:11px;color:#aaa;">${t.owner.split(' ')[0]}</span>
         ${t.due?`<span style="font-size:11px;color:#aaa;">${t.due}</span>`:''}
       </div>
-    </div>`;
-  }).join('');
-}
-
-function renderScore(){
-  const el=document.getElementById('score-list');
-  const owners=[...new Set(S.tasks.map(t=>t.owner))];
-  if(!owners.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Registra tareas para ver el score.</p>';return;}
-  el.innerHTML=owners.map(owner=>{
-    const ot=S.tasks.filter(t=>t.owner===owner);
-    const linked=ot.filter(t=>t.okrId);
-    const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
-    const oo=S.okrs.filter(o=>o.owner===owner);
-    const allKRs=oo.flatMap(o=>o.krs);
-    const okrS=allKRs.length?Math.round((allKRs.filter(k=>k.progress>0).length/allKRs.length)*100):0;
-    const score=Math.round(avgA*0.6+okrS*0.4);
-    const color=score>=70?'#1D9E75':score>=40?'#BA7517':'#E24B4A';
-    const initials=owner.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-    return `<div class="cons-row">
-      <div class="av" style="background:#E6F1FB;color:#185FA5;">${initials}</div>
-      <div class="ci"><div class="cn">${owner}</div><div class="cs">${ot.length} tareas · ${linked.length} vinculadas · avance prom. ${avgA}% · OKR score ${okrS}%</div>
-        <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${score}%;background:${color};"></div></div>
-      </div>
-      <span class="badge ${score>=70?'badge-green':score>=40?'badge-amber':'badge-red'}">${score}%</span>
-    </div>`;
-  }).join('');
-  if(owners.length){
-    const all=owners.map(owner=>{
-      const ot=S.tasks.filter(t=>t.owner===owner);const linked=ot.filter(t=>t.okrId);
-      const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
-      const oo=S.okrs.filter(o=>o.owner===owner);const allKRs=oo.flatMap(o=>o.krs);
-      const okrS=allKRs.length?Math.round((allKRs.filter(k=>k.progress>0).length/allKRs.length)*100):0;
-      return Math.round(avgA*0.6+okrS*0.4);
-    });
-    document.getElementById('m-score').textContent=Math.round(all.reduce((a,b)=>a+b,0)/all.length)+'%';
-  }
-}
-
-function renderAlerts(){
-  const el=document.getElementById('alerts-feed');
-  const alertas=S.tasks.filter(t=>t.expected!==null&&(t.expected-t.avance)>20&&t.estado!=='Finalizada');
-  if(!alertas.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin alertas activas.</p>';return;}
-  el.innerHTML=alertas.map(t=>`
-    <div style="padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
-      <span style="color:#A32D2D;font-weight:700;">${t.name.slice(0,40)}</span>
-      <span style="color:#888;"> — ${t.owner} — Desvío: ${t.expected-t.avance} pts (esperado ${t.expected}%, real ${t.avance}%)</span>
-    </div>`).join('');
-}
-
-function updateMetrics(){
-  document.getElementById('m-okrs').textContent=S.okrs.length;
-  document.getElementById('m-tasks').textContent=S.tasks.filter(t=>t.okrId).length;
-}
-
-function logActivity(msg){
-  const el=document.getElementById('activity-feed');
-  const t=new Date(); const time=t.getHours()+':'+(t.getMinutes()<10?'0':'')+t.getMinutes();
-  const d=document.createElement('div');
-  d.style='padding:5px 0;border-bottom:1px solid #f5f5f5;font-size:12px;color:#888;';
-  d.innerHTML=`<span style="color:#ccc;">${time}</span>  ${msg}`;
-  if(el.textContent.includes('Sin actividad'))el.innerHTML='';
-  el.insertBefore(d,el.firstChild);
+    </div>`;}).join('');
 }
 
 function clearTaskForm(){
-  ['t-name','t-due','t-created'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
+  ['t-name','t-due','t-created','t-edit-id'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   ['t-owner','t-okr','t-kr'].forEach(id=>{const e=document.getElementById(id);if(e)e.value='';});
   document.getElementById('t-prio').value='Media';
   document.getElementById('t-estado').value='Pendiente Inicio';
@@ -674,46 +808,115 @@ function clearTaskForm(){
   document.getElementById('exp-bar').style.width='0%';
   document.getElementById('gap-preview').style.display='none';
   document.getElementById('t-kr').innerHTML='<option value="">— seleccionar KR —</option>';
+  document.getElementById('link-form-title').textContent='Nueva tarea vinculada';
+  document.getElementById('t-save-btn').textContent='Vincular y guardar';
 }
 
-// ── Export functions ─────────────────────────────────────
-function copyPanelLink(){
-  const url=window.location.href;
-  navigator.clipboard.writeText(url).then(()=>alert('Link copiado al portapapeles.\n\nCompártelo en el canal General de Teams.')).catch(()=>prompt('Copia este link:',url));
+// ══ SCORE ════════════════════════════════════════════════
+function renderScore(){
+  const el=document.getElementById('score-list');
+  const owners=[...new Set(S.tasks.map(t=>t.owner))];
+  if(!owners.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Registra tareas para ver el score.</p>';return;}
+  const rows=owners.map(owner=>{
+    const ot=S.tasks.filter(t=>t.owner===owner);
+    const linked=ot.filter(t=>t.okrId);
+    const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
+    const oo=S.okrs.filter(o=>o.owner===owner);
+    const allKRs=oo.flatMap(o=>o.krs||[]);
+    const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
+    const score=Math.round(avgA*0.6+okrS*0.4);
+    const color=score>=70?'#1D9E75':score>=40?'#BA7517':'#E24B4A';
+    return {owner,score,color,ot,linked,avgA,okrS};
+  });
+  el.innerHTML=rows.map(r=>`
+    <div class="score-row">
+      <div style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:${avatarBg(r.owner)};color:${avatarTx(r.owner)};">${initials(r.owner)}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:13px;font-weight:700;color:#222;">${r.owner}</div>
+        <div style="font-size:11px;color:#888;">${r.ot.length} tareas · ${r.linked.length} vinculadas · avance ${r.avgA}% · OKR ${r.okrS}%</div>
+        <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${r.score}%;background:${r.color};"></div></div>
+      </div>
+      <span class="badge ${r.score>=70?'badge-green':r.score>=40?'badge-amber':'badge-red'}">${r.score}%</span>
+    </div>`).join('');
+  const avg=Math.round(rows.reduce((a,r)=>a+r.score,0)/rows.length);
+  document.getElementById('m-score').textContent=rows.length?avg+'%':'—';
 }
 
-function downloadExcel(){
-  alert('El archivo KALE_OKR_Tracker.xlsx está disponible para descarga junto a este panel.\nSúbelo a SharePoint en Documentos > KALÉ para que el equipo lo diligencie.');
+function renderAlerts(){
+  const el=document.getElementById('alerts-feed');
+  const alertas=S.tasks.filter(t=>t.expected!=null&&(t.expected-t.avance)>20&&t.estado!=='Finalizada');
+  if(!alertas.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin alertas activas.</p>';return;}
+  el.innerHTML=alertas.map(t=>`
+    <div style="padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
+      <span style="color:#A32D2D;font-weight:700;">${t.name.slice(0,40)}</span>
+      <span style="color:#888;"> — ${t.owner} — Desvío: ${t.expected-t.avance} pts (esp. ${t.expected}%, real ${t.avance}%)</span>
+    </div>`).join('');
+}
+
+// ══ EXPORT ═══════════════════════════════════════════════
+function copyLink(){
+  navigator.clipboard.writeText(window.location.href)
+    .then(()=>alert('Link copiado. Compártelo en Teams.'))
+    .catch(()=>prompt('Copia este link:',window.location.href));
+}
+
+function exportExcel(){
+  if(typeof XLSX==='undefined'){alert('Librería no disponible.');return;}
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([
+    ['ID','Nombre','Email','WhatsApp','Rol'],
+    ...S.consultores.map(c=>[c.id,c.name,c.email,c.wa,c.rol])
+  ]),'Consultores');
+  const okrRows=[['ID OKR','Objetivo','Consultor','Periodo','KR','Meta %','Avance %']];
+  S.okrs.forEach(o=>(o.krs||[]).forEach(kr=>okrRows.push([o.id,o.obj,o.owner,o.period,kr.label,kr.target,kr.progress||0])));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(okrRows),'OKRs');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([
+    ['ID','Nombre','Consultor','OKR','KR','Prioridad','Estado','Avance %','Esperado %','Creación','Límite'],
+    ...S.tasks.map(t=>[t.id,t.name,t.owner,t.okrLabel||'',t.krLabel||'',t.prio,t.estado,t.avance,t.expected||'',t.created,t.due])
+  ]),'Actividades');
+  XLSX.writeFile(wb,`KALE_Export_${new Date().toISOString().slice(0,10)}.xlsx`);
+  logActivity('Excel exportado');
 }
 
 function generateReport(){
   const today=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'long',year:'numeric'});
   document.getElementById('report-date').textContent=today;
   const owners=[...new Set(S.tasks.map(t=>t.owner))];
-  let body=`<div style="font-size:13px;color:#555;line-height:1.8;">`;
-  body+=`<div style="margin-bottom:12px;"><strong>OKRs activos:</strong> ${S.okrs.length} · <strong>Tareas vinculadas:</strong> ${S.tasks.filter(t=>t.okrId).length}</div>`;
+  let body='<div style="font-size:13px;color:#555;line-height:1.9;">';
+  body+=`<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee;"><strong>Consultores:</strong> ${S.consultores.length} · <strong>OKRs:</strong> ${S.okrs.length} · <strong>Tareas vinculadas:</strong> ${S.tasks.filter(t=>t.okrId).length}</div>`;
   if(owners.length){
     owners.forEach(owner=>{
       const ot=S.tasks.filter(t=>t.owner===owner);
       const linked=ot.filter(t=>t.okrId);
       const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
-      const alerts=ot.filter(t=>t.expected!==null&&(t.expected-t.avance)>20);
-      body+=`<div style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>${owner}</strong> — ${ot.length} tareas · avance prom. ${avgA}% · ${alerts.length>0?`<span style="color:#A32D2D;">${alerts.length} alerta(s)</span>`:'sin alertas'}</div>`;
+      const alerts=ot.filter(t=>t.expected!=null&&(t.expected-t.avance)>20&&t.estado!=='Finalizada');
+      const oo=S.okrs.filter(o=>o.owner===owner);
+      const allKRs=oo.flatMap(o=>o.krs||[]);
+      const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
+      const score=Math.round(avgA*0.6+okrS*0.4);
+      const sc=score>=70?'#0F6E56':score>=40?'#BA7517':'#A32D2D';
+      body+=`<div style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>${owner}</strong> — ${ot.length} tareas · avance ${avgA}% · score <span style="color:${sc};font-weight:700;">${score}%</span>${alerts.length?` · <span style="color:#A32D2D;">${alerts.length} alerta(s)</span>`:''}</div>`;
     });
-  } else { body+='<div style="color:#aaa;">Sin datos aún. Registra OKRs y tareas primero.</div>'; }
+  } else { body+='<div style="color:#aaa;">Sin datos aún.</div>'; }
   body+='</div>';
   document.getElementById('report-body').innerHTML=body;
   document.getElementById('report-output').style.display='block';
   document.getElementById('report-output').scrollIntoView({behavior:'smooth'});
 }
 
-// ── SharePoint write stub ────────────────────────────────
-function writeToSharePoint(sheet, data){
-  if(!S.spConnected)return;
-  console.log(`[SharePoint] Escribiendo en hoja "${sheet}":`, data);
-  // Implementación real: fetch a Microsoft Graph API
-  // POST https://graph.microsoft.com/v1.0/sites/{site-id}/drive/items/{item-id}/workbook/worksheets/{sheet}/tables/{table}/rows
-}
+// ══ MODAL CLOSE ON OUTSIDE CLICK ════════════════════════
+document.getElementById('modal-cons-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeConsModal();});
+document.getElementById('modal-okr-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOKRModal();});
+
+// ══ INIT ════════════════════════════════════════════════
+window.addEventListener('load',()=>{
+  try { initListeners(); }
+  catch(e){
+    const b=document.getElementById('fb-badge');
+    b.className='fb-badge fb-err'; b.textContent='Error Firebase';
+    console.error(e);
+  }
+});
 </script>
 </body>
 </html>
