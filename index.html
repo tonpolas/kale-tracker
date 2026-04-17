@@ -586,28 +586,38 @@ function showToast(msg='Guardado ✓'){
 }
 
 // ══ FIREBASE LISTENERS (tiempo real) ════════════════════
+const loaded = { consultores:false, okrs:false, tareas:false };
+
+function tryRenderDashboard(){
+  if(!loaded.consultores || !loaded.okrs || !loaded.tareas) return;
+  updateMetrics();
+  if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
+  else { renderScore(); renderAlerts(); }
+}
+
 function initListeners(){
   const badge=document.getElementById('fb-badge');
   badge.className='fb-badge fb-ok'; badge.textContent='Firebase conectado';
 
   db.collection('consultores').orderBy('name').onSnapshot(snap=>{
     S.consultores=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderConsList(); refreshAllConsSelects(); updateMetrics();
-    if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
+    loaded.consultores=true;
+    renderConsList(); refreshAllConsSelects();
+    tryRenderDashboard();
   });
 
   db.collection('okrs').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.okrs=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderOKRList(); updateMetrics();
-    if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
-    else { renderScore(); renderAlerts(); }
+    loaded.okrs=true;
+    renderOKRList();
+    tryRenderDashboard();
   });
 
   db.collection('tareas').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderLinked(); renderTasks(); updateMetrics();
-    if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
-    else { renderScore(); renderAlerts(); }
+    loaded.tareas=true;
+    renderLinked(); renderTasks();
+    tryRenderDashboard();
   });
 
   db.collection('actividad').orderBy('ts','desc').limit(20).onSnapshot(snap=>{
@@ -1197,7 +1207,7 @@ function renderOKRCompliance(okrs, tasks){
 function renderChartAvance(tasks){
   destroyChart('avance');
   const ctx = document.getElementById('chart-avance')?.getContext('2d'); if(!ctx) return;
-  const owners = S.consultores.map(c=>c.name).filter(n=>tasks.some(t=>t.owner===n));
+  const owners = [...new Set(tasks.filter(t=>t.okrId).map(t=>t.owner))].filter(Boolean);
   if(!owners.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
   const real = owners.map(o=>{ const t=tasks.filter(x=>x.owner===o&&x.okrId); return t.length?Math.round(t.reduce((a,x)=>a+x.avance,0)/t.length):0; });
   const esp  = owners.map(o=>{ const t=tasks.filter(x=>x.owner===o&&x.okrId&&x.expected!=null); return t.length?Math.round(t.reduce((a,x)=>a+(x.expected||0),0)/t.length):0; });
@@ -1235,7 +1245,7 @@ function renderChartEstados(tasks){
 function renderChartScore(tasks){
   destroyChart('score');
   const ctx = document.getElementById('chart-score')?.getContext('2d'); if(!ctx) return;
-  const owners = S.consultores.map(c=>c.name).filter(n=>tasks.some(t=>t.owner===n));
+  const owners = [...new Set(tasks.map(t=>t.owner))].filter(Boolean);
   if(!owners.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
   const scores = owners.map(owner=>{
     const ot=tasks.filter(t=>t.owner===owner); const linked=ot.filter(t=>t.okrId);
