@@ -7,6 +7,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
@@ -127,8 +128,41 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   .export-grid{grid-template-columns:1fr;}
   .avance-row{grid-template-columns:1fr;}
   .cons-card{flex-wrap:wrap;}
-}
-</style>
+/* dashboard charts */
+.dash-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
+.dash-filters select{font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;color:#222;}
+.dash-filters label{font-size:12px;color:#888;font-weight:600;}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.charts-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
+.chart-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 18px;}
+.chart-title{font-size:13px;font-weight:700;color:#222;margin-bottom:4px;}
+.chart-sub{font-size:11px;color:#aaa;margin-bottom:14px;}
+.chart-wrap{position:relative;}
+.okr-compliance-grid{display:grid;gap:10px;}
+.okr-comp-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #e8e8e8;border-radius:8px;background:#fff;}
+.okr-comp-info{flex:1;min-width:0;}
+.okr-comp-title{font-size:12px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.okr-comp-owner{font-size:11px;color:#888;margin-top:1px;}
+.okr-comp-bar-wrap{width:160px;flex-shrink:0;}
+.okr-comp-bar-bg{height:8px;background:#eee;border-radius:4px;overflow:hidden;}
+.okr-comp-bar-fill{height:100%;border-radius:4px;transition:width .4s;}
+.okr-comp-pct{font-size:13px;font-weight:700;min-width:40px;text-align:right;flex-shrink:0;}
+.okr-comp-badge{flex-shrink:0;}
+.resource-grid{display:grid;gap:8px;}
+.resource-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid #e8e8e8;border-radius:8px;background:#fff;}
+.resource-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
+.resource-info{flex:1;min-width:0;}
+.resource-name{font-size:13px;font-weight:700;color:#222;}
+.resource-detail{font-size:11px;color:#888;margin-top:1px;}
+.resource-bars{width:200px;flex-shrink:0;}
+.resource-bar-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.resource-bar-label{font-size:10px;color:#aaa;width:50px;text-align:right;flex-shrink:0;}
+.resource-bar-bg{flex:1;height:5px;background:#eee;border-radius:3px;overflow:hidden;}
+.resource-bar-fill{height:100%;border-radius:3px;}
+.resource-bar-val{font-size:10px;font-weight:700;width:28px;text-align:left;flex-shrink:0;}
+.dash-empty{text-align:center;padding:30px;font-size:13px;color:#aaa;}
+@media(max-width:680px){.charts-grid,.charts-grid-3{grid-template-columns:1fr;}}
+
 </head>
 <body>
 
@@ -162,20 +196,110 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 
 <!-- DASHBOARD -->
 <div class="panel active" id="panel-dashboard">
+
+  <!-- top metrics -->
   <div class="metrics">
-    <div class="metric"><div class="metric-label">Consultores</div><div class="metric-value" id="m-cons">—</div><div class="metric-sub">registrados</div></div>
-    <div class="metric"><div class="metric-label">OKRs activos</div><div class="metric-value" id="m-okrs">—</div><div class="metric-sub">este periodo</div></div>
-    <div class="metric"><div class="metric-label">Tareas vinculadas</div><div class="metric-value" id="m-tasks">—</div><div class="metric-sub">a un OKR</div></div>
-    <div class="metric"><div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">de valor</div></div>
+    <div class="metric" style="border-top:3px solid #0F6E56;">
+      <div class="metric-label">Consultores</div><div class="metric-value" id="m-cons">—</div><div class="metric-sub">registrados</div>
+    </div>
+    <div class="metric" style="border-top:3px solid #185FA5;">
+      <div class="metric-label">OKRs activos</div><div class="metric-value" id="m-okrs">—</div><div class="metric-sub">este periodo</div>
+    </div>
+    <div class="metric" style="border-top:3px solid #BA7517;">
+      <div class="metric-label">Tareas vinculadas</div><div class="metric-value" id="m-tasks">—</div><div class="metric-sub">a un OKR</div>
+    </div>
+    <div class="metric" style="border-top:3px solid #534AB7;">
+      <div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">de valor</div>
+    </div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-title">Actividad reciente</span><span class="badge badge-green">KALÉ · Q2 2026</span></div>
-    <div id="activity-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+
+  <!-- filters -->
+  <div class="dash-filters">
+    <label>Filtrar por:</label>
+    <select id="dash-filter-cons" onchange="renderDashboard()">
+      <option value="">Todos los consultores</option>
+    </select>
+    <select id="dash-filter-okr" onchange="renderDashboard()">
+      <option value="">Todos los OKRs</option>
+    </select>
+    <select id="dash-filter-period" onchange="renderDashboard()">
+      <option value="">Todos los periodos</option>
+      <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
+    </select>
+    <button class="btn" style="font-size:12px;padding:5px 13px;" onclick="renderDashboard()">Actualizar</button>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-title">Alertas de desvío</span></div>
-    <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+
+  <!-- row 1: cumplimiento OKR (full width) -->
+  <div class="chart-card" style="margin-bottom:14px;">
+    <div class="card-header" style="margin-bottom:6px;">
+      <div>
+        <div class="chart-title">Indicador de cumplimiento por OKR</div>
+        <div class="chart-sub">Avance promedio de Key Results por objetivo · ordenado de menor a mayor</div>
+      </div>
+      <span class="badge badge-blue" id="dash-okr-count">— OKRs</span>
+    </div>
+    <div id="okr-compliance-list"><div class="dash-empty">Sin datos aún</div></div>
   </div>
+
+  <!-- row 2: two charts -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Avance real vs esperado</div>
+      <div class="chart-sub">Por consultor · barras comparativas</div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chart-avance"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Distribución de estados</div>
+      <div class="chart-sub">Tareas por estado actual</div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chart-estados"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- row 3: three charts -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">Score de valor</div>
+      <div class="chart-sub">Por consultor · meta 80%</div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="chart-score"></canvas>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">Tareas por prioridad</div>
+      <div class="chart-sub">Distribución Alta · Media · Baja</div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="chart-prioridad"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- row 4: resources full width -->
+  <div class="chart-card" style="margin-bottom:14px;">
+    <div class="card-header" style="margin-bottom:6px;">
+      <div>
+        <div class="chart-title">Carga de recursos</div>
+        <div class="chart-sub">Tareas activas, avance y score por consultor</div>
+      </div>
+    </div>
+    <div id="resource-list"><div class="dash-empty">Sin datos aún</div></div>
+  </div>
+
+  <!-- row 5: activity + alerts -->
+  <div class="charts-grid">
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-header"><span class="card-title">Actividad reciente</span><span class="badge badge-green">en vivo</span></div>
+      <div id="activity-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+    </div>
+    <div class="card" style="margin-bottom:0;">
+      <div class="card-header"><span class="card-title">Alertas de desvío</span><span class="badge badge-red" id="alerts-count" style="display:none;"></span></div>
+      <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+    </div>
+  </div>
+
 </div>
 
 <!-- CONSULTORES -->
@@ -468,16 +592,21 @@ function initListeners(){
   db.collection('consultores').orderBy('name').onSnapshot(snap=>{
     S.consultores=snap.docs.map(d=>({id:d.id,...d.data()}));
     renderConsList(); refreshAllConsSelects(); updateMetrics();
+    if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
   });
 
   db.collection('okrs').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.okrs=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderOKRList(); updateMetrics(); renderScore(); renderAlerts();
+    renderOKRList(); updateMetrics();
+    if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
+    else { renderScore(); renderAlerts(); }
   });
 
   db.collection('tareas').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
-    renderLinked(); renderTasks(); updateMetrics(); renderScore(); renderAlerts();
+    renderLinked(); renderTasks(); updateMetrics();
+    if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
+    else { renderScore(); renderAlerts(); }
   });
 
   db.collection('actividad').orderBy('ts','desc').limit(20).onSnapshot(snap=>{
@@ -506,7 +635,7 @@ function showPanel(id,el){
   if(id==='seguimiento'){populateConsSelect('seg-filter-cons'); renderSeguimiento();}
   if(id==='tasks'){populateConsSelect('filter-cons-task'); renderTasks();}
   if(id==='score') renderScore();
-  if(id==='dashboard'){updateMetrics(); renderAlerts();}
+  if(id==='dashboard'){updateMetrics(); populateDashFilters(); renderDashboard();}
   if(id==='okrs'){populateConsSelect('filter-okr-owner'); renderOKRList();}
 }
 
@@ -915,7 +1044,9 @@ function renderScore(){
 
 function renderAlerts(){
   const el=document.getElementById('alerts-feed');
+  const badge=document.getElementById('alerts-count');
   const alertas=S.tasks.filter(t=>t.expected!=null&&(t.expected-t.avance)>20&&t.estado!=='Finalizada');
+  if(badge){ if(alertas.length){badge.textContent=alertas.length+' alerta'+(alertas.length>1?'s':'');badge.style.display='inline-block';}else{badge.style.display='none';} }
   if(!alertas.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin alertas activas.</p>';return;}
   el.innerHTML=alertas.map(t=>`
     <div style="padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
@@ -975,6 +1106,223 @@ function generateReport(){
   document.getElementById('report-output').scrollIntoView({behavior:'smooth'});
 }
 
+
+// ══ DASHBOARD CHARTS ══════════════════════════════════════
+let dashCharts = {};
+
+function destroyChart(id){
+  if(dashCharts[id]){ dashCharts[id].destroy(); delete dashCharts[id]; }
+}
+
+function getDashData(){
+  const fc = document.getElementById('dash-filter-cons')?.value||'';
+  const fo = document.getElementById('dash-filter-okr')?.value||'';
+  const fp = document.getElementById('dash-filter-period')?.value||'';
+  let tasks = S.tasks;
+  let okrs  = S.okrs;
+  if(fc){ tasks=tasks.filter(t=>t.owner===fc); }
+  if(fo){ tasks=tasks.filter(t=>t.okrId===fo); okrs=okrs.filter(o=>o.id===fo); }
+  if(fp){ okrs=okrs.filter(o=>o.period===fp); const okrIds=new Set(okrs.map(o=>o.id)); tasks=tasks.filter(t=>!t.okrId||okrIds.has(t.okrId)); }
+  return {tasks, okrs};
+}
+
+function populateDashFilters(){
+  const cs = document.getElementById('dash-filter-cons');
+  const co = document.getElementById('dash-filter-okr');
+  if(cs){ const v=cs.value; cs.innerHTML='<option value="">Todos los consultores</option>'; S.consultores.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;cs.appendChild(o);}); cs.value=v||''; }
+  if(co){ const v=co.value; co.innerHTML='<option value="">Todos los OKRs</option>'; S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>50?o.obj.slice(0,50)+'…':o.obj;co.appendChild(op);}); co.value=v||''; }
+}
+
+function renderDashboard(){
+  populateDashFilters();
+  const {tasks, okrs} = getDashData();
+  updateMetrics();
+  renderOKRCompliance(okrs, tasks);
+  renderChartAvance(tasks);
+  renderChartEstados(tasks);
+  renderChartScore(tasks);
+  renderChartPrioridad(tasks);
+  renderResourceList(tasks);
+  renderAlerts();
+}
+
+// ── OKR Compliance indicator ─────────────────────────────
+function renderOKRCompliance(okrs, tasks){
+  const el = document.getElementById('okr-compliance-list');
+  const badge = document.getElementById('dash-okr-count');
+  if(!okrs.length){ el.innerHTML='<div class="dash-empty">Sin OKRs registrados</div>'; badge.textContent='0 OKRs'; return; }
+  badge.textContent = okrs.length+' OKR'+(okrs.length!==1?'s':'');
+
+  const rows = okrs.map(o=>{
+    const krs = o.krs||[];
+    const avgKR = krs.length ? Math.round(krs.reduce((a,k)=>a+(k.progress||0),0)/krs.length) : 0;
+    // task-based avance for this OKR
+    const linkedTasks = tasks.filter(t=>t.okrId===o.id);
+    const avgTask = linkedTasks.length ? Math.round(linkedTasks.reduce((a,t)=>a+t.avance,0)/linkedTasks.length) : null;
+    // compliance = weighted avg KR progress
+    const compliance = avgKR;
+    return {...o, compliance, avgKR, avgTask, krs, linkedTasks};
+  }).sort((a,b)=>a.compliance-b.compliance);
+
+  el.innerHTML = `<div class="okr-compliance-grid">${rows.map(o=>{
+    const c = o.compliance;
+    const color = c>=80?'#1D9E75':c>=50?'#BA7517':'#E24B4A';
+    const cls   = c>=80?'badge-green':c>=50?'badge-amber':'badge-red';
+    const label = c>=80?'En meta':c>=50?'En progreso':'En riesgo';
+    const krsDetail = o.krs.map(kr=>`
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+        <span style="font-size:11px;color:#666;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${kr.label}</span>
+        <div style="width:80px;height:4px;background:#eee;border-radius:2px;overflow:hidden;flex-shrink:0;">
+          <div style="height:100%;border-radius:2px;background:${(kr.progress||0)>=70?'#1D9E75':(kr.progress||0)>=40?'#BA7517':'#E24B4A'};width:${kr.progress||0}%;"></div>
+        </div>
+        <span style="font-size:11px;font-weight:700;color:#222;width:28px;text-align:right;flex-shrink:0;">${kr.progress||0}%</span>
+      </div>`).join('');
+    return `<div class="okr-comp-row">
+      <div class="okr-comp-info">
+        <div class="okr-comp-title" title="${o.obj}">${o.obj}</div>
+        <div style="font-size:11px;color:#888;margin-top:2px;">${o.owner} · ${o.period} · ${o.krs.length} KR${o.krs.length!==1?'s':''} · ${o.linkedTasks.length} tarea${o.linkedTasks.length!==1?'s':''}</div>
+        <div style="margin-top:8px;">${krsDetail}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;padding-left:14px;">
+        <span style="font-size:22px;font-weight:700;color:${color};">${c}%</span>
+        <span class="badge ${cls}">${label}</span>
+        ${o.avgTask!==null?`<span style="font-size:11px;color:#aaa;">Tareas: ${o.avgTask}%</span>`:''}
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ── Chart: Avance real vs esperado ───────────────────────
+function renderChartAvance(tasks){
+  destroyChart('avance');
+  const ctx = document.getElementById('chart-avance')?.getContext('2d'); if(!ctx) return;
+  const owners = S.consultores.map(c=>c.name).filter(n=>tasks.some(t=>t.owner===n));
+  if(!owners.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
+  const real = owners.map(o=>{ const t=tasks.filter(x=>x.owner===o&&x.okrId); return t.length?Math.round(t.reduce((a,x)=>a+x.avance,0)/t.length):0; });
+  const esp  = owners.map(o=>{ const t=tasks.filter(x=>x.owner===o&&x.okrId&&x.expected!=null); return t.length?Math.round(t.reduce((a,x)=>a+(x.expected||0),0)/t.length):0; });
+  dashCharts['avance'] = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels: owners.map(n=>n.split(' ')[0]),
+      datasets:[
+        {label:'Avance real %', data:real, backgroundColor:'#1D9E75', borderRadius:4},
+        {label:'Avance esperado %', data:esp, backgroundColor:'#B5D4F4', borderRadius:4}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}
+  });
+}
+
+// ── Chart: Estados ───────────────────────────────────────
+function renderChartEstados(tasks){
+  destroyChart('estados');
+  const ctx = document.getElementById('chart-estados')?.getContext('2d'); if(!ctx) return;
+  const estados = ['Pendiente Inicio','En Progreso','Bloqueado','Finalizada'];
+  const counts  = estados.map(e=>tasks.filter(t=>t.estado===e).length);
+  if(!tasks.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
+  dashCharts['estados'] = new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:estados,
+      datasets:[{data:counts, backgroundColor:['#D3D1C7','#85B7EB','#F09595','#5DCAA5'], borderWidth:2, borderColor:'#fff'}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}
+  });
+}
+
+// ── Chart: Score ─────────────────────────────────────────
+function renderChartScore(tasks){
+  destroyChart('score');
+  const ctx = document.getElementById('chart-score')?.getContext('2d'); if(!ctx) return;
+  const owners = S.consultores.map(c=>c.name).filter(n=>tasks.some(t=>t.owner===n));
+  if(!owners.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
+  const scores = owners.map(owner=>{
+    const ot=tasks.filter(t=>t.owner===owner); const linked=ot.filter(t=>t.okrId);
+    const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
+    const oo=S.okrs.filter(o=>o.owner===owner); const allKRs=oo.flatMap(o=>o.krs||[]);
+    const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
+    return Math.round(avgA*0.6+okrS*0.4);
+  });
+  const colors = scores.map(s=>s>=70?'#1D9E75':s>=40?'#EF9F27':'#E24B4A');
+  dashCharts['score'] = new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:owners.map(n=>n.split(' ')[0]),
+      datasets:[
+        {label:'Score %', data:scores, backgroundColor:colors, borderRadius:6},
+        {label:'Meta 80%', data:owners.map(()=>80), type:'line', borderColor:'#534AB7', borderDash:[4,4], borderWidth:2, pointRadius:0, fill:false}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}
+  });
+}
+
+// ── Chart: Prioridad ─────────────────────────────────────
+function renderChartPrioridad(tasks){
+  destroyChart('prioridad');
+  const ctx = document.getElementById('chart-prioridad')?.getContext('2d'); if(!ctx) return;
+  if(!tasks.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
+  const alta  = tasks.filter(t=>t.prio==='Alta').length;
+  const media = tasks.filter(t=>t.prio==='Media').length;
+  const baja  = tasks.filter(t=>t.prio==='Baja').length;
+  dashCharts['prioridad'] = new Chart(ctx,{
+    type:'pie',
+    data:{
+      labels:['Alta','Media','Baja'],
+      datasets:[{data:[alta,media,baja], backgroundColor:['#F09595','#FAC775','#9FE1CB'], borderWidth:2, borderColor:'#fff'}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}
+  });
+}
+
+// ── Resource list ─────────────────────────────────────────
+function renderResourceList(tasks){
+  const el = document.getElementById('resource-list');
+  const owners = S.consultores.map(c=>c.name);
+  if(!owners.length){ el.innerHTML='<div class="dash-empty">Sin consultores registrados</div>'; return; }
+  el.innerHTML = `<div class="resource-grid">${owners.map(owner=>{
+    const cons = S.consultores.find(c=>c.name===owner);
+    const ot   = tasks.filter(t=>t.owner===owner);
+    const linked = ot.filter(t=>t.okrId);
+    const avgA = linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
+    const avgE = linked.filter(t=>t.expected!=null).length?Math.round(linked.filter(t=>t.expected!=null).reduce((a,t)=>a+(t.expected||0),0)/linked.filter(t=>t.expected!=null).length):0;
+    const oo   = S.okrs.filter(o=>o.owner===owner);
+    const allKRs=oo.flatMap(o=>o.krs||[]);
+    const okrS = allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
+    const score= Math.round(avgA*0.6+okrS*0.4);
+    const sc   = score>=70?'#1D9E75':score>=40?'#BA7517':'#E24B4A';
+    const bloqueadas = ot.filter(t=>t.estado==='Bloqueado').length;
+    const finalizadas= ot.filter(t=>t.estado==='Finalizada').length;
+    const bg=avatarBg(owner); const tx=avatarTx(owner);
+    return `<div class="resource-row">
+      <div class="resource-av" style="background:${bg};color:${tx};">${initials(owner)}</div>
+      <div class="resource-info">
+        <div class="resource-name">${owner}</div>
+        <div class="resource-detail">
+          ${cons?.rol?`<span class="badge badge-gray" style="margin-right:4px;">${cons.rol}</span>`:''}
+          ${ot.length} tareas · ${linked.length} vinculadas · ${finalizadas} finalizadas${bloqueadas?` · <span style="color:#A32D2D;">${bloqueadas} bloqueada${bloqueadas>1?'s':''}</span>`:''}
+        </div>
+      </div>
+      <div class="resource-bars">
+        <div class="resource-bar-row">
+          <span class="resource-bar-label">Real</span>
+          <div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgA}%;background:#1D9E75;"></div></div>
+          <span class="resource-bar-val" style="color:#1D9E75;">${avgA}%</span>
+        </div>
+        <div class="resource-bar-row">
+          <span class="resource-bar-label">Esperado</span>
+          <div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgE}%;background:#378ADD;"></div></div>
+          <span class="resource-bar-val" style="color:#378ADD;">${avgE}%</span>
+        </div>
+        <div class="resource-bar-row">
+          <span class="resource-bar-label">Score</span>
+          <div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${score}%;background:${sc};"></div></div>
+          <span class="resource-bar-val" style="color:${sc};font-weight:700;">${score}%</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('')}</div>`;
+}
 
 // ══ SEGUIMIENTO ══════════════════════════════════════════
 const PANEL_URL = 'https://tonpolas.github.io/kale-tracker';
