@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KALÉ — Tutorial: OKRs y Tareas</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f0f4f8;color:#222;min-height:100vh;}
+
+/* ── HEADER ── */
+.header{background:#0F6E56;color:#fff;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;}
+.header-brand{display:flex;align-items:center;gap:12px;}
+.header-logo{width:38px;height:38px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#9FE1CB;}
+.header-title{font-size:17px;font-weight:700;}
+.header-sub{font-size:11px;opacity:.7;margin-top:2px;}
+.header-badge{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{background:#fff;border-bottom:1px solid #e0e0e0;padding:14px 28px;}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+.progress-label{font-size:13px;font-weight:700;color:#222;}
+.progress-count{font-size:12px;color:#888;}
+.progress-track{height:6px;background:#e8e8e8;border-radius:3px;overflow:hidden;}
+.progress-fill{height:100%;background:#0F6E56;border-radius:3px;transition:width .4s ease;}
+.steps-dots{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:2px solid #e0e0e0;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#aaa;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.step-dot.active{background:#0F6E56;border-color:#0F6E56;color:#fff;}
+.step-dot.done{background:#E1F5EE;border-color:#1D9E75;color:#0F6E56;}
+
+/* ── MAIN LAYOUT ── */
+.main{display:grid;grid-template-columns:300px 1fr;gap:0;min-height:calc(100vh - 140px);}
+
+/* ── SIDEBAR ── */
+.sidebar{background:#fff;border-right:1px solid #e8e8e8;padding:20px 0;}
+.sidebar-section{padding:0 20px;margin-bottom:6px;}
+.sidebar-section-title{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;padding:10px 20px 6px;display:block;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 20px;cursor:pointer;border-radius:0;transition:background .15s;border-left:3px solid transparent;}
+.sidebar-item:hover{background:#f5f7fa;}
+.sidebar-item.active{background:#F0FAF6;border-left-color:#0F6E56;}
+.sidebar-item.done-item{opacity:.6;}
+.sidebar-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:#f0f0f0;color:#888;}
+.sidebar-item.active .sidebar-num{background:#0F6E56;color:#fff;}
+.sidebar-item.done-item .sidebar-num{background:#E1F5EE;color:#0F6E56;}
+.sidebar-text{font-size:13px;color:#444;font-weight:500;}
+.sidebar-item.active .sidebar-text{color:#0F6E56;font-weight:700;}
+
+/* ── CONTENT ── */
+.content{padding:28px 32px;overflow-y:auto;}
+.step-panel{display:none;animation:fadeIn .25s ease;}
+.step-panel.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+.step-header{margin-bottom:20px;}
+.step-tag{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;margin-bottom:8px;}
+.tag-okr{background:#E6F1FB;color:#185FA5;}
+.tag-tarea{background:#FFF3CD;color:#BA7517;}
+.tag-tip{background:#E1F5EE;color:#0F6E56;}
+.step-title{font-size:22px;font-weight:700;color:#222;margin-bottom:8px;line-height:1.3;}
+.step-desc{font-size:14px;color:#555;line-height:1.7;}
+
+/* ── MOCKUP SCREEN ── */
+.mockup-wrap{background:#f5f7fa;border:1px solid #e0e0e0;border-radius:12px;padding:16px;margin:20px 0;position:relative;}
+.mockup-label{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.mockup-screen{background:#fff;border-radius:8px;border:1px solid #e8e8e8;overflow:hidden;}
+.mockup-topbar{background:#0F6E56;padding:8px 14px;display:flex;align-items:center;gap:8px;}
+.mockup-logo{width:24px;height:24px;border-radius:5px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#9FE1CB;flex-shrink:0;}
+.mockup-brand{font-size:12px;font-weight:700;color:#fff;}
+.mockup-tabs{background:#fff;border-bottom:1px solid #e8e8e8;display:flex;padding:0 14px;overflow-x:auto;}
+.mockup-tab{padding:8px 12px;font-size:11px;color:#aaa;border-bottom:2px solid transparent;white-space:nowrap;cursor:pointer;}
+.mockup-tab.active{color:#0F6E56;border-bottom-color:#0F6E56;font-weight:700;}
+.mockup-body{padding:14px;}
+
+/* mockup form elements */
+.m-field{margin-bottom:10px;}
+.m-label{font-size:10px;font-weight:700;color:#555;margin-bottom:3px;}
+.m-input{border:1px solid #d0d0d0;border-radius:5px;padding:6px 9px;font-size:11px;color:#222;width:100%;background:#fff;}
+.m-input.highlight{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.15);background:#F8FFFC;}
+.m-input.filled{background:#f9f9f9;color:#444;}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.m-btn{padding:6px 14px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;border:none;}
+.m-btn-primary{background:#0F6E56;color:#fff;}
+.m-btn-secondary{background:#fff;color:#555;border:1px solid #ccc;}
+.m-btn-row{display:flex;gap:6px;margin-top:10px;}
+.m-section{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 6px;}
+.m-kr-row{display:grid;grid-template-columns:1fr 80px;gap:6px;margin-bottom:6px;}
+.m-badge{display:inline-block;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700;}
+.m-badge-blue{background:#E6F1FB;color:#185FA5;}
+.m-badge-green{background:#E1F5EE;color:#0F6E56;}
+.m-badge-amber{background:#FFF3CD;color:#BA7517;}
+.m-badge-red{background:#FCEBEB;color:#A32D2D;}
+.m-badge-gray{background:#F1F1F1;color:#555;}
+.m-okr-card{border:1px solid #e8e8e8;border-radius:6px;padding:10px 12px;margin-bottom:8px;}
+.m-okr-title{font-size:11px;font-weight:700;color:#222;margin-bottom:4px;}
+.m-okr-meta{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;}
+.m-kr-prog-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.m-kr-text{font-size:10px;color:#555;flex:1;}
+.m-prog-bar{height:4px;background:#eee;border-radius:2px;overflow:hidden;width:60px;}
+.m-prog-fill{height:100%;border-radius:2px;}
+.m-prog-pct{font-size:10px;font-weight:700;color:#222;width:24px;text-align:right;}
+
+/* ── CALLOUT ── */
+.callout{border-radius:8px;padding:12px 16px;margin:14px 0;display:flex;gap:10px;align-items:flex-start;}
+.callout-info{background:#E6F1FB;border-left:3px solid #185FA5;}
+.callout-tip{background:#E1F5EE;border-left:3px solid #0F6E56;}
+.callout-warn{background:#FFF3CD;border-left:3px solid #BA7517;}
+.callout-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.callout-text{font-size:13px;color:#444;line-height:1.6;}
+.callout-text strong{color:#222;}
+
+/* ── STEPS LIST ── */
+.steps-list{list-style:none;counter-reset:step-counter;margin:14px 0;}
+.steps-list li{counter-increment:step-counter;display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f0f0f0;}
+.steps-list li:last-child{border-bottom:none;}
+.steps-list li::before{content:counter(step-counter);width:24px;height:24px;border-radius:50%;background:#0F6E56;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+.steps-list li span{font-size:13px;color:#444;line-height:1.6;}
+.steps-list li span strong{color:#222;}
+
+/* ── HIGHLIGHT BOX ── */
+.highlight-box{background:#F0FAF6;border:1px solid #9FE1CB;border-radius:8px;padding:14px 16px;margin:14px 0;}
+.highlight-box p{font-size:13px;color:#0F6E56;line-height:1.6;}
+.highlight-box strong{color:#085041;}
+
+/* ── CURSOR ANIMATION ── */
+.cursor{display:inline-block;width:2px;height:14px;background:#0F6E56;vertical-align:middle;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* ── NAV BUTTONS ── */
+.nav-bar{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid #eee;}
+.nav-btn{padding:10px 22px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;border:none;display:flex;align-items:center;gap:6px;}
+.nav-btn-prev{background:#f0f0f0;color:#555;}
+.nav-btn-prev:hover{background:#e8e8e8;}
+.nav-btn-next{background:#0F6E56;color:#fff;}
+.nav-btn-next:hover{background:#085041;}
+.nav-btn:disabled{opacity:.4;cursor:not-allowed;}
+.nav-step-info{font-size:12px;color:#aaa;font-weight:600;}
+
+/* ── COMPLETION ── */
+.completion{text-align:center;padding:40px 20px;}
+.completion-icon{width:72px;height:72px;border-radius:50%;background:#E1F5EE;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:32px;}
+.completion-title{font-size:24px;font-weight:700;color:#0F6E56;margin-bottom:8px;}
+.completion-desc{font-size:14px;color:#666;line-height:1.7;max-width:400px;margin:0 auto 24px;}
+.completion-link{display:inline-block;padding:12px 28px;background:#0F6E56;color:#fff;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;}
+.completion-link:hover{background:#085041;}
+
+@media(max-width:768px){
+  .main{grid-template-columns:1fr;}
+  .sidebar{display:none;}
+  .content{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-brand">
+    <div class="header-logo">KL</div>
+    <div>
+      <div class="header-title">KALÉ — Tutorial interactivo</div>
+      <div class="header-sub">Aprende a crear OKRs y vincular tareas paso a paso</div>
+    </div>
+  </div>
+  <div class="header-badge">Guía de uso</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <span class="progress-label" id="progress-label">Paso 1 de 10</span>
+    <span class="progress-count" id="progress-count">10% completado</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:10%;"></div></div>
+  <div class="steps-dots" id="steps-dots"></div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <span class="sidebar-section-title">Módulo 1 — OKRs</span>
+    <div class="sidebar-item active" onclick="goTo(0)" id="sb-0">
+      <div class="sidebar-num">1</div><div class="sidebar-text">¿Qué es un OKR?</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(1)" id="sb-1">
+      <div class="sidebar-num">2</div><div class="sidebar-text">Abrir el panel OKRs</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(2)" id="sb-2">
+      <div class="sidebar-num">3</div><div class="sidebar-text">Crear un OKR</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(3)" id="sb-3">
+      <div class="sidebar-num">4</div><div class="sidebar-text">Agregar Key Results</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(4)" id="sb-4">
+      <div class="sidebar-num">5</div><div class="sidebar-text">Editar un OKR</div>
+    </div>
+    <span class="sidebar-section-title">Módulo 2 — Tareas</span>
+    <div class="sidebar-item" onclick="goTo(5)" id="sb-5">
+      <div class="sidebar-num">6</div><div class="sidebar-text">Abrir Vincular tareas</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(6)" id="sb-6">
+      <div class="sidebar-num">7</div><div class="sidebar-text">Completar los campos</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(7)" id="sb-7">
+      <div class="sidebar-num">8</div><div class="sidebar-text">Estado y avance</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(8)" id="sb-8">
+      <div class="sidebar-num">9</div><div class="sidebar-text">Editar una tarea</div>
+    </div>
+    <div class="sidebar-item" onclick="goTo(9)" id="sb-9">
+      <div class="sidebar-num">10</div><div class="sidebar-text">Listo</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- STEP 0 -->
+    <div class="step-panel active" id="step-0">
+      <div class="step-header">
+        <span class="step-tag tag-okr">Módulo 1 · OKRs</span>
+        <div class="step-title">¿Qué es un OKR?</div>
+        <div class="step-desc">Antes de crear un OKR en KALÉ, entendamos qué es y para qué sirve.</div>
+      </div>
+      <div class="callout callout-info">
+        <div class="callout-icon">💡</div>
+        <div class="callout-text"><strong>OKR</strong> significa <strong>Objective and Key Results</strong> — Objetivo y Resultados Clave. Es un marco para definir metas y medir si se están cumpliendo.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span><strong>Objetivo (O):</strong> Una declaración cualitativa de lo que quieres lograr. Ej: <em>"Incrementar la satisfacción del cliente en proyectos activos"</em></span></li>
+        <li><span><strong>Key Result (KR):</strong> Una métrica específica y medible que indica si se está logrando el objetivo. Ej: <em>"NPS ≥ 70 en encuesta mensual"</em></span></li>
+        <li><span><strong>Tareas:</strong> Las actividades concretas que el consultor ejecuta y que contribuyen a mover un KR.</span></li>
+      </ul>
+      <div class="highlight-box">
+        <p><strong>En KALÉ:</strong> cada consultor tiene sus propios OKRs por periodo (Q1, Q2...). Las tareas se vinculan a un OKR y a un KR específico, lo que permite saber exactamente si el trabajo genera valor.</p>
+      </div>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Estructura en KALÉ</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;font-size:12px;">
+          <div style="background:#E6F1FB;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:20px;margin-bottom:6px;">🎯</div>
+            <div style="font-weight:700;color:#185FA5;">Objetivo</div>
+            <div style="color:#555;margin-top:4px;font-size:11px;">Lo que quieres lograr</div>
+          </div>
+          <div style="background:#E1F5EE;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:20px;margin-bottom:6px;">📊</div>
+            <div style="font-weight:700;color:#0F6E56;">Key Results</div>
+            <div style="color:#555;margin-top:4px;font-size:11px;">Cómo mides el logro</div>
+          </div>
+          <div style="background:#FFF3CD;border-radius:8px;padding:12px;text-align:center;">
+            <div style="font-size:20px;margin-bottom:6px;">✅</div>
+            <div style="font-weight:700;color:#BA7517;">Tareas</div>
+            <div style="color:#555;margin-top:4px;font-size:11px;">Lo que ejecutas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1 -->
+    <div class="step-panel" id="step-1">
+      <div class="step-header">
+        <span class="step-tag tag-okr">Módulo 1 · OKRs</span>
+        <div class="step-title">Abrir el panel de OKRs</div>
+        <div class="step-desc">El primer paso es navegar a la pestaña correcta en el panel KALÉ.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>Abre el panel en <strong>tonpolas.github.io/kale-tracker</strong></span></li>
+        <li><span>En la barra de navegación superior, haz clic en la pestaña <strong>"OKRs"</strong></span></li>
+        <li><span>Verás la lista de OKRs existentes y el botón <strong>"+ Nuevo OKR"</strong> en la esquina superior derecha</span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Haz clic en "OKRs" en la barra de navegación</div>
+        <div class="mockup-screen">
+          <div class="mockup-topbar">
+            <div class="mockup-logo">KL</div>
+            <div class="mockup-brand">KALÉ</div>
+          </div>
+          <div class="mockup-tabs">
+            <div class="mockup-tab">Dashboard</div>
+            <div class="mockup-tab">Consultores</div>
+            <div class="mockup-tab active" style="position:relative;">
+              OKRs
+              <div style="position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:#0F6E56;border-radius:50%;animation:pulse 1.5s infinite;"></div>
+            </div>
+            <div class="mockup-tab">Vincular tareas</div>
+            <div class="mockup-tab">Panel de tareas</div>
+          </div>
+          <div class="mockup-body">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <div style="font-size:13px;font-weight:700;color:#222;">Objetivos y Key Results</div>
+              <div class="m-btn m-btn-primary" style="font-size:11px;">+ Nuevo OKR</div>
+            </div>
+            <div class="m-okr-card">
+              <div class="m-okr-title">Incrementar satisfacción del cliente...</div>
+              <div class="m-okr-meta"><span class="m-badge m-badge-blue">Francisco T.</span><span class="m-badge m-badge-gray">Q2 · 2026</span></div>
+            </div>
+            <div class="m-okr-card" style="opacity:.5;">
+              <div class="m-okr-title">Acelerar entrega de valor...</div>
+              <div class="m-okr-meta"><span class="m-badge m-badge-blue">Luis A.</span><span class="m-badge m-badge-gray">Q2 · 2026</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-tip">
+        <div class="callout-icon">💡</div>
+        <div class="callout-text">Puedes usar los filtros de <strong>consultor</strong> y <strong>periodo</strong> para ver solo los OKRs que te interesan.</div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-panel" id="step-2">
+      <div class="step-header">
+        <span class="step-tag tag-okr">Módulo 1 · OKRs</span>
+        <div class="step-title">Crear un nuevo OKR</div>
+        <div class="step-desc">Haz clic en "+ Nuevo OKR" para abrir el formulario de creación.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>Haz clic en <strong>"+ Nuevo OKR"</strong> — se abre un modal con el formulario</span></li>
+        <li><span>Escribe el <strong>Objetivo</strong> — debe ser una frase clara de lo que quieres lograr</span></li>
+        <li><span>Selecciona el <strong>Consultor responsable</strong> del listado</span></li>
+        <li><span>Elige el <strong>Periodo</strong> (Q1, Q2, Q3 o Q4 · 2026)</span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Modal de creación de OKR</div>
+        <div class="mockup-screen">
+          <div class="mockup-body" style="padding:16px;">
+            <div style="font-size:14px;font-weight:700;color:#0F6E56;margin-bottom:14px;">Nuevo OKR</div>
+            <div class="m-field">
+              <div class="m-label">Objetivo</div>
+              <div class="m-input highlight" style="color:#0F6E56;">Consolidar la adopción de la solución entre los Stakeholders<span class="cursor"></span></div>
+            </div>
+            <div class="m-grid">
+              <div class="m-field">
+                <div class="m-label">Consultor responsable</div>
+                <div class="m-input filled">Luis Antonio Delgado ▾</div>
+              </div>
+              <div class="m-field">
+                <div class="m-label">Periodo</div>
+                <div class="m-input filled">Q2 · 2026 ▾</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-text"><strong>Importante:</strong> El objetivo debe ser claro e inspirador. Evita frases técnicas o muy largas. Ej: <em>"Incrementar la adopción del cliente en un 30%"</em> es mejor que <em>"Realizar actividades de implementación del módulo X"</em>.</div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-panel" id="step-3">
+      <div class="step-header">
+        <span class="step-tag tag-okr">Módulo 1 · OKRs</span>
+        <div class="step-title">Agregar Key Results</div>
+        <div class="step-desc">Los Key Results son las métricas que demuestran si estás logrando el objetivo.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>Debajo del formulario principal verás la sección <strong>"Key Results"</strong> con KR 1 ya disponible</span></li>
+        <li><span>Escribe la descripción del KR — debe ser <strong>medible y específico</strong></span></li>
+        <li><span>Define la <strong>Meta %</strong> — normalmente 100 (significa que quieres llegar al 100%)</span></li>
+        <li><span>Si necesitas más KRs, haz clic en <strong>"+ Agregar otro Key Result"</strong></span></li>
+        <li><span>Cuando termines, haz clic en <strong>"Guardar OKR"</strong></span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Sección de Key Results en el modal</div>
+        <div class="mockup-screen">
+          <div class="mockup-body" style="padding:16px;">
+            <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Key Results</div>
+            <div class="m-kr-row">
+              <div>
+                <div class="m-label">KR 1</div>
+                <div class="m-input highlight" style="color:#0F6E56;">Capacitar al 100% de usuarios clave en el sistema</div>
+              </div>
+              <div>
+                <div class="m-label">Meta %</div>
+                <div class="m-input filled" style="text-align:center;">100</div>
+              </div>
+            </div>
+            <div class="m-kr-row">
+              <div>
+                <div class="m-label">KR 2</div>
+                <div class="m-input highlight" style="color:#0F6E56;">Realizar piloto con 3 áreas del cliente</div>
+              </div>
+              <div>
+                <div class="m-label">Meta %</div>
+                <div class="m-input filled" style="text-align:center;">100</div>
+              </div>
+            </div>
+            <div style="width:100%;padding:7px;border:1px dashed #ccc;border-radius:5px;font-size:11px;color:#aaa;text-align:center;margin:6px 0 12px;cursor:pointer;">+ Agregar otro Key Result</div>
+            <div class="m-btn-row">
+              <div class="m-btn m-btn-primary">Guardar OKR</div>
+              <div class="m-btn m-btn-secondary">Cancelar</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-tip">
+        <div class="callout-icon">✅</div>
+        <div class="callout-text">Un buen OKR tiene entre <strong>2 y 4 Key Results</strong>. Más de 4 puede indicar que el objetivo es demasiado amplio y debe dividirse en dos OKRs.</div>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="step-panel" id="step-4">
+      <div class="step-header">
+        <span class="step-tag tag-okr">Módulo 1 · OKRs</span>
+        <div class="step-title">Editar un OKR existente</div>
+        <div class="step-desc">Puedes modificar cualquier OKR en cualquier momento — el avance de los KRs se preserva.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>En la lista de OKRs, localiza el OKR que quieres modificar</span></li>
+        <li><span>Haz clic en el botón <strong>"Editar"</strong> — se abre el mismo modal con los datos precargados</span></li>
+        <li><span>Modifica lo que necesites: objetivo, consultor, periodo o Key Results</span></li>
+        <li><span>Si editas el texto de un KR existente, el avance se <strong>reinicia a 0%</strong> — ten cuidado</span></li>
+        <li><span>Haz clic en <strong>"Guardar OKR"</strong> para confirmar los cambios</span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Botones de acción en cada OKR</div>
+        <div class="mockup-screen">
+          <div class="mockup-body">
+            <div class="m-okr-card">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+                <div class="m-okr-title" style="flex:1;">Consolidar la adopción de la solución entre los Stakeholders del aeropuerto</div>
+                <div style="display:flex;gap:5px;flex-shrink:0;margin-left:8px;">
+                  <div class="m-btn m-btn-secondary" style="font-size:10px;padding:4px 10px;background:#E6F1FB;color:#185FA5;border-color:#185FA5;">Editar</div>
+                  <div class="m-btn" style="font-size:10px;padding:4px 10px;background:#FCEBEB;color:#A32D2D;border-color:#A32D2D;">Eliminar</div>
+                </div>
+              </div>
+              <div class="m-okr-meta">
+                <span class="m-badge m-badge-blue">Luis Antonio Delgado</span>
+                <span class="m-badge m-badge-gray">Q2 · 2026</span>
+                <span class="m-badge m-badge-gray">3 KRs</span>
+              </div>
+              <div class="m-kr-prog-row">
+                <div class="m-kr-text">Capacitar al 100% de usuarios clave</div>
+                <div class="m-prog-bar"><div class="m-prog-fill" style="width:45%;background:#BA7517;"></div></div>
+                <div class="m-prog-pct">45%</div>
+                <input type="range" style="width:50px;" value="45" min="0" max="100">
+              </div>
+              <div class="m-kr-prog-row">
+                <div class="m-kr-text">Realizar piloto con 3 áreas</div>
+                <div class="m-prog-bar"><div class="m-prog-fill" style="width:0%;background:#E24B4A;"></div></div>
+                <div class="m-prog-pct">0%</div>
+                <input type="range" style="width:50px;" value="0" min="0" max="100">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-warn">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-text"><strong>Actualizar el avance del KR:</strong> el slider que ves en cada KR se actualiza directamente en la lista — no necesitas abrir el modal para eso. El modal de edición es solo para cambiar el texto del objetivo o los Key Results.</div>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="step-panel" id="step-5">
+      <div class="step-header">
+        <span class="step-tag tag-tarea">Módulo 2 · Tareas</span>
+        <div class="step-title">Abrir "Vincular tareas"</div>
+        <div class="step-desc">Las tareas son las actividades concretas que ejecuta cada consultor. Vincularlas a un OKR permite medir su impacto.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>En la barra de navegación, haz clic en <strong>"Vincular tareas"</strong></span></li>
+        <li><span>Verás el formulario de nueva tarea arriba y la lista de tareas ya creadas abajo</span></li>
+        <li><span>Asegúrate de que ya tienes <strong>consultores creados</strong> y al menos <strong>un OKR</strong> antes de vincular tareas</span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Pestaña "Vincular tareas"</div>
+        <div class="mockup-screen">
+          <div class="mockup-topbar">
+            <div class="mockup-logo">KL</div>
+            <div class="mockup-brand">KALÉ</div>
+          </div>
+          <div class="mockup-tabs">
+            <div class="mockup-tab">OKRs</div>
+            <div class="mockup-tab active" style="position:relative;">
+              Vincular tareas
+              <div style="position:absolute;top:-4px;right:-4px;width:8px;height:8px;background:#BA7517;border-radius:50%;animation:pulse 1.5s infinite;"></div>
+            </div>
+            <div class="mockup-tab">Panel de tareas</div>
+          </div>
+          <div class="mockup-body">
+            <div style="font-size:13px;font-weight:700;color:#222;margin-bottom:10px;">Nueva tarea vinculada</div>
+            <div class="m-field">
+              <div class="m-label">Nombre de la tarea</div>
+              <div class="m-input" style="color:#aaa;">Ej: Análisis de brecha cliente...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-info">
+        <div class="callout-icon">💡</div>
+        <div class="callout-text">Una tarea <strong>sin OKR vinculado</strong> se registra pero <strong>no suma al score de valor</strong>. Siempre que sea posible, vincula cada tarea a un KR específico.</div>
+      </div>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="step-panel" id="step-6">
+      <div class="step-header">
+        <span class="step-tag tag-tarea">Módulo 2 · Tareas</span>
+        <div class="step-title">Completar los campos de la tarea</div>
+        <div class="step-desc">El formulario tiene dos bloques: identificación de la tarea y vinculación al OKR.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>Escribe el <strong>nombre de la tarea</strong> — sé específico. Ej: <em>"Taller de capacitación con equipo de logística"</em></span></li>
+        <li><span>Selecciona el <strong>consultor</strong> responsable de ejecutarla</span></li>
+        <li><span>Define la <strong>prioridad</strong>: Alta, Media o Baja</span></li>
+        <li><span>Selecciona el <strong>OKR vinculado</strong> del listado — aparecen todos los OKRs creados</span></li>
+        <li><span>Selecciona el <strong>Key Result específico</strong> dentro de ese OKR</span></li>
+        <li><span>Define la <strong>fecha de creación</strong> (se llena con hoy automáticamente) y la <strong>fecha límite</strong></span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Formulario completo de tarea</div>
+        <div class="mockup-screen">
+          <div class="mockup-body" style="padding:14px;">
+            <div class="m-field">
+              <div class="m-label">Nombre de la tarea</div>
+              <div class="m-input filled">Taller de capacitación con equipo de logística</div>
+            </div>
+            <div class="m-grid">
+              <div class="m-field">
+                <div class="m-label">Consultor</div>
+                <div class="m-input filled">Luis Antonio Delgado ▾</div>
+              </div>
+              <div class="m-field">
+                <div class="m-label">Prioridad</div>
+                <div class="m-input filled">Alta ▾</div>
+              </div>
+            </div>
+            <div class="m-grid">
+              <div class="m-field">
+                <div class="m-label">OKR vinculado</div>
+                <div class="m-input highlight" style="font-size:10px;color:#0F6E56;">Consolidar la adopción de la solución... ▾</div>
+              </div>
+              <div class="m-field">
+                <div class="m-label">Key Result</div>
+                <div class="m-input highlight" style="color:#0F6E56;">Capacitar al 100% de usuarios clave ▾</div>
+              </div>
+            </div>
+            <div class="m-grid">
+              <div class="m-field">
+                <div class="m-label">Fecha de creación</div>
+                <div class="m-input filled">2026-04-17</div>
+              </div>
+              <div class="m-field">
+                <div class="m-label">Fecha límite</div>
+                <div class="m-input highlight" style="color:#0F6E56;">2026-04-30</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 7 -->
+    <div class="step-panel" id="step-7">
+      <div class="step-header">
+        <span class="step-tag tag-tarea">Módulo 2 · Tareas</span>
+        <div class="step-title">Estado, avance y avance esperado</div>
+        <div class="step-desc">Este es el bloque más importante — aquí el consultor reporta su progreso real.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>Selecciona el <strong>Estado actual</strong>: Pendiente Inicio, En Progreso, Bloqueado o Finalizada</span></li>
+        <li><span>Ingresa el <strong>Avance actual %</strong> — es un número entre 0 y 100 que tú mismo defines</span></li>
+        <li><span>El <strong>Avance esperado</strong> se calcula solo — es el porcentaje de días transcurridos entre la fecha de creación y la fecha límite</span></li>
+        <li><span>El sistema muestra automáticamente si vas <strong>en tiempo</strong> (verde), con <strong>desvío leve</strong> (amarillo) o <strong>retrasado</strong> (rojo)</span></li>
+        <li><span>Haz clic en <strong>"Vincular y guardar"</strong> para guardar en Firebase</span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Bloque de estado y avance</div>
+        <div class="mockup-screen">
+          <div class="mockup-body" style="padding:14px;background:#f9fafb;">
+            <div style="font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;margin-bottom:8px;">Estado y avance</div>
+            <div class="m-grid" style="margin-bottom:10px;">
+              <div class="m-field">
+                <div class="m-label">Estado actual</div>
+                <div class="m-input filled">En Progreso ▾</div>
+              </div>
+              <div class="m-field">
+                <div class="m-label">Avance actual (%)</div>
+                <div class="m-input highlight" style="color:#0F6E56;">35</div>
+                <div style="font-size:10px;color:#aaa;margin-top:2px;">Diligenciado por el consultor</div>
+              </div>
+            </div>
+            <div class="m-field" style="margin-bottom:0;">
+              <div class="m-label">Avance esperado a hoy (automático)</div>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+                <div style="flex:1;height:7px;background:#e0e0e0;border-radius:3px;overflow:hidden;">
+                  <div style="height:100%;width:55%;background:#378ADD;border-radius:3px;"></div>
+                </div>
+                <span style="font-size:13px;font-weight:700;color:#222;">55%</span>
+              </div>
+              <div style="font-size:10px;color:#aaa;margin-top:3px;">Días transcurridos ÷ días totales × 100</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0;">
+        <div style="background:#E1F5EE;border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#0F6E56;">En tiempo</div>
+          <div style="font-size:10px;color:#1D9E75;margin-top:2px;">Real ≥ Esperado</div>
+        </div>
+        <div style="background:#FFF3CD;border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#BA7517;">Desvío leve</div>
+          <div style="font-size:10px;color:#BA7517;margin-top:2px;">Diferencia 1-20 pts</div>
+        </div>
+        <div style="background:#FCEBEB;border-radius:8px;padding:10px;text-align:center;">
+          <div style="font-size:11px;font-weight:700;color:#A32D2D;">Retrasada</div>
+          <div style="font-size:10px;color:#A32D2D;margin-top:2px;">Diferencia &gt; 20 pts</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 8 -->
+    <div class="step-panel" id="step-8">
+      <div class="step-header">
+        <span class="step-tag tag-tarea">Módulo 2 · Tareas</span>
+        <div class="step-title">Editar una tarea existente</div>
+        <div class="step-desc">Puedes actualizar el estado y avance de una tarea en cualquier momento.</div>
+      </div>
+      <ul class="steps-list">
+        <li><span>En la sección <strong>"Tareas vinculadas"</strong> (debajo del formulario) localiza la tarea que quieres actualizar</span></li>
+        <li><span>Haz clic en <strong>"Editar"</strong> — el formulario arriba se precarga con todos los datos de esa tarea</span></li>
+        <li><span>Actualiza el <strong>Estado</strong> y el <strong>Avance %</strong> según tu progreso real</span></li>
+        <li><span>Haz clic en <strong>"Guardar cambios"</strong> — el botón cambia de nombre automáticamente</span></li>
+        <li><span>Los cambios se reflejan en el <strong>Dashboard</strong> y en el <strong>Score de valor</strong> en tiempo real</span></li>
+      </ul>
+      <div class="mockup-wrap">
+        <div class="mockup-label">Tarjeta de tarea con opciones de acción</div>
+        <div class="mockup-screen">
+          <div class="mockup-body">
+            <div style="border:1px solid #e8e8e8;border-radius:7px;padding:11px 13px;">
+              <div style="font-size:10px;color:#185FA5;margin-bottom:3px;">OKR: Consolidar la adopción de la solución...</div>
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px;">
+                <div style="font-size:12px;font-weight:700;color:#222;">Taller de capacitación con equipo de logística</div>
+                <span class="m-badge m-badge-blue">En Progreso</span>
+              </div>
+              <div style="font-size:10px;color:#185FA5;margin-bottom:6px;">KR: Capacitar al 100% de usuarios clave</div>
+              <div style="display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;">
+                <span class="m-badge m-badge-blue">Luis Antonio D.</span>
+                <span class="m-badge" style="background:#FCEBEB;color:#A32D2D;">Alta</span>
+                <span class="m-badge m-badge-gray">Límite: 30 abr</span>
+                <span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;background:#FFF3CD22;color:#BA7517;">Desvío 20 pts</span>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                <div>
+                  <div style="font-size:10px;color:#888;">Avance real</div>
+                  <div style="font-size:14px;font-weight:700;color:#222;">35%</div>
+                  <div style="height:5px;background:#eee;border-radius:2px;overflow:hidden;margin-top:2px;"><div style="height:100%;width:35%;background:#1D9E75;border-radius:2px;"></div></div>
+                </div>
+                <div>
+                  <div style="font-size:10px;color:#888;">Avance esperado</div>
+                  <div style="font-size:14px;font-weight:700;color:#222;">55%</div>
+                  <div style="height:5px;background:#eee;border-radius:2px;overflow:hidden;margin-top:2px;"><div style="height:100%;width:55%;background:#378ADD;border-radius:2px;"></div></div>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;">
+                <div class="m-btn m-btn-secondary" style="font-size:10px;padding:4px 10px;background:#E6F1FB;color:#185FA5;border-color:#185FA5;">Editar</div>
+                <div class="m-btn" style="font-size:10px;padding:4px 10px;background:#FCEBEB;color:#A32D2D;border-color:#A32D2D;">Eliminar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="callout callout-tip">
+        <div class="callout-icon">🔄</div>
+        <div class="callout-text"><strong>Rutina recomendada:</strong> cada consultor debería actualizar el avance de sus tareas <strong>mínimo dos veces por semana</strong> para que el panel de seguimiento y el dashboard muestren información confiable.</div>
+      </div>
+    </div>
+
+    <!-- STEP 9 - COMPLETION -->
+    <div class="step-panel" id="step-9">
+      <div class="completion">
+        <div class="completion-icon">🎉</div>
+        <div class="completion-title">¡Tutorial completado!</div>
+        <div class="completion-desc">Ya sabes cómo crear, visualizar y editar OKRs, y cómo vincular y actualizar tareas en el panel KALÉ. El equipo está listo para empezar.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:400px;margin:0 auto 24px;text-align:left;">
+          <div style="background:#E1F5EE;border-radius:8px;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#0F6E56;margin-bottom:6px;">Aprendiste</div>
+            <div style="font-size:12px;color:#444;line-height:1.7;">✓ Qué es un OKR<br>✓ Crear OKRs con KRs<br>✓ Editar OKRs<br>✓ Vincular tareas<br>✓ Actualizar avance<br>✓ Editar tareas</div>
+          </div>
+          <div style="background:#E6F1FB;border-radius:8px;padding:12px;">
+            <div style="font-size:12px;font-weight:700;color:#185FA5;margin-bottom:6px;">Recuerda</div>
+            <div style="font-size:12px;color:#444;line-height:1.7;">📌 Vincular tareas a KRs<br>📌 Actualizar 2x semana<br>📌 Revisar el dashboard<br>📌 Verificar alertas<br>📌 Score meta: 80%</div>
+          </div>
+        </div>
+        <a href="https://tonpolas.github.io/kale-tracker" class="completion-link" target="_blank">Ir al panel KALÉ →</a>
+        <div style="margin-top:16px;">
+          <button class="nav-btn nav-btn-prev" onclick="goTo(0)" style="margin:0 auto;display:block;font-size:12px;padding:8px 18px;">Reiniciar tutorial</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAV -->
+    <div class="nav-bar" id="nav-bar">
+      <button class="nav-btn nav-btn-prev" id="btn-prev" onclick="prev()">← Anterior</button>
+      <span class="nav-step-info" id="nav-info">Paso 1 de 10</span>
+      <button class="nav-btn nav-btn-next" id="btn-next" onclick="next()">Siguiente →</button>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.3);}}
+</style>
+
+<script>
+const TOTAL = 10;
+let current = 0;
+
+function goTo(n){
+  // hide current
+  document.getElementById('step-'+current).classList.remove('active');
+  document.getElementById('sb-'+current).classList.remove('active');
+  if(current < n) document.getElementById('sb-'+current).classList.add('done-item');
+
+  current = n;
+
+  // show new
+  document.getElementById('step-'+current).classList.add('active');
+  document.getElementById('sb-'+current).classList.remove('done-item');
+  document.getElementById('sb-'+current).classList.add('active');
+
+  // update dots
+  updateUI();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function next(){ if(current < TOTAL-1) goTo(current+1); }
+function prev(){ if(current > 0) goTo(current-1); }
+
+function updateUI(){
+  const pct = Math.round(((current+1)/TOTAL)*100);
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('progress-label').textContent = 'Paso '+(current+1)+' de '+TOTAL;
+  document.getElementById('progress-count').textContent = pct+'% completado';
+  document.getElementById('nav-info').textContent = 'Paso '+(current+1)+' de '+TOTAL;
+  document.getElementById('btn-prev').disabled = current === 0;
+  document.getElementById('nav-bar').style.display = current === TOTAL-1 ? 'none' : 'flex';
+
+  // sidebar items
+  for(let i=0;i<TOTAL;i++){
+    const sb = document.getElementById('sb-'+i);
+    sb.classList.remove('active','done-item');
+    if(i < current) sb.classList.add('done-item');
+    if(i === current) sb.classList.add('active');
+    const num = sb.querySelector('.sidebar-num');
+    if(i < current) num.textContent = '✓';
+    else num.textContent = i+1;
+  }
+
+  // dots
+  const dotsEl = document.getElementById('steps-dots');
+  dotsEl.innerHTML = '';
+  for(let i=0;i<TOTAL;i++){
+    const d = document.createElement('div');
+    d.className = 'step-dot' + (i===current?' active':i<current?' done':'');
+    d.textContent = i < current ? '✓' : i+1;
+    d.onclick = ()=>goTo(i);
+    dotsEl.appendChild(d);
+  }
+}
+
+// keyboard navigation
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') next();
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') prev();
+});
+
+updateUI();
+</script>
+</body>
+</html>
