@@ -89,6 +89,28 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .score-bar-wrap{width:80px;height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:3px;}
 .score-bar-fill{height:100%;border-radius:3px;}
 .export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+/* seguimiento */
+.seg-cons-block{border:1px solid #e8e8e8;border-radius:12px;margin-bottom:16px;overflow:hidden;}
+.seg-cons-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;}
+.seg-cons-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
+.seg-cons-info{flex:1;}
+.seg-cons-name{font-size:14px;font-weight:700;color:#222;}
+.seg-cons-meta{font-size:12px;color:#888;margin-top:2px;}
+.seg-cons-badges{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
+.seg-tareas-list{background:#f9fafb;border-top:1px solid #eee;}
+.seg-tarea-row{display:flex;align-items:flex-start;gap:10px;padding:10px 18px;border-bottom:1px solid #f0f0f0;}
+.seg-tarea-row:last-child{border-bottom:none;}
+.seg-tarea-alerta{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.seg-tarea-info{flex:1;min-width:0;}
+.seg-tarea-name{font-size:13px;font-weight:700;color:#222;}
+.seg-tarea-detail{font-size:11px;color:#888;margin-top:2px;}
+.seg-tarea-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;}
+.seg-msg-block{background:#fff;border-top:1px solid #e8e8e8;padding:14px 18px;}
+.seg-msg-label{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
+.seg-msg-text{background:#f5f7fa;border:1px solid #e0e0e0;border-radius:8px;padding:12px 14px;font-size:13px;color:#333;line-height:1.7;white-space:pre-wrap;font-family:Arial,sans-serif;}
+.seg-copy-btn{font-size:11px;padding:4px 12px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:600;color:#555;}
+.seg-copy-btn:hover{background:#f0f0f0;}
+.seg-copy-btn.copied{background:#E1F5EE;color:#0F6E56;border-color:#9FE1CB;}
 .export-card{border:1px solid #e8e8e8;border-radius:10px;padding:16px;text-align:center;}
 .export-card:hover{border-color:#0F6E56;background:#F0FAF6;}
 .export-icon{width:44px;height:44px;border-radius:10px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:22px;}
@@ -133,6 +155,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   <div class="tab" onclick="showPanel('tasks',this)">Panel de tareas</div>
   <div class="tab" onclick="showPanel('score',this)">Score de valor</div>
   <div class="tab" onclick="showPanel('export',this)">Exportar</div>
+  <div class="tab" style="color:#A32D2D;border-bottom-color:transparent;" onclick="showPanel('seguimiento',this)" id="tab-seguimiento">Seguimiento</div>
 </div>
 
 <div class="main">
@@ -302,6 +325,53 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   </div>
 </div>
 
+<!-- SEGUIMIENTO -->
+<div class="panel" id="panel-seguimiento">
+
+  <!-- header metrics -->
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+    <div class="metric" style="border-left:4px solid #E24B4A;">
+      <div class="metric-label">Tareas atrasadas</div>
+      <div class="metric-value" id="seg-total">—</div>
+      <div class="metric-sub">desvío o sin actualizar</div>
+    </div>
+    <div class="metric" style="border-left:4px solid #BA7517;">
+      <div class="metric-label">Consultores con alerta</div>
+      <div class="metric-value" id="seg-cons">—</div>
+      <div class="metric-sub">requieren seguimiento</div>
+    </div>
+    <div class="metric" style="border-left:4px solid #185FA5;">
+      <div class="metric-label">Desvío promedio</div>
+      <div class="metric-value" id="seg-desvio">—</div>
+      <div class="metric-sub">pts esperado vs real</div>
+    </div>
+    <div class="metric" style="border-left:4px solid #0F6E56;">
+      <div class="metric-label">Última revisión</div>
+      <div class="metric-value" style="font-size:16px;" id="seg-fecha">—</div>
+      <div class="metric-sub">fecha actual</div>
+    </div>
+  </div>
+
+  <!-- filter bar -->
+  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
+    <select id="seg-filter-cons" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
+      <option value="">Todos los consultores</option>
+    </select>
+    <select id="seg-filter-tipo" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
+      <option value="">Todos los tipos de atraso</option>
+      <option value="desvio">Solo desvío &gt; 20 pts</option>
+      <option value="inactiva">Solo sin actualizar &gt; 3 días</option>
+      <option value="ambos">Ambos criterios</option>
+    </select>
+    <button class="btn" style="font-size:12px;padding:6px 14px;" onclick="renderSeguimiento()">Actualizar</button>
+    <button class="btn" style="font-size:12px;padding:6px 14px;background:#534AB7;border-color:#534AB7;color:#fff;" onclick="generarTodosLosMensajes()">Generar todos los mensajes</button>
+  </div>
+
+  <!-- cards por consultor -->
+  <div id="seg-cards"><p style="font-size:13px;color:#aaa;">Cargando seguimiento...</p></div>
+
+</div>
+
 </div><!-- /main -->
 
 <!-- MODAL CONSULTOR -->
@@ -433,6 +503,7 @@ function showPanel(id,el){
   document.getElementById('panel-'+id).classList.add('active');
   if(el) el.classList.add('active');
   if(id==='link'){populateConsSelect('t-owner'); populateOKRDropdown(); setTodayCreated();}
+  if(id==='seguimiento'){populateConsSelect('seg-filter-cons'); renderSeguimiento();}
   if(id==='tasks'){populateConsSelect('filter-cons-task'); renderTasks();}
   if(id==='score') renderScore();
   if(id==='dashboard'){updateMetrics(); renderAlerts();}
@@ -902,6 +973,211 @@ function generateReport(){
   document.getElementById('report-body').innerHTML=body;
   document.getElementById('report-output').style.display='block';
   document.getElementById('report-output').scrollIntoView({behavior:'smooth'});
+}
+
+
+// ══ SEGUIMIENTO ══════════════════════════════════════════
+const PANEL_URL = 'https://tonpolas.github.io/kale-tracker';
+const DIAS_INACTIVA = 3;
+const DESVIO_UMBRAL = 20;
+
+function diasSinActualizar(t){
+  const ref = t.updatedAt?.toDate ? t.updatedAt.toDate() : t.updatedAt ? new Date(t.updatedAt) : null;
+  if(!ref) return 999;
+  return Math.floor((new Date()-ref)/(1000*60*60*24));
+}
+
+function clasificarTarea(t){
+  const dias = diasSinActualizar(t);
+  const desvio = (t.expected!=null && t.avance!=null) ? t.expected - t.avance : null;
+  const tieneDesvio = desvio !== null && desvio > DESVIO_UMBRAL;
+  const inactiva = dias > DIAS_INACTIVA;
+  const finalizada = t.estado === 'Finalizada';
+  if(finalizada) return null;
+  if(tieneDesvio && inactiva) return {tipo:'ambos', desvio, dias, color:'#A32D2D'};
+  if(tieneDesvio) return {tipo:'desvio', desvio, dias, color:'#BA7517'};
+  if(inactiva) return {tipo:'inactiva', desvio, dias, color:'#185FA5'};
+  return null;
+}
+
+function renderSeguimiento(){
+  const filterCons = document.getElementById('seg-filter-cons')?.value||'';
+  const filterTipo = document.getElementById('seg-filter-tipo')?.value||'';
+
+  // classify all tasks
+  const atrasadas = S.tasks
+    .map(t=>({...t, _cls: clasificarTarea(t)}))
+    .filter(t=> t._cls !== null)
+    .filter(t=> !filterCons || t.owner === filterCons)
+    .filter(t=> {
+      if(!filterTipo) return true;
+      return t._cls.tipo === filterTipo || (filterTipo==='ambos' && t._cls.tipo==='ambos');
+    });
+
+  // update top metrics
+  const owners = [...new Set(atrasadas.map(t=>t.owner))];
+  document.getElementById('seg-total').textContent = atrasadas.length;
+  document.getElementById('seg-cons').textContent = owners.length;
+  const avgDesvio = atrasadas.filter(t=>t._cls.desvio!=null).length
+    ? Math.round(atrasadas.filter(t=>t._cls.desvio!=null).reduce((a,t)=>a+t._cls.desvio,0)/atrasadas.filter(t=>t._cls.desvio!=null).length)
+    : 0;
+  document.getElementById('seg-desvio').textContent = avgDesvio > 0 ? '+'+avgDesvio : avgDesvio;
+  document.getElementById('seg-fecha').textContent = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+
+  const el = document.getElementById('seg-cards');
+  if(!atrasadas.length){
+    el.innerHTML=`<div style="text-align:center;padding:40px 20px;">
+      <div style="font-size:32px;margin-bottom:12px;">✓</div>
+      <div style="font-size:15px;font-weight:700;color:#0F6E56;">Todo al día</div>
+      <div style="font-size:13px;color:#aaa;margin-top:6px;">No hay tareas atrasadas ni inactivas en este momento.</div>
+    </div>`;
+    return;
+  }
+
+  // group by consultant
+  el.innerHTML = owners.map(owner=>{
+    const tareas = atrasadas.filter(t=>t.owner===owner);
+    const cons = S.consultores.find(c=>c.name===owner);
+    const criticas = tareas.filter(t=>t._cls.tipo==='ambos').length;
+    const desvio_only = tareas.filter(t=>t._cls.tipo==='desvio').length;
+    const inactiva_only = tareas.filter(t=>t._cls.tipo==='inactiva').length;
+    const msg = generarMensaje(owner, tareas, cons);
+    const bg = avatarBg(owner); const tx = avatarTx(owner);
+    const ini = initials(owner);
+
+    return `<div class="seg-cons-block">
+      <div class="seg-cons-header">
+        <div class="seg-cons-avatar" style="background:${bg};color:${tx};">${ini}</div>
+        <div class="seg-cons-info">
+          <div class="seg-cons-name">${owner}</div>
+          <div class="seg-cons-meta">
+            ${cons?.email?`<span>${cons.email}</span>`:''}
+            ${cons?.wa?`<span style="margin-left:10px;">WA: ${cons.wa}</span>`:''}
+          </div>
+        </div>
+        <div class="seg-cons-badges">
+          ${criticas?`<span class="badge badge-red">${criticas} crítica${criticas>1?'s':''}</span>`:''}
+          ${desvio_only?`<span class="badge badge-amber">${desvio_only} desvío</span>`:''}
+          ${inactiva_only?`<span class="badge badge-blue">${inactiva_only} inactiva${inactiva_only>1?'s':''}</span>`:''}
+          <span class="badge badge-gray">${tareas.length} total</span>
+        </div>
+      </div>
+
+      <div class="seg-tareas-list">
+        ${tareas.map(t=>{
+          const c=t._cls;
+          const tipotxt = c.tipo==='ambos'?'Desvío + inactiva':c.tipo==='desvio'?'Desvío de avance':'Sin actualizar';
+          const detalle = [
+            c.desvio!=null?`Esperado ${t.expected}% · Real ${t.avance}% · Desvío ${c.desvio} pts`:'',
+            c.dias<999?`Última actualización hace ${c.dias} día${c.dias!==1?'s':''}`:'Sin registro de actualización',
+            t.due?`Límite: ${t.due}`:''
+          ].filter(Boolean).join(' · ');
+          return `<div class="seg-tarea-row">
+            <div class="seg-tarea-alerta" style="background:${c.color};"></div>
+            <div class="seg-tarea-info">
+              <div class="seg-tarea-name">${t.name}</div>
+              <div class="seg-tarea-detail">${detalle}</div>
+              <div class="seg-tarea-badges">
+                <span class="badge ${c.tipo==='ambos'?'badge-red':c.tipo==='desvio'?'badge-amber':'badge-blue'}">${tipotxt}</span>
+                <span class="badge badge-gray">${t.estado}</span>
+                ${t.okrLabel?`<span class="badge badge-gray" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">OKR: ${t.okrLabel.slice(0,35)}</span>`:''}
+              </div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+
+      <div class="seg-msg-block">
+        <div class="seg-msg-label">
+          <span>Mensaje para ${owner.split(' ')[0]}</span>
+          <button class="seg-copy-btn" onclick="copiarMensaje(this, '${owner}')">Copiar mensaje</button>
+        </div>
+        <div class="seg-msg-text" id="msg-${owner.replace(/\s+/g,'_')}">${msg}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function generarMensaje(owner, tareas, cons){
+  const nombre = owner.split(' ')[0];
+  const hoy = new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
+  const criticas = tareas.filter(t=>t._cls.tipo==='ambos');
+  const desvio = tareas.filter(t=>t._cls.tipo==='desvio');
+  const inactivas = tareas.filter(t=>t._cls.tipo==='inactiva');
+
+  let msg = `Hola ${nombre}, buen día 👋\n\n`;
+  msg += `Es ${hoy}. Revisando el panel KALÉ, encontré que tienes ${tareas.length} tarea${tareas.length>1?'s':''} que necesita${tareas.length>1?'n':''} atención:\n\n`;
+
+  if(criticas.length){
+    msg += `🔴 *CRÍTICAS — Desvío alto y sin actualizar:*\n`;
+    criticas.forEach(t=>{
+      msg += `• ${t.name}\n`;
+      msg += `  Avance esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n`;
+      msg += `  Sin actualizar hace ${t._cls.dias} día${t._cls.dias!==1?'s':''}\n`;
+      if(t.due) msg += `  Límite: ${t.due}\n`;
+      msg += '\n';
+    });
+  }
+
+  if(desvio.length){
+    msg += `🟡 *DESVÍO DE AVANCE:*\n`;
+    desvio.forEach(t=>{
+      msg += `• ${t.name}\n`;
+      msg += `  Esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n`;
+      if(t.due) msg += `  Límite: ${t.due}\n`;
+      msg += '\n';
+    });
+  }
+
+  if(inactivas.length){
+    msg += `🔵 *SIN ACTUALIZAR (${DIAS_INACTIVA}+ días):*\n`;
+    inactivas.forEach(t=>{
+      msg += `• ${t.name} — ${t._cls.dias} día${t._cls.dias!==1?'s':''} sin actualizar\n`;
+      if(t.due) msg += `  Límite: ${t.due}\n`;
+    });
+    msg += '\n';
+  }
+
+  msg += `Por favor actualiza tu avance y estado en el panel:\n`;
+  msg += `👉 ${PANEL_URL}\n\n`;
+  msg += `Cualquier duda me cuentas. ¡Gracias!`;
+  return msg;
+}
+
+function copiarMensaje(btn, owner){
+  const key = owner.replace(/\s+/g,'_');
+  const el = document.getElementById('msg-'+key);
+  if(!el) return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    btn.textContent='¡Copiado!'; btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar mensaje';btn.classList.remove('copied');},2500);
+  }).catch(()=>{ prompt('Copia el mensaje:', el.textContent); });
+}
+
+function generarTodosLosMensajes(){
+  const filterCons = document.getElementById('seg-filter-cons')?.value||'';
+  const atrasadas = S.tasks
+    .map(t=>({...t, _cls:clasificarTarea(t)}))
+    .filter(t=>t._cls!==null)
+    .filter(t=>!filterCons||t.owner===filterCons);
+  if(!atrasadas.length){alert('No hay tareas atrasadas en este momento.');return;}
+  const owners=[...new Set(atrasadas.map(t=>t.owner))];
+  let todos='';
+  owners.forEach(owner=>{
+    const cons=S.consultores.find(c=>c.name===owner);
+    const tareas=atrasadas.filter(t=>t.owner===owner);
+    todos+=`${'═'.repeat(50)}\n`;
+    todos+=`MENSAJE PARA: ${owner.toUpperCase()}`;
+    if(cons?.wa) todos+=` (WA: ${cons.wa})`;
+    todos+='\n'+'═'.repeat(50)+'\n\n';
+    todos+=generarMensaje(owner,tareas,cons)+'\n\n';
+  });
+  const blob=new Blob([todos],{type:'text/plain'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download=`KALE_Seguimiento_${new Date().toISOString().slice(0,10)}.txt`;
+  a.click(); URL.revokeObjectURL(url);
+  logActivity(`Seguimiento generado: ${owners.length} consultor${owners.length>1?'es':''} con alertas`);
 }
 
 // ══ MODAL CLOSE ON OUTSIDE CLICK ════════════════════════
