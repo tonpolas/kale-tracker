@@ -27,6 +27,7 @@ body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
 .tab{padding:13px 15px;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:#888;white-space:nowrap;font-weight:600;}
 .tab.active{border-bottom-color:#0F6E56;color:#0F6E56;}
 .tab:hover:not(.active){background:#f9f9f9;}
+.tab-update{color:#0F6E56 !important;font-weight:700;}
 .main{padding:20px 24px;max-width:1080px;margin:0 auto;}
 .panel{display:none;}.panel.active{display:block;}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
@@ -43,6 +44,7 @@ body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
 .badge-amber{background:#FFF3CD;color:#BA7517;}
 .badge-red{background:#FCEBEB;color:#A32D2D;}
 .badge-gray{background:#F1F1F1;color:#555;}
+.badge-purple{background:#EEEDFE;color:#3C3489;}
 .field-label{font-size:12px;color:#555;margin-bottom:4px;font-weight:700;}
 .field-hint{font-size:11px;color:#aaa;margin-top:3px;}
 .field-row{margin-bottom:12px;}
@@ -90,7 +92,6 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .score-bar-wrap{width:80px;height:6px;background:#eee;border-radius:3px;overflow:hidden;margin-top:3px;}
 .score-bar-fill{height:100%;border-radius:3px;}
 .export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-/* seguimiento */
 .seg-cons-block{border:1px solid #e8e8e8;border-radius:12px;margin-bottom:16px;overflow:hidden;}
 .seg-cons-header{display:flex;align-items:center;gap:12px;padding:14px 18px;background:#fff;}
 .seg-cons-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0;}
@@ -129,12 +130,10 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   .avance-row{grid-template-columns:1fr;}
   .cons-card{flex-wrap:wrap;}
 }
-/* dashboard charts */
 .dash-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;align-items:center;}
 .dash-filters select{font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;color:#222;}
 .dash-filters label{font-size:12px;color:#888;font-weight:600;}
 .charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-.charts-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px;}
 .chart-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 18px;}
 .chart-title{font-size:13px;font-weight:700;color:#222;margin-bottom:4px;}
 .chart-sub{font-size:11px;color:#aaa;margin-bottom:14px;}
@@ -143,12 +142,6 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .okr-comp-row{display:flex;align-items:center;gap:10px;padding:10px 14px;border:1px solid #e8e8e8;border-radius:8px;background:#fff;}
 .okr-comp-info{flex:1;min-width:0;}
 .okr-comp-title{font-size:12px;font-weight:700;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.okr-comp-owner{font-size:11px;color:#888;margin-top:1px;}
-.okr-comp-bar-wrap{width:160px;flex-shrink:0;}
-.okr-comp-bar-bg{height:8px;background:#eee;border-radius:4px;overflow:hidden;}
-.okr-comp-bar-fill{height:100%;border-radius:4px;transition:width .4s;}
-.okr-comp-pct{font-size:13px;font-weight:700;min-width:40px;text-align:right;flex-shrink:0;}
-.okr-comp-badge{flex-shrink:0;}
 .resource-grid{display:grid;gap:8px;}
 .resource-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border:1px solid #e8e8e8;border-radius:8px;background:#fff;}
 .resource-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;}
@@ -162,7 +155,82 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .resource-bar-fill{height:100%;border-radius:3px;}
 .resource-bar-val{font-size:10px;font-weight:700;width:28px;text-align:left;flex-shrink:0;}
 .dash-empty{text-align:center;padding:30px;font-size:13px;color:#aaa;}
-@media(max-width:680px){.charts-grid,.charts-grid-3{grid-template-columns:1fr;}}
+@media(max-width:680px){.charts-grid{grid-template-columns:1fr;}}
+
+/* ══ ACTUALIZAR TAREAS ══════════════════════════════════ */
+.upd-header{display:flex;gap:12px;align-items:center;margin-bottom:20px;flex-wrap:wrap;}
+.upd-filter-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:1;}
+.upd-filter-bar select{font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;color:#222;}
+.upd-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.upd-stat{background:#fff;border-radius:10px;padding:12px 14px;border:1px solid #e8e8e8;text-align:center;}
+.upd-stat-val{font-size:22px;font-weight:700;color:#222;}
+.upd-stat-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+
+/* Task update card */
+.upd-task-card{background:#fff;border:1px solid #e8e8e8;border-radius:12px;margin-bottom:12px;overflow:hidden;transition:box-shadow .2s;}
+.upd-task-card:hover{box-shadow:0 2px 12px rgba(0,0,0,.08);}
+.upd-task-card.finalizada{border-color:#d0e8d8;background:#f8fdf9;}
+.upd-task-top{display:flex;align-items:flex-start;gap:12px;padding:14px 16px 10px;}
+.upd-task-indicator{width:4px;border-radius:2px;min-height:50px;flex-shrink:0;margin-top:2px;}
+.upd-task-main{flex:1;min-width:0;}
+.upd-task-name{font-size:14px;font-weight:700;color:#222;margin-bottom:4px;}
+.upd-task-okr{font-size:11px;color:#185FA5;margin-bottom:6px;}
+.upd-task-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.upd-desvio-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;}
+
+/* Avance visual inline */
+.upd-avance-block{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.upd-avance-col{position:relative;}
+.upd-avance-col-lbl{font-size:10px;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+.upd-avance-col-val{font-size:20px;font-weight:700;color:#222;line-height:1;}
+.upd-avance-col-bar{height:5px;background:#eee;border-radius:3px;overflow:hidden;margin-top:5px;}
+.upd-avance-col-fill{height:100%;border-radius:3px;transition:width .4s ease;}
+
+/* Quick update section */
+.upd-quick{background:#f9fafb;border-top:1px solid #f0f0f0;padding:12px 16px;display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;}
+.upd-quick-field{display:flex;flex-direction:column;gap:4px;}
+.upd-quick-lbl{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.04em;}
+.upd-quick-input{font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:80px;}
+.upd-quick-input:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+.upd-quick-select{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:auto;}
+.upd-quick-select:focus{border-color:#0F6E56;}
+.upd-quick-comment{flex:1;min-width:200px;}
+.upd-quick-comment textarea{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:100%;resize:none;height:36px;}
+.upd-quick-comment textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+.upd-quick-btn{padding:7px 16px;background:#0F6E56;border:none;color:#fff;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:flex-end;}
+.upd-quick-btn:hover{background:#085041;}
+
+/* Comments / History */
+.upd-history{border-top:1px solid #f0f0f0;padding:10px 16px;}
+.upd-history-toggle{font-size:11px;color:#888;cursor:pointer;display:flex;align-items:center;gap:5px;padding:2px 0;user-select:none;}
+.upd-history-toggle:hover{color:#0F6E56;}
+.upd-history-list{margin-top:8px;display:none;}
+.upd-history-list.open{display:block;}
+.upd-comment-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #f5f5f5;}
+.upd-comment-item:last-child{border-bottom:none;}
+.upd-comment-avatar{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;}
+.upd-comment-body{flex:1;min-width:0;}
+.upd-comment-header{display:flex;gap:6px;align-items:baseline;flex-wrap:wrap;margin-bottom:2px;}
+.upd-comment-author{font-size:11px;font-weight:700;color:#222;}
+.upd-comment-time{font-size:10px;color:#aaa;}
+.upd-comment-change{font-size:10px;color:#0F6E56;font-weight:700;background:#E1F5EE;padding:1px 6px;border-radius:8px;}
+.upd-comment-text{font-size:12px;color:#555;line-height:1.5;}
+
+/* Finalizadas section */
+.upd-finalizadas-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f0faf5;border:1px solid #c8e6d5;border-radius:10px;cursor:pointer;margin-bottom:8px;margin-top:20px;}
+.upd-finalizadas-header:hover{background:#e4f5ec;}
+.upd-finalizadas-title{font-size:13px;font-weight:700;color:#0F6E56;display:flex;align-items:center;gap:8px;}
+.upd-finalizadas-body{display:none;}
+.upd-finalizadas-body.open{display:block;}
+.upd-fin-card{background:#fff;border:1px solid #d0e8d8;border-radius:10px;padding:12px 14px;margin-bottom:8px;}
+.upd-fin-card-name{font-size:13px;font-weight:700;color:#333;margin-bottom:4px;}
+.upd-fin-card-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px;}
+.upd-fin-comment{font-size:11px;color:#666;background:#f5faf7;border-radius:6px;padding:6px 10px;margin-top:6px;border-left:2px solid #9FE1CB;}
+.upd-timeline{border-left:2px solid #e8e8e8;padding-left:14px;margin-top:6px;}
+.upd-timeline-item{position:relative;padding:4px 0;}
+.upd-timeline-item::before{content:'';position:absolute;left:-19px;top:8px;width:8px;height:8px;border-radius:50%;background:#0F6E56;border:2px solid #fff;box-shadow:0 0 0 1px #0F6E56;}
+.upd-timeline-date{font-size:10px;color:#aaa;}
+.upd-timeline-text{font-size:11px;color:#555;}
 </style>
 </head>
 <body>
@@ -189,6 +257,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   <div class="tab" onclick="showPanel('okrs',this)">OKRs</div>
   <div class="tab" onclick="showPanel('link',this)">Vincular tareas</div>
   <div class="tab" onclick="showPanel('tasks',this)">Panel de tareas</div>
+  <div class="tab tab-update" onclick="showPanel('update',this)">⟳ Actualizar tareas</div>
   <div class="tab" onclick="showPanel('score',this)">Score de valor</div>
   <div class="tab" onclick="showPanel('export',this)">Exportar</div>
   <div class="tab" style="color:#A32D2D;border-bottom-color:transparent;" onclick="showPanel('seguimiento',this)" id="tab-seguimiento">Seguimiento</div>
@@ -198,8 +267,6 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 
 <!-- DASHBOARD -->
 <div class="panel active" id="panel-dashboard">
-
-  <!-- top metrics -->
   <div class="metrics">
     <div class="metric" style="border-top:3px solid #0F6E56;">
       <div class="metric-label">Consultores</div><div class="metric-value" id="m-cons">—</div><div class="metric-sub">registrados</div>
@@ -214,83 +281,53 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
       <div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">de valor</div>
     </div>
   </div>
-
-  <!-- filters -->
   <div class="dash-filters">
     <label>Filtrar por:</label>
-    <select id="dash-filter-cons" onchange="renderDashboard()">
-      <option value="">Todos los consultores</option>
-    </select>
-    <select id="dash-filter-okr" onchange="renderDashboard()">
-      <option value="">Todos los OKRs</option>
-    </select>
+    <select id="dash-filter-cons" onchange="renderDashboard()"><option value="">Todos los consultores</option></select>
+    <select id="dash-filter-okr" onchange="renderDashboard()"><option value="">Todos los OKRs</option></select>
     <select id="dash-filter-period" onchange="renderDashboard()">
       <option value="">Todos los periodos</option>
       <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
     </select>
     <button class="btn" style="font-size:12px;padding:5px 13px;" onclick="renderDashboard()">Actualizar</button>
   </div>
-
-  <!-- row 1: cumplimiento OKR (full width) -->
   <div class="chart-card" style="margin-bottom:14px;">
     <div class="card-header" style="margin-bottom:6px;">
-      <div>
-        <div class="chart-title">Indicador de cumplimiento por OKR</div>
-        <div class="chart-sub">Avance promedio de Key Results por objetivo · ordenado de menor a mayor</div>
-      </div>
+      <div><div class="chart-title">Indicador de cumplimiento por OKR</div><div class="chart-sub">Avance promedio de Key Results por objetivo · ordenado de menor a mayor</div></div>
       <span class="badge badge-blue" id="dash-okr-count">— OKRs</span>
     </div>
     <div id="okr-compliance-list"><div class="dash-empty">Sin datos aún</div></div>
   </div>
-
-  <!-- row 2: two charts -->
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-title">Avance real vs esperado</div>
       <div class="chart-sub">Por consultor · barras comparativas</div>
-      <div class="chart-wrap" style="height:220px;">
-        <canvas id="chart-avance"></canvas>
-      </div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chart-avance"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Distribución de estados</div>
       <div class="chart-sub">Tareas por estado actual</div>
-      <div class="chart-wrap" style="height:220px;">
-        <canvas id="chart-estados"></canvas>
-      </div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chart-estados"></canvas></div>
     </div>
   </div>
-
-  <!-- row 3: three charts -->
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-title">Score de valor</div>
       <div class="chart-sub">Por consultor · meta 80%</div>
-      <div class="chart-wrap" style="height:200px;">
-        <canvas id="chart-score"></canvas>
-      </div>
+      <div class="chart-wrap" style="height:200px;"><canvas id="chart-score"></canvas></div>
     </div>
     <div class="chart-card">
       <div class="chart-title">Tareas por prioridad</div>
       <div class="chart-sub">Distribución Alta · Media · Baja</div>
-      <div class="chart-wrap" style="height:200px;">
-        <canvas id="chart-prioridad"></canvas>
-      </div>
+      <div class="chart-wrap" style="height:200px;"><canvas id="chart-prioridad"></canvas></div>
     </div>
   </div>
-
-  <!-- row 4: resources full width -->
   <div class="chart-card" style="margin-bottom:14px;">
     <div class="card-header" style="margin-bottom:6px;">
-      <div>
-        <div class="chart-title">Carga de recursos</div>
-        <div class="chart-sub">Tareas activas, avance y score por consultor</div>
-      </div>
+      <div><div class="chart-title">Carga de recursos</div><div class="chart-sub">Tareas activas, avance y score por consultor</div></div>
     </div>
     <div id="resource-list"><div class="dash-empty">Sin datos aún</div></div>
   </div>
-
-  <!-- row 5: activity + alerts -->
   <div class="charts-grid">
     <div class="card" style="margin-bottom:0;">
       <div class="card-header"><span class="card-title">Actividad reciente</span><span class="badge badge-green">en vivo</span></div>
@@ -301,7 +338,6 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
       <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
     </div>
   </div>
-
 </div>
 
 <!-- CONSULTORES -->
@@ -323,9 +359,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
       <button class="btn btn-primary" onclick="openOKRModal()">+ Nuevo OKR</button>
     </div>
     <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <select id="filter-okr-owner" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
-        <option value="">Todos los consultores</option>
-      </select>
+      <select id="filter-okr-owner" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;"><option value="">Todos los consultores</option></select>
       <select id="filter-okr-period" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
         <option value="">Todos los periodos</option>
         <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
@@ -405,6 +439,75 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   </div>
 </div>
 
+<!-- ══ ACTUALIZAR TAREAS ══════════════════════════════════ -->
+<div class="panel" id="panel-update">
+
+  <!-- Stats rápidas -->
+  <div class="upd-stats">
+    <div class="upd-stat" style="border-top:3px solid #0F6E56;">
+      <div class="upd-stat-val" id="upd-m-total">—</div>
+      <div class="upd-stat-lbl">Tareas activas</div>
+    </div>
+    <div class="upd-stat" style="border-top:3px solid #BA7517;">
+      <div class="upd-stat-val" id="upd-m-desvio">—</div>
+      <div class="upd-stat-lbl">Con desvío &gt;20pts</div>
+    </div>
+    <div class="upd-stat" style="border-top:3px solid #185FA5;">
+      <div class="upd-stat-val" id="upd-m-avg">—</div>
+      <div class="upd-stat-lbl">Avance promedio</div>
+    </div>
+    <div class="upd-stat" style="border-top:3px solid #534AB7;">
+      <div class="upd-stat-val" id="upd-m-fin">—</div>
+      <div class="upd-stat-lbl">Finalizadas</div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="upd-header">
+    <div class="upd-filter-bar">
+      <select id="upd-filter-cons" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
+        <option value="">Todos los consultores</option>
+      </select>
+      <select id="upd-filter-estado" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
+        <option value="">Todos los estados</option>
+        <option value="Pendiente Inicio">Pendiente Inicio</option>
+        <option value="En Progreso">En Progreso</option>
+        <option value="Bloqueado">Bloqueado</option>
+      </select>
+      <select id="upd-filter-prio" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
+        <option value="">Todas las prioridades</option>
+        <option value="Alta">Alta</option>
+        <option value="Media">Media</option>
+        <option value="Baja">Baja</option>
+      </select>
+      <select id="upd-filter-order" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
+        <option value="desvio">Ordenar: mayor desvío primero</option>
+        <option value="due">Ordenar: vence primero</option>
+        <option value="avance">Ordenar: menor avance primero</option>
+        <option value="owner">Ordenar: por consultor</option>
+      </select>
+      <button class="btn" style="font-size:12px;padding:5px 13px;" onclick="renderUpdatePanel()">Actualizar</button>
+    </div>
+  </div>
+
+  <!-- Lista de tareas activas -->
+  <div id="upd-task-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+
+  <!-- Sección finalizadas colapsable -->
+  <div id="upd-finalizadas-section" style="display:none;">
+    <div class="upd-finalizadas-header" onclick="toggleFinalizadas()">
+      <div class="upd-finalizadas-title">
+        <span>✓</span>
+        <span>Tareas finalizadas</span>
+        <span class="badge badge-green" id="upd-fin-count">0</span>
+      </div>
+      <span id="upd-fin-chevron" style="font-size:13px;color:#0F6E56;font-weight:700;">▼ Ver</span>
+    </div>
+    <div class="upd-finalizadas-body" id="upd-fin-body"></div>
+  </div>
+
+</div>
+
 <!-- SCORE -->
 <div class="panel" id="panel-score">
   <div class="card">
@@ -446,7 +549,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
       <div class="export-card">
         <div class="export-icon" style="background:#FFF3CD;">📖</div>
         <div class="export-title">Tutorial interactivo</div>
-        <div class="export-desc">Guía paso a paso para crear OKRs y vincular tareas. Compártela con el equipo.</div>
+        <div class="export-desc">Guía paso a paso para crear OKRs y vincular tareas.</div>
         <a href="tutorial.html" target="_blank" class="btn" style="width:100%;margin-top:12px;background:#BA7517;border-color:#BA7517;color:#fff;display:block;text-align:center;text-decoration:none;">Abrir tutorial</a>
       </div>
     </div>
@@ -459,36 +562,14 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 
 <!-- SEGUIMIENTO -->
 <div class="panel" id="panel-seguimiento">
-
-  <!-- header metrics -->
   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-    <div class="metric" style="border-left:4px solid #E24B4A;">
-      <div class="metric-label">Tareas atrasadas</div>
-      <div class="metric-value" id="seg-total">—</div>
-      <div class="metric-sub">desvío o sin actualizar</div>
-    </div>
-    <div class="metric" style="border-left:4px solid #BA7517;">
-      <div class="metric-label">Consultores con alerta</div>
-      <div class="metric-value" id="seg-cons">—</div>
-      <div class="metric-sub">requieren seguimiento</div>
-    </div>
-    <div class="metric" style="border-left:4px solid #185FA5;">
-      <div class="metric-label">Desvío promedio</div>
-      <div class="metric-value" id="seg-desvio">—</div>
-      <div class="metric-sub">pts esperado vs real</div>
-    </div>
-    <div class="metric" style="border-left:4px solid #0F6E56;">
-      <div class="metric-label">Última revisión</div>
-      <div class="metric-value" style="font-size:16px;" id="seg-fecha">—</div>
-      <div class="metric-sub">fecha actual</div>
-    </div>
+    <div class="metric" style="border-left:4px solid #E24B4A;"><div class="metric-label">Tareas atrasadas</div><div class="metric-value" id="seg-total">—</div><div class="metric-sub">desvío o sin actualizar</div></div>
+    <div class="metric" style="border-left:4px solid #BA7517;"><div class="metric-label">Consultores con alerta</div><div class="metric-value" id="seg-cons">—</div><div class="metric-sub">requieren seguimiento</div></div>
+    <div class="metric" style="border-left:4px solid #185FA5;"><div class="metric-label">Desvío promedio</div><div class="metric-value" id="seg-desvio">—</div><div class="metric-sub">pts esperado vs real</div></div>
+    <div class="metric" style="border-left:4px solid #0F6E56;"><div class="metric-label">Última revisión</div><div class="metric-value" style="font-size:16px;" id="seg-fecha">—</div><div class="metric-sub">fecha actual</div></div>
   </div>
-
-  <!-- filter bar -->
   <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
-    <select id="seg-filter-cons" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
-      <option value="">Todos los consultores</option>
-    </select>
+    <select id="seg-filter-cons" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;"><option value="">Todos los consultores</option></select>
     <select id="seg-filter-tipo" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
       <option value="">Todos los tipos de atraso</option>
       <option value="desvio">Solo desvío &gt; 20 pts</option>
@@ -498,10 +579,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
     <button class="btn" style="font-size:12px;padding:6px 14px;" onclick="renderSeguimiento()">Actualizar</button>
     <button class="btn" style="font-size:12px;padding:6px 14px;background:#534AB7;border-color:#534AB7;color:#fff;" onclick="generarTodosLosMensajes()">Generar todos los mensajes</button>
   </div>
-
-  <!-- cards por consultor -->
   <div id="seg-cards"><p style="font-size:13px;color:#aaa;">Cargando seguimiento...</p></div>
-
 </div>
 
 </div><!-- /main -->
@@ -571,7 +649,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ══ STATE (cache local) ══════════════════════════════════
 const S = { consultores:[], okrs:[], tasks:[], krCount:1 };
 
 const ESTADO_CFG = {
@@ -586,13 +663,11 @@ function avatarBg(n){return AV_COLORS[n.charCodeAt(0)%AV_COLORS.length];}
 function avatarTx(n){return TX_COLORS[n.charCodeAt(0)%TX_COLORS.length];}
 function initials(n){return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
 
-// ══ TOAST ════════════════════════════════════════════════
 function showToast(msg='Guardado ✓'){
   const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block';
   setTimeout(()=>t.style.display='none',2500);
 }
 
-// ══ FIREBASE LISTENERS (tiempo real) ════════════════════
 const loaded = { consultores:false, okrs:false, tareas:false };
 
 function tryRenderDashboard(){
@@ -625,6 +700,7 @@ function initListeners(){
     loaded.tareas=true;
     renderLinked(); renderTasks();
     tryRenderDashboard();
+    if(document.getElementById('panel-update').classList.contains('active')) renderUpdatePanel();
   });
 
   db.collection('actividad').orderBy('ts','desc').limit(20).onSnapshot(snap=>{
@@ -655,20 +731,29 @@ function showPanel(id,el){
   if(id==='score') renderScore();
   if(id==='dashboard'){updateMetrics(); populateDashFilters(); renderDashboard();}
   if(id==='okrs'){populateConsSelect('filter-okr-owner'); renderOKRList();}
+  if(id==='update'){populateConsSelect('upd-filter-cons'); renderUpdatePanel();}
 }
 
 // ══ HELPERS ══════════════════════════════════════════════
 function populateConsSelect(elId){
   const sel=document.getElementById(elId); if(!sel) return;
   const cur=sel.value;
-  sel.innerHTML='<option value="">— seleccionar —</option>';
+  // Filtros usan "Todos", formularios usan "— seleccionar —"
+  const isFilter=['upd-filter-cons','filter-cons-task','filter-okr-owner','seg-filter-cons','dash-filter-cons'].includes(elId);
+  sel.innerHTML=isFilter?'<option value="">Todos los consultores</option>':'<option value="">— seleccionar —</option>';
   S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});
   sel.value=cur||'';
 }
 function refreshAllConsSelects(){
-  ['t-owner','filter-cons-task','filter-okr-owner'].forEach(id=>populateConsSelect(id));
+  ['t-owner','filter-cons-task','filter-okr-owner','upd-filter-cons'].forEach(id=>populateConsSelect(id));
   const sel=document.getElementById('okr-owner');
   if(sel){const cur=sel.value;sel.innerHTML='<option value="">— seleccionar —</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});sel.value=cur||'';}
+  // also populate seg-filter-cons without the "— seleccionar —" default
+  const segSel=document.getElementById('seg-filter-cons');
+  if(segSel){const cur=segSel.value;segSel.innerHTML='<option value="">Todos los consultores</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;segSel.appendChild(op);});segSel.value=cur||'';}
+  // upd filter as "Todos"
+  const updSel=document.getElementById('upd-filter-cons');
+  if(updSel){const cur=updSel.value;updSel.innerHTML='<option value="">Todos los consultores</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;updSel.appendChild(op);});updSel.value=cur||'';}
 }
 function updateMetrics(){
   document.getElementById('m-cons').textContent=S.consultores.length;
@@ -697,14 +782,8 @@ async function saveCons(){
   const editId=document.getElementById('c-edit-id').value;
   if(!name){alert('El nombre es obligatorio.');return;}
   const data={name,email,wa,rol,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
-  if(editId){
-    await db.collection('consultores').doc(editId).update(data);
-    logActivity(`Consultor actualizado: ${name}`);
-  } else {
-    data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('consultores').add(data);
-    logActivity(`Consultor creado: ${name} · ${rol}`);
-  }
+  if(editId){await db.collection('consultores').doc(editId).update(data);logActivity(`Consultor actualizado: ${name}`);}
+  else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('consultores').add(data);logActivity(`Consultor creado: ${name} · ${rol}`);}
   closeConsModal(); showToast('Consultor guardado ✓');
 }
 
@@ -726,8 +805,7 @@ function renderConsList(){
         <div class="cons-name">${c.name}</div>
         <div class="cons-detail">
           <span class="badge badge-gray" style="margin-right:4px;">${c.rol||''}</span>
-          ${c.email?`<span>${c.email}</span>`:''}
-          ${c.wa?`<span style="margin-left:8px;">WA: ${c.wa}</span>`:''}
+          ${c.email?`<span>${c.email}</span>`:''}${c.wa?`<span style="margin-left:8px;">WA: ${c.wa}</span>`:''}
         </div>
       </div>
       <div style="display:flex;gap:6px;flex-shrink:0;">
@@ -751,13 +829,7 @@ function openOKRModal(id=null){
   sel.value=e?e.owner:'';
   const kc=document.getElementById('kr-inputs'); kc.innerHTML=''; krCount=0;
   const krs=e?e.krs:[{label:'',target:100}];
-  krs.forEach((kr,i)=>{
-    krCount++;
-    const d=document.createElement('div');
-    d.className='form-grid field-row'; d.style.alignItems='flex-end';
-    d.innerHTML=`<div><div class="field-label">KR ${i+1}</div><input type="text" value="${kr.label||''}" placeholder="Key Result ${i+1}"></div><div><div class="field-label">Meta %</div><input type="number" value="${kr.target||100}" min="0" max="100"></div>`;
-    kc.appendChild(d);
-  });
+  krs.forEach((kr,i)=>{krCount++;const d=document.createElement('div');d.className='form-grid field-row';d.style.alignItems='flex-end';d.innerHTML=`<div><div class="field-label">KR ${i+1}</div><input type="text" value="${kr.label||''}" placeholder="Key Result ${i+1}"></div><div><div class="field-label">Meta %</div><input type="number" value="${kr.target||100}" min="0" max="100"></div>`;kc.appendChild(d);});
   document.getElementById('modal-okr-bg').classList.add('open');
 }
 function closeOKRModal(){document.getElementById('modal-okr-bg').classList.remove('open');}
@@ -787,14 +859,8 @@ async function saveOKR(){
   });
   if(!krs.length){alert('Agrega al menos un Key Result.');return;}
   const data={obj,owner,period,krs,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
-  if(editId){
-    await db.collection('okrs').doc(editId).update(data);
-    logActivity(`OKR actualizado: "${obj.slice(0,40)}" — ${owner}`);
-  } else {
-    data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('okrs').add(data);
-    logActivity(`OKR creado: "${obj.slice(0,40)}" — ${owner}`);
-  }
+  if(editId){await db.collection('okrs').doc(editId).update(data);logActivity(`OKR actualizado: "${obj.slice(0,40)}" — ${owner}`);}
+  else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('okrs').add(data);logActivity(`OKR creado: "${obj.slice(0,40)}" — ${owner}`);}
   closeOKRModal(); showToast('OKR guardado ✓');
 }
 
@@ -1030,6 +1096,255 @@ function clearTaskForm(){
   document.getElementById('t-save-btn').textContent='Vincular y guardar';
 }
 
+// ══ ACTUALIZAR TAREAS ═════════════════════════════════════
+function renderUpdatePanel(){
+  const fc = document.getElementById('upd-filter-cons')?.value||'';
+  const fe = document.getElementById('upd-filter-estado')?.value||'';
+  const fp = document.getElementById('upd-filter-prio')?.value||'';
+  const fo = document.getElementById('upd-filter-order')?.value||'desvio';
+
+  const activas = S.tasks.filter(t=>t.estado!=='Finalizada');
+  const finalizadas = S.tasks.filter(t=>t.estado==='Finalizada');
+
+  // update top stats (all tasks, no filter)
+  const totalActivas = activas.length;
+  const conDesvio = activas.filter(t=>t.expected!=null&&(t.expected-t.avance)>20).length;
+  const avgAvance = totalActivas ? Math.round(activas.reduce((a,t)=>a+t.avance,0)/totalActivas) : 0;
+  document.getElementById('upd-m-total').textContent = totalActivas;
+  document.getElementById('upd-m-desvio').textContent = conDesvio;
+  document.getElementById('upd-m-avg').textContent = avgAvance+'%';
+  document.getElementById('upd-m-fin').textContent = finalizadas.length;
+
+  // apply filters
+  let filtered = activas;
+  if(fc) filtered = filtered.filter(t=>t.owner===fc);
+  if(fe) filtered = filtered.filter(t=>t.estado===fe);
+  if(fp) filtered = filtered.filter(t=>t.prio===fp);
+
+  // sort
+  if(fo==='desvio') filtered.sort((a,b)=>{const da=(a.expected||0)-a.avance; const db=(b.expected||0)-b.avance; return db-da;});
+  else if(fo==='due') filtered.sort((a,b)=>{if(!a.due) return 1; if(!b.due) return -1; return new Date(a.due)-new Date(b.due);});
+  else if(fo==='avance') filtered.sort((a,b)=>a.avance-b.avance);
+  else if(fo==='owner') filtered.sort((a,b)=>a.owner.localeCompare(b.owner));
+
+  const el = document.getElementById('upd-task-list');
+  if(!filtered.length){
+    el.innerHTML='<div style="text-align:center;padding:40px;font-size:13px;color:#aaa;">No hay tareas activas con los filtros seleccionados.</div>';
+  } else {
+    el.innerHTML = filtered.map(t=>renderUpdCard(t)).join('');
+  }
+
+  // Finalizadas section
+  const finSec = document.getElementById('upd-finalizadas-section');
+  const finCount = document.getElementById('upd-fin-count');
+  if(finalizadas.length > 0){
+    finSec.style.display='block';
+    finCount.textContent = finalizadas.length;
+    renderFinalizadas(finalizadas.filter(t=>!fc||t.owner===fc));
+  } else {
+    finSec.style.display='none';
+  }
+}
+
+function renderUpdCard(t){
+  const exp = getExpected(t.created, t.due);
+  const gap = exp !== null ? exp - t.avance : null;
+  const ac = t.avance>=70?'#1D9E75':t.avance>=40?'#BA7517':'#378ADD';
+  const ec = exp!=null?(exp>=70?'#1D9E75':exp>=40?'#BA7517':'#378ADD'):'#ccc';
+
+  let indicatorColor = '#0F6E56';
+  let desvioHtml = '';
+  if(gap !== null){
+    if(gap > 20){
+      indicatorColor='#E24B4A';
+      desvioHtml=`<span class="upd-desvio-pill" style="background:#FCEBEB;color:#A32D2D;">⚠ Desvío ${gap} pts</span>`;
+    } else if(gap > 0){
+      indicatorColor='#BA7517';
+      desvioHtml=`<span class="upd-desvio-pill" style="background:#FFF3CD;color:#BA7517;">↓ ${gap} pts</span>`;
+    } else {
+      desvioHtml=`<span class="upd-desvio-pill" style="background:#E1F5EE;color:#0F6E56;">✓ En tiempo</span>`;
+    }
+  }
+
+  const est=ESTADO_CFG[t.estado]||ESTADO_CFG['Pendiente Inicio'];
+  const comments = t.comentarios || [];
+  const lastComment = comments.length ? comments[comments.length-1] : null;
+
+  // build history HTML
+  let historyHtml = '';
+  if(comments.length){
+    historyHtml = comments.slice().reverse().map(c=>{
+      const ts = c.ts ? new Date(c.ts).toLocaleString('es-CO',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}) : '';
+      const changeHtml = c.cambio ? `<span class="upd-comment-change">${c.cambio}</span>` : '';
+      const bg = avatarBg(c.autor||'?');
+      const tx = avatarTx(c.autor||'?');
+      return `<div class="upd-comment-item">
+        <div class="upd-comment-avatar" style="background:${bg};color:${tx};">${initials(c.autor||'?')}</div>
+        <div class="upd-comment-body">
+          <div class="upd-comment-header">
+            <span class="upd-comment-author">${c.autor||''}</span>
+            <span class="upd-comment-time">${ts}</span>
+            ${changeHtml}
+          </div>
+          ${c.texto?`<div class="upd-comment-text">${c.texto}</div>`:''}
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  return `<div class="upd-task-card" id="utc-${t.id}">
+    <div class="upd-task-top">
+      <div class="upd-task-indicator" style="background:${indicatorColor};"></div>
+      <div class="upd-task-main">
+        <div class="upd-task-name">${t.name}</div>
+        <div class="upd-task-okr">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,60):t.krLabel?'KR: '+t.krLabel.slice(0,60):'Sin OKR vinculado'}</div>
+        <div class="upd-task-badges">
+          <span class="badge ${est.cls}">${t.estado}</span>
+          <span class="badge badge-gray">${t.owner}</span>
+          <span class="badge ${t.prio==='Alta'?'badge-red':t.prio==='Media'?'badge-amber':'badge-gray'}">${t.prio}</span>
+          ${t.due?`<span class="badge badge-gray">📅 ${t.due}</span>`:''}
+          ${desvioHtml}
+        </div>
+        <div class="upd-avance-block">
+          <div class="upd-avance-col">
+            <div class="upd-avance-col-lbl">Avance real</div>
+            <div class="upd-avance-col-val" id="upd-av-${t.id}">${t.avance}%</div>
+            <div class="upd-avance-col-bar"><div class="upd-avance-col-fill" id="upd-ab-${t.id}" style="width:${t.avance}%;background:${ac};"></div></div>
+          </div>
+          <div class="upd-avance-col">
+            <div class="upd-avance-col-lbl">Avance esperado</div>
+            <div class="upd-avance-col-val" style="color:#888;">${exp!=null?exp+'%':'—'}</div>
+            <div class="upd-avance-col-bar"><div class="upd-avance-col-fill" style="width:${exp||0}%;background:${ec};opacity:.6;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick update row -->
+    <div class="upd-quick">
+      <div class="upd-quick-field">
+        <span class="upd-quick-lbl">Avance %</span>
+        <input type="number" class="upd-quick-input" id="qi-av-${t.id}" value="${t.avance}" min="0" max="100" placeholder="0">
+      </div>
+      <div class="upd-quick-field">
+        <span class="upd-quick-lbl">Estado</span>
+        <select class="upd-quick-select" id="qi-est-${t.id}">
+          <option value="Pendiente Inicio"${t.estado==='Pendiente Inicio'?' selected':''}>Pendiente Inicio</option>
+          <option value="En Progreso"${t.estado==='En Progreso'?' selected':''}>En Progreso</option>
+          <option value="Bloqueado"${t.estado==='Bloqueado'?' selected':''}>Bloqueado</option>
+          <option value="Finalizada"${t.estado==='Finalizada'?' selected':''}>Finalizada</option>
+        </select>
+      </div>
+      <div class="upd-quick-comment upd-quick-field">
+        <span class="upd-quick-lbl">Comentario / nota de avance</span>
+        <textarea id="qi-txt-${t.id}" placeholder="Ej: Se completó la reunión con el cliente. Pendiente validación..."></textarea>
+      </div>
+      <button class="upd-quick-btn" onclick="quickUpdate('${t.id}')">Guardar</button>
+    </div>
+
+    <!-- History -->
+    <div class="upd-history">
+      <div class="upd-history-toggle" onclick="toggleHistory('${t.id}')">
+        <span id="upd-hist-chev-${t.id}">▶</span>
+        <span>Historial</span>
+        ${comments.length?`<span class="badge badge-gray" style="font-size:10px;">${comments.length}</span>`:''}
+        ${lastComment?`<span style="font-size:11px;color:#aaa;margin-left:4px;">Último: ${new Date(lastComment.ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short'})} — ${lastComment.texto?lastComment.texto.slice(0,40)+'…':lastComment.cambio}</span>`:''}
+      </div>
+      <div class="upd-history-list" id="upd-hist-${t.id}">
+        ${historyHtml || '<p style="font-size:12px;color:#aaa;padding:8px 0;">Sin comentarios aún.</p>'}
+      </div>
+    </div>
+  </div>`;
+}
+
+function toggleHistory(id){
+  const el = document.getElementById('upd-hist-'+id);
+  const chev = document.getElementById('upd-hist-chev-'+id);
+  const open = el.classList.toggle('open');
+  chev.textContent = open ? '▼' : '▶';
+}
+
+async function quickUpdate(id){
+  const t = S.tasks.find(x=>x.id===id); if(!t) return;
+  const newAvance = Math.min(100,Math.max(0,parseInt(document.getElementById('qi-av-'+id)?.value)||0));
+  const newEstado = document.getElementById('qi-est-'+id)?.value || t.estado;
+  const newText = document.getElementById('qi-txt-'+id)?.value.trim() || '';
+
+  // build change description
+  const changes = [];
+  if(newAvance !== t.avance) changes.push(`Avance: ${t.avance}% → ${newAvance}%`);
+  if(newEstado !== t.estado) changes.push(`Estado: ${t.estado} → ${newEstado}`);
+  const cambio = changes.join(' · ');
+
+  // build comment entry
+  const comentarios = [...(t.comentarios||[])];
+  if(cambio || newText){
+    comentarios.push({
+      autor: t.owner,
+      ts: new Date().toISOString(),
+      cambio: cambio || null,
+      texto: newText || null
+    });
+  }
+
+  const newExp = getExpected(t.created, t.due);
+  await db.collection('tareas').doc(id).update({
+    avance: newAvance,
+    estado: newEstado,
+    expected: newExp,
+    comentarios,
+    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+  });
+
+  const msg = newText
+    ? `"${t.name.slice(0,30)}" → ${newEstado} ${newAvance}% · "${newText.slice(0,40)}"`
+    : `"${t.name.slice(0,30)}" → ${newEstado} ${newAvance}%`;
+  logActivity(msg);
+  showToast('Actualizado ✓');
+
+  // clear comment box
+  const txtEl = document.getElementById('qi-txt-'+id);
+  if(txtEl) txtEl.value='';
+}
+
+function renderFinalizadas(tasks){
+  const el = document.getElementById('upd-fin-body');
+  if(!tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;padding:10px 0;">No hay tareas finalizadas con los filtros actuales.</p>';return;}
+  el.innerHTML = tasks.map(t=>{
+    const comentarios = t.comentarios||[];
+    const timeline = comentarios.map(c=>{
+      const ts = c.ts ? new Date(c.ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'}) : '';
+      return `<div class="upd-timeline-item">
+        <div class="upd-timeline-date">${ts}</div>
+        <div class="upd-timeline-text">${c.cambio?`<strong>${c.cambio}</strong> `:''}${c.texto||''}</div>
+      </div>`;
+    }).join('');
+
+    const lastComment = comentarios.length ? comentarios[comentarios.length-1] : null;
+    return `<div class="upd-fin-card">
+      <div class="upd-fin-card-name">${t.name}</div>
+      <div class="upd-fin-card-meta">
+        <span class="badge badge-green">✓ Finalizada</span>
+        <span class="badge badge-gray">${t.owner}</span>
+        <span class="badge badge-gray">${t.avance}%</span>
+        ${t.due?`<span class="badge badge-gray">Límite: ${t.due}</span>`:''}
+        ${t.okrLabel?`<span class="badge badge-blue" style="font-size:10px;">OKR vinculada</span>`:''}
+      </div>
+      ${lastComment&&lastComment.texto?`<div class="upd-fin-comment">💬 "${lastComment.texto}"</div>`:''}
+      ${timeline?`<div class="upd-timeline" style="margin-top:8px;">${timeline}</div>`:''}
+    </div>`;
+  }).join('');
+}
+
+let finalizadasOpen = false;
+function toggleFinalizadas(){
+  finalizadasOpen = !finalizadasOpen;
+  const body = document.getElementById('upd-fin-body');
+  const chev = document.getElementById('upd-fin-chevron');
+  body.classList.toggle('open', finalizadasOpen);
+  chev.textContent = finalizadasOpen ? '▲ Ocultar' : '▼ Ver';
+}
+
 // ══ SCORE ════════════════════════════════════════════════
 function renderScore(){
   const el=document.getElementById('score-list');
@@ -1075,9 +1390,7 @@ function renderAlerts(){
 
 // ══ EXPORT ═══════════════════════════════════════════════
 function copyLink(){
-  navigator.clipboard.writeText(window.location.href)
-    .then(()=>alert('Link copiado. Compártelo en Teams.'))
-    .catch(()=>prompt('Copia este link:',window.location.href));
+  navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copiado.')).catch(()=>prompt('Copia este link:',window.location.href));
 }
 
 function exportExcel(){
@@ -1094,6 +1407,10 @@ function exportExcel(){
     ['ID','Nombre','Consultor','OKR','KR','Prioridad','Estado','Avance %','Esperado %','Creación','Límite'],
     ...S.tasks.map(t=>[t.id,t.name,t.owner,t.okrLabel||'',t.krLabel||'',t.prio,t.estado,t.avance,t.expected||'',t.created,t.due])
   ]),'Actividades');
+  // Export comments/history
+  const histRows=[['Tarea','Consultor','Fecha','Cambio','Comentario']];
+  S.tasks.forEach(t=>(t.comentarios||[]).forEach(c=>histRows.push([t.name,c.autor||'',c.ts?new Date(c.ts).toLocaleString('es-CO'):'',c.cambio||'',c.texto||''])));
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(histRows),'Historial');
   XLSX.writeFile(wb,`KALE_Export_${new Date().toISOString().slice(0,10)}.xlsx`);
   logActivity('Excel exportado');
 }
@@ -1124,38 +1441,30 @@ function generateReport(){
   document.getElementById('report-output').scrollIntoView({behavior:'smooth'});
 }
 
-
 // ══ DASHBOARD CHARTS ══════════════════════════════════════
 let dashCharts = {};
-
-function destroyChart(id){
-  if(dashCharts[id]){ dashCharts[id].destroy(); delete dashCharts[id]; }
-}
-
+function destroyChart(id){ if(dashCharts[id]){ dashCharts[id].destroy(); delete dashCharts[id]; } }
 function getDashData(){
-  const fc = document.getElementById('dash-filter-cons')?.value||'';
-  const fo = document.getElementById('dash-filter-okr')?.value||'';
-  const fp = document.getElementById('dash-filter-period')?.value||'';
-  let tasks = S.tasks;
-  let okrs  = S.okrs;
-  if(fc){ tasks=tasks.filter(t=>t.owner===fc); }
-  if(fo){ tasks=tasks.filter(t=>t.okrId===fo); okrs=okrs.filter(o=>o.id===fo); }
-  if(fp){ okrs=okrs.filter(o=>o.period===fp); const okrIds=new Set(okrs.map(o=>o.id)); tasks=tasks.filter(t=>!t.okrId||okrIds.has(t.okrId)); }
-  return {tasks, okrs};
+  const fc=document.getElementById('dash-filter-cons')?.value||'';
+  const fo=document.getElementById('dash-filter-okr')?.value||'';
+  const fp=document.getElementById('dash-filter-period')?.value||'';
+  let tasks=S.tasks; let okrs=S.okrs;
+  if(fc) tasks=tasks.filter(t=>t.owner===fc);
+  if(fo){tasks=tasks.filter(t=>t.okrId===fo);okrs=okrs.filter(o=>o.id===fo);}
+  if(fp){okrs=okrs.filter(o=>o.period===fp);const okrIds=new Set(okrs.map(o=>o.id));tasks=tasks.filter(t=>!t.okrId||okrIds.has(t.okrId));}
+  return {tasks,okrs};
 }
-
 function populateDashFilters(){
-  const cs = document.getElementById('dash-filter-cons');
-  const co = document.getElementById('dash-filter-okr');
-  if(cs){ const v=cs.value; cs.innerHTML='<option value="">Todos los consultores</option>'; S.consultores.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;cs.appendChild(o);}); cs.value=v||''; }
-  if(co){ const v=co.value; co.innerHTML='<option value="">Todos los OKRs</option>'; S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>50?o.obj.slice(0,50)+'…':o.obj;co.appendChild(op);}); co.value=v||''; }
+  const cs=document.getElementById('dash-filter-cons');
+  const co=document.getElementById('dash-filter-okr');
+  if(cs){const v=cs.value;cs.innerHTML='<option value="">Todos los consultores</option>';S.consultores.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;cs.appendChild(o);});cs.value=v||'';}
+  if(co){const v=co.value;co.innerHTML='<option value="">Todos los OKRs</option>';S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>50?o.obj.slice(0,50)+'…':o.obj;co.appendChild(op);});co.value=v||'';}
 }
-
 function renderDashboard(){
   populateDashFilters();
-  const {tasks, okrs} = getDashData();
+  const {tasks,okrs}=getDashData();
   updateMetrics();
-  renderOKRCompliance(okrs, tasks);
+  renderOKRCompliance(okrs,tasks);
   renderChartAvance(tasks);
   renderChartEstados(tasks);
   renderChartScore(tasks);
@@ -1163,401 +1472,172 @@ function renderDashboard(){
   renderResourceList(tasks);
   renderAlerts();
 }
-
-// ── OKR Compliance indicator ─────────────────────────────
-function renderOKRCompliance(okrs, tasks){
-  const el = document.getElementById('okr-compliance-list');
-  const badge = document.getElementById('dash-okr-count');
-  if(!okrs.length){ el.innerHTML='<div class="dash-empty">Sin OKRs registrados</div>'; badge.textContent='0 OKRs'; return; }
-  badge.textContent = okrs.length+' OKR'+(okrs.length!==1?'s':'');
-
-  const rows = okrs.map(o=>{
-    const krs = o.krs||[];
-    const avgKR = krs.length ? Math.round(krs.reduce((a,k)=>a+(k.progress||0),0)/krs.length) : 0;
-    // task-based avance for this OKR
-    const linkedTasks = tasks.filter(t=>t.okrId===o.id);
-    const avgTask = linkedTasks.length ? Math.round(linkedTasks.reduce((a,t)=>a+t.avance,0)/linkedTasks.length) : null;
-    // compliance = weighted avg KR progress
-    const compliance = avgKR;
-    return {...o, compliance, avgKR, avgTask, krs, linkedTasks};
+function renderOKRCompliance(okrs,tasks){
+  const el=document.getElementById('okr-compliance-list');
+  const badge=document.getElementById('dash-okr-count');
+  if(!okrs.length){el.innerHTML='<div class="dash-empty">Sin OKRs registrados</div>';badge.textContent='0 OKRs';return;}
+  badge.textContent=okrs.length+' OKR'+(okrs.length!==1?'s':'');
+  const rows=okrs.map(o=>{
+    const krs=o.krs||[];
+    const avgKR=krs.length?Math.round(krs.reduce((a,k)=>a+(k.progress||0),0)/krs.length):0;
+    const linkedTasks=tasks.filter(t=>t.okrId===o.id);
+    const avgTask=linkedTasks.length?Math.round(linkedTasks.reduce((a,t)=>a+t.avance,0)/linkedTasks.length):null;
+    return {...o,compliance:avgKR,avgKR,avgTask,krs,linkedTasks};
   }).sort((a,b)=>a.compliance-b.compliance);
-
-  el.innerHTML = `<div class="okr-compliance-grid">${rows.map(o=>{
-    const c = o.compliance;
-    const color = c>=80?'#1D9E75':c>=50?'#BA7517':'#E24B4A';
-    const cls   = c>=80?'badge-green':c>=50?'badge-amber':'badge-red';
-    const label = c>=80?'En meta':c>=50?'En progreso':'En riesgo';
-    const krsDetail = o.krs.map(kr=>`
-      <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
-        <span style="font-size:11px;color:#666;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${kr.label}</span>
-        <div style="width:80px;height:4px;background:#eee;border-radius:2px;overflow:hidden;flex-shrink:0;">
-          <div style="height:100%;border-radius:2px;background:${(kr.progress||0)>=70?'#1D9E75':(kr.progress||0)>=40?'#BA7517':'#E24B4A'};width:${kr.progress||0}%;"></div>
-        </div>
-        <span style="font-size:11px;font-weight:700;color:#222;width:28px;text-align:right;flex-shrink:0;">${kr.progress||0}%</span>
-      </div>`).join('');
-    return `<div class="okr-comp-row">
-      <div class="okr-comp-info">
-        <div class="okr-comp-title" title="${o.obj}">${o.obj}</div>
-        <div style="font-size:11px;color:#888;margin-top:2px;">${o.owner} · ${o.period} · ${o.krs.length} KR${o.krs.length!==1?'s':''} · ${o.linkedTasks.length} tarea${o.linkedTasks.length!==1?'s':''}</div>
-        <div style="margin-top:8px;">${krsDetail}</div>
-      </div>
-      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;padding-left:14px;">
-        <span style="font-size:22px;font-weight:700;color:${color};">${c}%</span>
-        <span class="badge ${cls}">${label}</span>
-        ${o.avgTask!==null?`<span style="font-size:11px;color:#aaa;">Tareas: ${o.avgTask}%</span>`:''}
-      </div>
-    </div>`;
+  el.innerHTML=`<div class="okr-compliance-grid">${rows.map(o=>{
+    const c=o.compliance;
+    const color=c>=80?'#1D9E75':c>=50?'#BA7517':'#E24B4A';
+    const cls=c>=80?'badge-green':c>=50?'badge-amber':'badge-red';
+    const label=c>=80?'En meta':c>=50?'En progreso':'En riesgo';
+    const krsDetail=o.krs.map(kr=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:11px;color:#666;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${kr.label}</span><div style="width:80px;height:4px;background:#eee;border-radius:2px;overflow:hidden;flex-shrink:0;"><div style="height:100%;border-radius:2px;background:${(kr.progress||0)>=70?'#1D9E75':(kr.progress||0)>=40?'#BA7517':'#E24B4A'};width:${kr.progress||0}%;"></div></div><span style="font-size:11px;font-weight:700;color:#222;width:28px;text-align:right;flex-shrink:0;">${kr.progress||0}%</span></div>`).join('');
+    return `<div class="okr-comp-row"><div class="okr-comp-info"><div class="okr-comp-title" title="${o.obj}">${o.obj}</div><div style="font-size:11px;color:#888;margin-top:2px;">${o.owner} · ${o.period} · ${o.krs.length} KR${o.krs.length!==1?'s':''} · ${o.linkedTasks.length} tarea${o.linkedTasks.length!==1?'s':''}</div><div style="margin-top:8px;">${krsDetail}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;padding-left:14px;"><span style="font-size:22px;font-weight:700;color:${color};">${c}%</span><span class="badge ${cls}">${label}</span>${o.avgTask!==null?`<span style="font-size:11px;color:#aaa;">Tareas: ${o.avgTask}%</span>`:''}</div></div>`;
   }).join('')}</div>`;
 }
-
-// ── Chart: Avance real vs esperado ───────────────────────
 function renderChartAvance(tasks){
   destroyChart('avance');
-  const ctx = document.getElementById('chart-avance')?.getContext('2d'); if(!ctx) return;
-  const owners = [...new Set(tasks.filter(t=>t.okrId).map(t=>t.owner))].filter(Boolean);
-  if(!owners.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
-  const real = owners.map(o=>{ const t=tasks.filter(x=>x.owner===o&&x.okrId); return t.length?Math.round(t.reduce((a,x)=>a+x.avance,0)/t.length):0; });
-  const esp  = owners.map(o=>{ const t=tasks.filter(x=>x.owner===o&&x.okrId&&x.expected!=null); return t.length?Math.round(t.reduce((a,x)=>a+(x.expected||0),0)/t.length):0; });
-  dashCharts['avance'] = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels: owners.map(n=>n.split(' ')[0]),
-      datasets:[
-        {label:'Avance real %', data:real, backgroundColor:'#1D9E75', borderRadius:4},
-        {label:'Avance esperado %', data:esp, backgroundColor:'#B5D4F4', borderRadius:4}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}
-  });
+  const ctx=document.getElementById('chart-avance')?.getContext('2d');if(!ctx)return;
+  const owners=[...new Set(tasks.filter(t=>t.okrId).map(t=>t.owner))].filter(Boolean);
+  if(!owners.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  const real=owners.map(o=>{const t=tasks.filter(x=>x.owner===o&&x.okrId);return t.length?Math.round(t.reduce((a,x)=>a+x.avance,0)/t.length):0;});
+  const esp=owners.map(o=>{const t=tasks.filter(x=>x.owner===o&&x.okrId&&x.expected!=null);return t.length?Math.round(t.reduce((a,x)=>a+(x.expected||0),0)/t.length):0;});
+  dashCharts['avance']=new Chart(ctx,{type:'bar',data:{labels:owners.map(n=>n.split(' ')[0]),datasets:[{label:'Avance real %',data:real,backgroundColor:'#1D9E75',borderRadius:4},{label:'Avance esperado %',data:esp,backgroundColor:'#B5D4F4',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}});
 }
-
-// ── Chart: Estados ───────────────────────────────────────
 function renderChartEstados(tasks){
   destroyChart('estados');
-  const ctx = document.getElementById('chart-estados')?.getContext('2d'); if(!ctx) return;
-  const estados = ['Pendiente Inicio','En Progreso','Bloqueado','Finalizada'];
-  const counts  = estados.map(e=>tasks.filter(t=>t.estado===e).length);
-  if(!tasks.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
-  dashCharts['estados'] = new Chart(ctx,{
-    type:'doughnut',
-    data:{
-      labels:estados,
-      datasets:[{data:counts, backgroundColor:['#D3D1C7','#85B7EB','#F09595','#5DCAA5'], borderWidth:2, borderColor:'#fff'}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}
-  });
+  const ctx=document.getElementById('chart-estados')?.getContext('2d');if(!ctx)return;
+  const estados=['Pendiente Inicio','En Progreso','Bloqueado','Finalizada'];
+  const counts=estados.map(e=>tasks.filter(t=>t.estado===e).length);
+  if(!tasks.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  dashCharts['estados']=new Chart(ctx,{type:'doughnut',data:{labels:estados,datasets:[{data:counts,backgroundColor:['#D3D1C7','#85B7EB','#F09595','#5DCAA5'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}});
 }
-
-// ── Chart: Score ─────────────────────────────────────────
 function renderChartScore(tasks){
   destroyChart('score');
-  const ctx = document.getElementById('chart-score')?.getContext('2d'); if(!ctx) return;
-  const owners = [...new Set(tasks.map(t=>t.owner))].filter(Boolean);
-  if(!owners.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
-  const scores = owners.map(owner=>{
-    const ot=tasks.filter(t=>t.owner===owner); const linked=ot.filter(t=>t.okrId);
-    const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
-    const oo=S.okrs.filter(o=>o.owner===owner); const allKRs=oo.flatMap(o=>o.krs||[]);
-    const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
-    return Math.round(avgA*0.6+okrS*0.4);
-  });
-  const colors = scores.map(s=>s>=70?'#1D9E75':s>=40?'#EF9F27':'#E24B4A');
-  dashCharts['score'] = new Chart(ctx,{
-    type:'bar',
-    data:{
-      labels:owners.map(n=>n.split(' ')[0]),
-      datasets:[
-        {label:'Score %', data:scores, backgroundColor:colors, borderRadius:6},
-        {label:'Meta 80%', data:owners.map(()=>80), type:'line', borderColor:'#534AB7', borderDash:[4,4], borderWidth:2, pointRadius:0, fill:false}
-      ]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}
-  });
+  const ctx=document.getElementById('chart-score')?.getContext('2d');if(!ctx)return;
+  const owners=[...new Set(tasks.map(t=>t.owner))].filter(Boolean);
+  if(!owners.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  const scores=owners.map(owner=>{const ot=tasks.filter(t=>t.owner===owner);const linked=ot.filter(t=>t.okrId);const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;const oo=S.okrs.filter(o=>o.owner===owner);const allKRs=oo.flatMap(o=>o.krs||[]);const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;return Math.round(avgA*0.6+okrS*0.4);});
+  const colors=scores.map(s=>s>=70?'#1D9E75':s>=40?'#EF9F27':'#E24B4A');
+  dashCharts['score']=new Chart(ctx,{type:'bar',data:{labels:owners.map(n=>n.split(' ')[0]),datasets:[{label:'Score %',data:scores,backgroundColor:colors,borderRadius:6},{label:'Meta 80%',data:owners.map(()=>80),type:'line',borderColor:'#534AB7',borderDash:[4,4],borderWidth:2,pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}});
 }
-
-// ── Chart: Prioridad ─────────────────────────────────────
 function renderChartPrioridad(tasks){
   destroyChart('prioridad');
-  const ctx = document.getElementById('chart-prioridad')?.getContext('2d'); if(!ctx) return;
-  if(!tasks.length){ ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>'; return; }
-  const alta  = tasks.filter(t=>t.prio==='Alta').length;
-  const media = tasks.filter(t=>t.prio==='Media').length;
-  const baja  = tasks.filter(t=>t.prio==='Baja').length;
-  dashCharts['prioridad'] = new Chart(ctx,{
-    type:'pie',
-    data:{
-      labels:['Alta','Media','Baja'],
-      datasets:[{data:[alta,media,baja], backgroundColor:['#F09595','#FAC775','#9FE1CB'], borderWidth:2, borderColor:'#fff'}]
-    },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}
-  });
+  const ctx=document.getElementById('chart-prioridad')?.getContext('2d');if(!ctx)return;
+  if(!tasks.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  dashCharts['prioridad']=new Chart(ctx,{type:'pie',data:{labels:['Alta','Media','Baja'],datasets:[{data:[tasks.filter(t=>t.prio==='Alta').length,tasks.filter(t=>t.prio==='Media').length,tasks.filter(t=>t.prio==='Baja').length],backgroundColor:['#F09595','#FAC775','#9FE1CB'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}});
 }
-
-// ── Resource list ─────────────────────────────────────────
 function renderResourceList(tasks){
-  const el = document.getElementById('resource-list');
-  const owners = S.consultores.map(c=>c.name);
-  if(!owners.length){ el.innerHTML='<div class="dash-empty">Sin consultores registrados</div>'; return; }
-  el.innerHTML = `<div class="resource-grid">${owners.map(owner=>{
-    const cons = S.consultores.find(c=>c.name===owner);
-    const ot   = tasks.filter(t=>t.owner===owner);
-    const linked = ot.filter(t=>t.okrId);
-    const avgA = linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
-    const avgE = linked.filter(t=>t.expected!=null).length?Math.round(linked.filter(t=>t.expected!=null).reduce((a,t)=>a+(t.expected||0),0)/linked.filter(t=>t.expected!=null).length):0;
-    const oo   = S.okrs.filter(o=>o.owner===owner);
+  const el=document.getElementById('resource-list');
+  const owners=S.consultores.map(c=>c.name);
+  if(!owners.length){el.innerHTML='<div class="dash-empty">Sin consultores registrados</div>';return;}
+  el.innerHTML=`<div class="resource-grid">${owners.map(owner=>{
+    const cons=S.consultores.find(c=>c.name===owner);
+    const ot=tasks.filter(t=>t.owner===owner);
+    const linked=ot.filter(t=>t.okrId);
+    const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;
+    const avgE=linked.filter(t=>t.expected!=null).length?Math.round(linked.filter(t=>t.expected!=null).reduce((a,t)=>a+(t.expected||0),0)/linked.filter(t=>t.expected!=null).length):0;
+    const oo=S.okrs.filter(o=>o.owner===owner);
     const allKRs=oo.flatMap(o=>o.krs||[]);
-    const okrS = allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
-    const score= Math.round(avgA*0.6+okrS*0.4);
-    const sc   = score>=70?'#1D9E75':score>=40?'#BA7517':'#E24B4A';
-    const bloqueadas = ot.filter(t=>t.estado==='Bloqueado').length;
-    const finalizadas= ot.filter(t=>t.estado==='Finalizada').length;
-    const bg=avatarBg(owner); const tx=avatarTx(owner);
-    return `<div class="resource-row">
-      <div class="resource-av" style="background:${bg};color:${tx};">${initials(owner)}</div>
-      <div class="resource-info">
-        <div class="resource-name">${owner}</div>
-        <div class="resource-detail">
-          ${cons?.rol?`<span class="badge badge-gray" style="margin-right:4px;">${cons.rol}</span>`:''}
-          ${ot.length} tareas · ${linked.length} vinculadas · ${finalizadas} finalizadas${bloqueadas?` · <span style="color:#A32D2D;">${bloqueadas} bloqueada${bloqueadas>1?'s':''}</span>`:''}
-        </div>
-      </div>
-      <div class="resource-bars">
-        <div class="resource-bar-row">
-          <span class="resource-bar-label">Real</span>
-          <div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgA}%;background:#1D9E75;"></div></div>
-          <span class="resource-bar-val" style="color:#1D9E75;">${avgA}%</span>
-        </div>
-        <div class="resource-bar-row">
-          <span class="resource-bar-label">Esperado</span>
-          <div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgE}%;background:#378ADD;"></div></div>
-          <span class="resource-bar-val" style="color:#378ADD;">${avgE}%</span>
-        </div>
-        <div class="resource-bar-row">
-          <span class="resource-bar-label">Score</span>
-          <div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${score}%;background:${sc};"></div></div>
-          <span class="resource-bar-val" style="color:${sc};font-weight:700;">${score}%</span>
-        </div>
-      </div>
-    </div>`;
+    const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
+    const score=Math.round(avgA*0.6+okrS*0.4);
+    const sc=score>=70?'#1D9E75':score>=40?'#BA7517':'#E24B4A';
+    const bloqueadas=ot.filter(t=>t.estado==='Bloqueado').length;
+    const finalizadas=ot.filter(t=>t.estado==='Finalizada').length;
+    const bg=avatarBg(owner);const tx=avatarTx(owner);
+    return `<div class="resource-row"><div class="resource-av" style="background:${bg};color:${tx};">${initials(owner)}</div><div class="resource-info"><div class="resource-name">${owner}</div><div class="resource-detail">${cons?.rol?`<span class="badge badge-gray" style="margin-right:4px;">${cons.rol}</span>`:''} ${ot.length} tareas · ${linked.length} vinculadas · ${finalizadas} finalizadas${bloqueadas?` · <span style="color:#A32D2D;">${bloqueadas} bloqueada${bloqueadas>1?'s':''}</span>`:''}</div></div><div class="resource-bars"><div class="resource-bar-row"><span class="resource-bar-label">Real</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgA}%;background:#1D9E75;"></div></div><span class="resource-bar-val" style="color:#1D9E75;">${avgA}%</span></div><div class="resource-bar-row"><span class="resource-bar-label">Esperado</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgE}%;background:#378ADD;"></div></div><span class="resource-bar-val" style="color:#378ADD;">${avgE}%</span></div><div class="resource-bar-row"><span class="resource-bar-label">Score</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${score}%;background:${sc};"></div></div><span class="resource-bar-val" style="color:${sc};font-weight:700;">${score}%</span></div></div></div>`;
   }).join('')}</div>`;
 }
 
 // ══ SEGUIMIENTO ══════════════════════════════════════════
-const PANEL_URL = 'https://tonpolas.github.io/kale-tracker';
-const DIAS_INACTIVA = 3;
-const DESVIO_UMBRAL = 20;
-
-function diasSinActualizar(t){
-  const ref = t.updatedAt?.toDate ? t.updatedAt.toDate() : t.updatedAt ? new Date(t.updatedAt) : null;
-  if(!ref) return 999;
-  return Math.floor((new Date()-ref)/(1000*60*60*24));
-}
-
+const PANEL_URL='https://tonpolas.github.io/kale-tracker';
+const DIAS_INACTIVA=3;
+const DESVIO_UMBRAL=20;
+function diasSinActualizar(t){const ref=t.updatedAt?.toDate?t.updatedAt.toDate():t.updatedAt?new Date(t.updatedAt):null;if(!ref)return 999;return Math.floor((new Date()-ref)/(1000*60*60*24));}
 function clasificarTarea(t){
-  const dias = diasSinActualizar(t);
-  const desvio = (t.expected!=null && t.avance!=null) ? t.expected - t.avance : null;
-  const tieneDesvio = desvio !== null && desvio > DESVIO_UMBRAL;
-  const inactiva = dias > DIAS_INACTIVA;
-  const finalizada = t.estado === 'Finalizada';
-  if(finalizada) return null;
-  if(tieneDesvio && inactiva) return {tipo:'ambos', desvio, dias, color:'#A32D2D'};
-  if(tieneDesvio) return {tipo:'desvio', desvio, dias, color:'#BA7517'};
-  if(inactiva) return {tipo:'inactiva', desvio, dias, color:'#185FA5'};
+  const dias=diasSinActualizar(t);
+  const desvio=(t.expected!=null&&t.avance!=null)?t.expected-t.avance:null;
+  const tieneDesvio=desvio!==null&&desvio>DESVIO_UMBRAL;
+  const inactiva=dias>DIAS_INACTIVA;
+  if(t.estado==='Finalizada')return null;
+  if(tieneDesvio&&inactiva)return{tipo:'ambos',desvio,dias,color:'#A32D2D'};
+  if(tieneDesvio)return{tipo:'desvio',desvio,dias,color:'#BA7517'};
+  if(inactiva)return{tipo:'inactiva',desvio,dias,color:'#185FA5'};
   return null;
 }
-
 function renderSeguimiento(){
-  const filterCons = document.getElementById('seg-filter-cons')?.value||'';
-  const filterTipo = document.getElementById('seg-filter-tipo')?.value||'';
-
-  // classify all tasks
-  const atrasadas = S.tasks
-    .map(t=>({...t, _cls: clasificarTarea(t)}))
-    .filter(t=> t._cls !== null)
-    .filter(t=> !filterCons || t.owner === filterCons)
-    .filter(t=> {
-      if(!filterTipo) return true;
-      return t._cls.tipo === filterTipo || (filterTipo==='ambos' && t._cls.tipo==='ambos');
-    });
-
-  // update top metrics
-  const owners = [...new Set(atrasadas.map(t=>t.owner))];
-  document.getElementById('seg-total').textContent = atrasadas.length;
-  document.getElementById('seg-cons').textContent = owners.length;
-  const avgDesvio = atrasadas.filter(t=>t._cls.desvio!=null).length
-    ? Math.round(atrasadas.filter(t=>t._cls.desvio!=null).reduce((a,t)=>a+t._cls.desvio,0)/atrasadas.filter(t=>t._cls.desvio!=null).length)
-    : 0;
-  document.getElementById('seg-desvio').textContent = avgDesvio > 0 ? '+'+avgDesvio : avgDesvio;
-  document.getElementById('seg-fecha').textContent = new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
-
-  const el = document.getElementById('seg-cards');
-  if(!atrasadas.length){
-    el.innerHTML=`<div style="text-align:center;padding:40px 20px;">
-      <div style="font-size:32px;margin-bottom:12px;">✓</div>
-      <div style="font-size:15px;font-weight:700;color:#0F6E56;">Todo al día</div>
-      <div style="font-size:13px;color:#aaa;margin-top:6px;">No hay tareas atrasadas ni inactivas en este momento.</div>
-    </div>`;
-    return;
-  }
-
-  // group by consultant
-  el.innerHTML = owners.map(owner=>{
-    const tareas = atrasadas.filter(t=>t.owner===owner);
-    const cons = S.consultores.find(c=>c.name===owner);
-    const criticas = tareas.filter(t=>t._cls.tipo==='ambos').length;
-    const desvio_only = tareas.filter(t=>t._cls.tipo==='desvio').length;
-    const inactiva_only = tareas.filter(t=>t._cls.tipo==='inactiva').length;
-    const msg = generarMensaje(owner, tareas, cons);
-    const bg = avatarBg(owner); const tx = avatarTx(owner);
-    const ini = initials(owner);
-
+  const filterCons=document.getElementById('seg-filter-cons')?.value||'';
+  const filterTipo=document.getElementById('seg-filter-tipo')?.value||'';
+  const atrasadas=S.tasks.map(t=>({...t,_cls:clasificarTarea(t)})).filter(t=>t._cls!==null).filter(t=>!filterCons||t.owner===filterCons).filter(t=>{if(!filterTipo)return true;return t._cls.tipo===filterTipo||(filterTipo==='ambos'&&t._cls.tipo==='ambos');});
+  const owners=[...new Set(atrasadas.map(t=>t.owner))];
+  document.getElementById('seg-total').textContent=atrasadas.length;
+  document.getElementById('seg-cons').textContent=owners.length;
+  const avgDesvio=atrasadas.filter(t=>t._cls.desvio!=null).length?Math.round(atrasadas.filter(t=>t._cls.desvio!=null).reduce((a,t)=>a+t._cls.desvio,0)/atrasadas.filter(t=>t._cls.desvio!=null).length):0;
+  document.getElementById('seg-desvio').textContent=avgDesvio>0?'+'+avgDesvio:avgDesvio;
+  document.getElementById('seg-fecha').textContent=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
+  const el=document.getElementById('seg-cards');
+  if(!atrasadas.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;"><div style="font-size:32px;margin-bottom:12px;">✓</div><div style="font-size:15px;font-weight:700;color:#0F6E56;">Todo al día</div><div style="font-size:13px;color:#aaa;margin-top:6px;">No hay tareas atrasadas ni inactivas.</div></div>`;return;}
+  el.innerHTML=owners.map(owner=>{
+    const tareas=atrasadas.filter(t=>t.owner===owner);
+    const cons=S.consultores.find(c=>c.name===owner);
+    const criticas=tareas.filter(t=>t._cls.tipo==='ambos').length;
+    const desvio_only=tareas.filter(t=>t._cls.tipo==='desvio').length;
+    const inactiva_only=tareas.filter(t=>t._cls.tipo==='inactiva').length;
+    const msg=generarMensaje(owner,tareas,cons);
+    const bg=avatarBg(owner);const tx=avatarTx(owner);const ini=initials(owner);
     return `<div class="seg-cons-block">
       <div class="seg-cons-header">
         <div class="seg-cons-avatar" style="background:${bg};color:${tx};">${ini}</div>
-        <div class="seg-cons-info">
-          <div class="seg-cons-name">${owner}</div>
-          <div class="seg-cons-meta">
-            ${cons?.email?`<span>${cons.email}</span>`:''}
-            ${cons?.wa?`<span style="margin-left:10px;">WA: ${cons.wa}</span>`:''}
-          </div>
-        </div>
-        <div class="seg-cons-badges">
-          ${criticas?`<span class="badge badge-red">${criticas} crítica${criticas>1?'s':''}</span>`:''}
-          ${desvio_only?`<span class="badge badge-amber">${desvio_only} desvío</span>`:''}
-          ${inactiva_only?`<span class="badge badge-blue">${inactiva_only} inactiva${inactiva_only>1?'s':''}</span>`:''}
-          <span class="badge badge-gray">${tareas.length} total</span>
-        </div>
+        <div class="seg-cons-info"><div class="seg-cons-name">${owner}</div><div class="seg-cons-meta">${cons?.email?`<span>${cons.email}</span>`:''}${cons?.wa?`<span style="margin-left:10px;">WA: ${cons.wa}</span>`:''}</div></div>
+        <div class="seg-cons-badges">${criticas?`<span class="badge badge-red">${criticas} crítica${criticas>1?'s':''}</span>`:''}${desvio_only?`<span class="badge badge-amber">${desvio_only} desvío</span>`:''}${inactiva_only?`<span class="badge badge-blue">${inactiva_only} inactiva${inactiva_only>1?'s':''}</span>`:''}<span class="badge badge-gray">${tareas.length} total</span></div>
       </div>
-
       <div class="seg-tareas-list">
-        ${tareas.map(t=>{
-          const c=t._cls;
-          const tipotxt = c.tipo==='ambos'?'Desvío + inactiva':c.tipo==='desvio'?'Desvío de avance':'Sin actualizar';
-          const detalle = [
-            c.desvio!=null?`Esperado ${t.expected}% · Real ${t.avance}% · Desvío ${c.desvio} pts`:'',
-            c.dias<999?`Última actualización hace ${c.dias} día${c.dias!==1?'s':''}`:'Sin registro de actualización',
-            t.due?`Límite: ${t.due}`:''
-          ].filter(Boolean).join(' · ');
-          return `<div class="seg-tarea-row">
-            <div class="seg-tarea-alerta" style="background:${c.color};"></div>
-            <div class="seg-tarea-info">
-              <div class="seg-tarea-name">${t.name}</div>
-              <div class="seg-tarea-detail">${detalle}</div>
-              <div class="seg-tarea-badges">
-                <span class="badge ${c.tipo==='ambos'?'badge-red':c.tipo==='desvio'?'badge-amber':'badge-blue'}">${tipotxt}</span>
-                <span class="badge badge-gray">${t.estado}</span>
-                ${t.okrLabel?`<span class="badge badge-gray" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">OKR: ${t.okrLabel.slice(0,35)}</span>`:''}
-              </div>
-            </div>
-          </div>`;
-        }).join('')}
+        ${tareas.map(t=>{const c=t._cls;const tipotxt=c.tipo==='ambos'?'Desvío + inactiva':c.tipo==='desvio'?'Desvío de avance':'Sin actualizar';const detalle=[c.desvio!=null?`Esperado ${t.expected}% · Real ${t.avance}% · Desvío ${c.desvio} pts`:'',c.dias<999?`Última actualización hace ${c.dias} día${c.dias!==1?'s':''}`:'Sin registro',t.due?`Límite: ${t.due}`:''].filter(Boolean).join(' · ');return `<div class="seg-tarea-row"><div class="seg-tarea-alerta" style="background:${c.color};"></div><div class="seg-tarea-info"><div class="seg-tarea-name">${t.name}</div><div class="seg-tarea-detail">${detalle}</div><div class="seg-tarea-badges"><span class="badge ${c.tipo==='ambos'?'badge-red':c.tipo==='desvio'?'badge-amber':'badge-blue'}">${tipotxt}</span><span class="badge badge-gray">${t.estado}</span>${t.okrLabel?`<span class="badge badge-gray" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">OKR: ${t.okrLabel.slice(0,35)}</span>`:''}</div></div></div>`;}).join('')}
       </div>
-
       <div class="seg-msg-block">
-        <div class="seg-msg-label">
-          <span>Mensaje para ${owner.split(' ')[0]}</span>
-          <button class="seg-copy-btn" onclick="copiarMensaje(this, '${owner}')">Copiar mensaje</button>
-        </div>
+        <div class="seg-msg-label"><span>Mensaje para ${owner.split(' ')[0]}</span><button class="seg-copy-btn" onclick="copiarMensaje(this,'${owner}')">Copiar mensaje</button></div>
         <div class="seg-msg-text" id="msg-${owner.replace(/\s+/g,'_')}">${msg}</div>
       </div>
     </div>`;
   }).join('');
 }
-
-function generarMensaje(owner, tareas, cons){
-  const nombre = owner.split(' ')[0];
-  const hoy = new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
-  const criticas = tareas.filter(t=>t._cls.tipo==='ambos');
-  const desvio = tareas.filter(t=>t._cls.tipo==='desvio');
-  const inactivas = tareas.filter(t=>t._cls.tipo==='inactiva');
-
-  let msg = `Hola ${nombre}, buen día 👋\n\n`;
-  msg += `Es ${hoy}. Revisando el panel KALÉ, encontré que tienes ${tareas.length} tarea${tareas.length>1?'s':''} que necesita${tareas.length>1?'n':''} atención:\n\n`;
-
-  if(criticas.length){
-    msg += `🔴 *CRÍTICAS — Desvío alto y sin actualizar:*\n`;
-    criticas.forEach(t=>{
-      msg += `• ${t.name}\n`;
-      msg += `  Avance esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n`;
-      msg += `  Sin actualizar hace ${t._cls.dias} día${t._cls.dias!==1?'s':''}\n`;
-      if(t.due) msg += `  Límite: ${t.due}\n`;
-      msg += '\n';
-    });
-  }
-
-  if(desvio.length){
-    msg += `🟡 *DESVÍO DE AVANCE:*\n`;
-    desvio.forEach(t=>{
-      msg += `• ${t.name}\n`;
-      msg += `  Esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n`;
-      if(t.due) msg += `  Límite: ${t.due}\n`;
-      msg += '\n';
-    });
-  }
-
-  if(inactivas.length){
-    msg += `🔵 *SIN ACTUALIZAR (${DIAS_INACTIVA}+ días):*\n`;
-    inactivas.forEach(t=>{
-      msg += `• ${t.name} — ${t._cls.dias} día${t._cls.dias!==1?'s':''} sin actualizar\n`;
-      if(t.due) msg += `  Límite: ${t.due}\n`;
-    });
-    msg += '\n';
-  }
-
-  msg += `Por favor actualiza tu avance y estado en el panel:\n`;
-  msg += `👉 ${PANEL_URL}\n\n`;
-  msg += `Cualquier duda me cuentas. ¡Gracias!`;
+function generarMensaje(owner,tareas,cons){
+  const nombre=owner.split(' ')[0];
+  const hoy=new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
+  const criticas=tareas.filter(t=>t._cls.tipo==='ambos');
+  const desvio=tareas.filter(t=>t._cls.tipo==='desvio');
+  const inactivas=tareas.filter(t=>t._cls.tipo==='inactiva');
+  let msg=`Hola ${nombre}, buen día 👋\n\nEs ${hoy}. Revisando el panel KALÉ, encontré que tienes ${tareas.length} tarea${tareas.length>1?'s':''} que necesita${tareas.length>1?'n':''} atención:\n\n`;
+  if(criticas.length){msg+=`🔴 *CRÍTICAS — Desvío alto y sin actualizar:*\n`;criticas.forEach(t=>{msg+=`• ${t.name}\n  Avance esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n  Sin actualizar hace ${t._cls.dias} día${t._cls.dias!==1?'s':''}\n${t.due?`  Límite: ${t.due}\n`:''}\n`;});}
+  if(desvio.length){msg+=`🟡 *DESVÍO DE AVANCE:*\n`;desvio.forEach(t=>{msg+=`• ${t.name}\n  Esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n${t.due?`  Límite: ${t.due}\n`:''}\n`;});}
+  if(inactivas.length){msg+=`🔵 *SIN ACTUALIZAR (${DIAS_INACTIVA}+ días):*\n`;inactivas.forEach(t=>{msg+=`• ${t.name} — ${t._cls.dias} día${t._cls.dias!==1?'s':''} sin actualizar\n${t.due?`  Límite: ${t.due}\n`:''}`;}); msg+='\n';}
+  msg+=`Por favor actualiza tu avance y estado en el panel:\n👉 ${PANEL_URL}\n\nCualquier duda me cuentas. ¡Gracias!`;
   return msg;
 }
-
-function copiarMensaje(btn, owner){
-  const key = owner.replace(/\s+/g,'_');
-  const el = document.getElementById('msg-'+key);
-  if(!el) return;
-  navigator.clipboard.writeText(el.textContent).then(()=>{
-    btn.textContent='¡Copiado!'; btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent='Copiar mensaje';btn.classList.remove('copied');},2500);
-  }).catch(()=>{ prompt('Copia el mensaje:', el.textContent); });
+function copiarMensaje(btn,owner){
+  const key=owner.replace(/\s+/g,'_');
+  const el=document.getElementById('msg-'+key);if(!el)return;
+  navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='¡Copiado!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copiar mensaje';btn.classList.remove('copied');},2500);}).catch(()=>{prompt('Copia el mensaje:',el.textContent);});
 }
-
 function generarTodosLosMensajes(){
-  const filterCons = document.getElementById('seg-filter-cons')?.value||'';
-  const atrasadas = S.tasks
-    .map(t=>({...t, _cls:clasificarTarea(t)}))
-    .filter(t=>t._cls!==null)
-    .filter(t=>!filterCons||t.owner===filterCons);
+  const filterCons=document.getElementById('seg-filter-cons')?.value||'';
+  const atrasadas=S.tasks.map(t=>({...t,_cls:clasificarTarea(t)})).filter(t=>t._cls!==null).filter(t=>!filterCons||t.owner===filterCons);
   if(!atrasadas.length){alert('No hay tareas atrasadas en este momento.');return;}
   const owners=[...new Set(atrasadas.map(t=>t.owner))];
   let todos='';
-  owners.forEach(owner=>{
-    const cons=S.consultores.find(c=>c.name===owner);
-    const tareas=atrasadas.filter(t=>t.owner===owner);
-    todos+=`${'═'.repeat(50)}\n`;
-    todos+=`MENSAJE PARA: ${owner.toUpperCase()}`;
-    if(cons?.wa) todos+=` (WA: ${cons.wa})`;
-    todos+='\n'+'═'.repeat(50)+'\n\n';
-    todos+=generarMensaje(owner,tareas,cons)+'\n\n';
-  });
+  owners.forEach(owner=>{const cons=S.consultores.find(c=>c.name===owner);const tareas=atrasadas.filter(t=>t.owner===owner);todos+=`${'═'.repeat(50)}\nMENSAJE PARA: ${owner.toUpperCase()}${cons?.wa?` (WA: ${cons.wa})`:''}\n${'═'.repeat(50)}\n\n${generarMensaje(owner,tareas,cons)}\n\n`;});
   const blob=new Blob([todos],{type:'text/plain'});
   const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url; a.download=`KALE_Seguimiento_${new Date().toISOString().slice(0,10)}.txt`;
-  a.click(); URL.revokeObjectURL(url);
+  const a=document.createElement('a');a.href=url;a.download=`KALE_Seguimiento_${new Date().toISOString().slice(0,10)}.txt`;a.click();URL.revokeObjectURL(url);
   logActivity(`Seguimiento generado: ${owners.length} consultor${owners.length>1?'es':''} con alertas`);
 }
 
-// ══ MODAL CLOSE ON OUTSIDE CLICK ════════════════════════
+// ══ MODAL CLOSE ═════════════════════════════════════════
 document.getElementById('modal-cons-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeConsModal();});
 document.getElementById('modal-okr-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOKRModal();});
 
 // ══ INIT ════════════════════════════════════════════════
 window.addEventListener('load',()=>{
-  try { initListeners(); }
-  catch(e){
-    const b=document.getElementById('fb-badge');
-    b.className='fb-badge fb-err'; b.textContent='Error Firebase';
-    console.error(e);
-  }
+  try{initListeners();}
+  catch(e){const b=document.getElementById('fb-badge');b.className='fb-badge fb-err';b.textContent='Error Firebase';console.error(e);}
 });
 </script>
 </body>
