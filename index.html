@@ -241,8 +241,8 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .dash-kpi-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
 .dash-kpi-sep{width:1px;height:36px;background:rgba(255,255,255,.2);}
 .dash-filter-strip{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.dash-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;outline:none;cursor:pointer;}
-.dash-sel option{background:#0F6E56;color:#fff;}
+.dash-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.92);color:#0A4A39;outline:none;cursor:pointer;font-weight:600;}
+.dash-sel option{background:#fff;color:#222;}
 .dash-refresh-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.2);color:#fff;cursor:pointer;font-weight:700;}
 .dash-refresh-btn:hover{background:rgba(255,255,255,.3);}
 
@@ -283,10 +283,11 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .panel-hero-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;}
 .panel-hero-sub{font-size:12px;color:rgba(255,255,255,.75);}
 .panel-hero-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.panel-hero-btn{font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.18);color:#fff;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block;}
-.panel-hero-btn:hover{background:rgba(255,255,255,.3);}
-.panel-hero-btn-solid{background:#fff;color:#0F6E56;border-color:#fff;}
+.panel-hero-btn{font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.92);color:#0A4A39;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block;}
+.panel-hero-btn:hover{background:#fff;}
+.panel-hero-btn-solid{background:#fff;color:#0F6E56;border-color:#fff;font-weight:800;}
 .panel-hero-btn-solid:hover{background:#f0fdf8;}
+.panel-hero-btn option{background:#fff;color:#222;}
 
 /* hero color variants */
 .hero-consultants{background:linear-gradient(135deg,#0F6E56 0%,#1D9E75 100%);}
@@ -346,8 +347,8 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .seg-hero-val{font-size:26px;font-weight:800;color:#fff;}
 .seg-hero-lbl{font-size:10px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
 .seg-hero-filters{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center;}
-.seg-hero-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;outline:none;}
-.seg-hero-sel option{background:#1a1a2e;color:#fff;}
+.seg-hero-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.92);color:#1a1a2e;outline:none;font-weight:600;}
+.seg-hero-sel option{background:#fff;color:#222;}
 .seg-hero-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;cursor:pointer;font-weight:700;}
 .seg-hero-btn:hover{background:rgba(255,255,255,.25);}
 .seg-hero-btn-accent{background:#A32D2D;border-color:#A32D2D;}
@@ -361,8 +362,8 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .upd-hero-kpi-lbl{font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
 .upd-hero-sep{width:1px;height:36px;background:rgba(255,255,255,.2);}
 .upd-hero-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
-.upd-hero-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;outline:none;}
-.upd-hero-sel option{background:#074033;}
+.upd-hero-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.92);color:#074033;outline:none;font-weight:600;}
+.upd-hero-sel option{background:#fff;color:#222;}
 .upd-hero-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;cursor:pointer;font-weight:700;}
 .upd-hero-btn:hover{background:rgba(255,255,255,.25);}
 
@@ -1041,6 +1042,15 @@ const db = firebase.firestore();
 
 const S = { consultores:[], okrs:[], tasks:[], krCount:1 };
 
+
+const ESTADO_DISPLAY = {
+  'Pendiente Inicio': 'Pending Start',
+  'En Progreso': 'In Progress',
+  'Bloqueado': 'Blocked',
+  'Finalizada': 'Completed'
+};
+function estadoLabel(e){ return ESTADO_DISPLAY[e]||e; }
+
 const ESTADO_CFG = {
   'Pendiente Inicio':{cls:'badge-gray'},
   'En Progreso':     {cls:'badge-blue'},
@@ -1085,7 +1095,7 @@ function initListeners(){
     tryRenderDashboard();
   });
 
-  db.collection('tasks').orderBy('createdAt','desc').onSnapshot(snap=>{
+  db.collection('tareas').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
     loaded.tasks=true;
     renderLinked(); renderTasks();
@@ -1376,7 +1386,7 @@ function editTask(id){
 async function deleteTask(id){
   const t=S.tasks.find(x=>x.id===id); if(!t) return;
   if(!confirm(`Delete task "${t.name}"?`)) return;
-  await db.collection('tasks').doc(id).delete();
+  await db.collection('tareas').doc(id).delete();
   logActivity(`Task deleted: "${t.name.slice(0,35)}"`);
   showToast('Task deleted');
 }
@@ -1404,11 +1414,11 @@ async function saveTask(){
     updatedAt:firebase.firestore.FieldValue.serverTimestamp()
   };
   if(editId){
-    await db.collection('tasks').doc(editId).update(data);
+    await db.collection('tareas').doc(editId).update(data);
     logActivity(`Tarea actualizada: "${name.slice(0,35)}" · ${estado}`);
   } else {
     data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('tasks').add(data);
+    await db.collection('tareas').add(data);
     logActivity(`Tarea creada: "${name.slice(0,35)}" — ${owner} · ${estado}`);
   }
   clearTaskForm(); showToast('Task saved ✓');
@@ -1422,7 +1432,7 @@ function renderLinked(){
     const exp=t.expected; const gap=exp!==null&&exp!==undefined?exp-t.avance:null;
     const ac=t.avance>=70?'#1D9E75':t.avance>=40?'#BA7517':'#378ADD';
     const ec=exp!=null?(exp>=70?'#1D9E75':exp>=40?'#BA7517':'#378ADD'):'#ccc';
-    let gapHtml=''; if(gap!==null){const gc=gap>20?'#A32D2D':gap>0?'#BA7517':'#0F6E56';const gl=gap>20?'Delayed '+gap+' pts':gap>0?'Deviation '+gap+' pts':'En tiempo';gapHtml=`<span class="gap-tag" style="background:${gc}22;color:${gc};">${gl}</span>`;}
+    let gapHtml=''; if(gap!==null){const gc=gap>20?'#A32D2D':gap>0?'#BA7517':'#0F6E56';const gl=gap>20?'Delayed '+gap+' pts':gap>0?'Deviation '+gap+' pts':'On track';gapHtml=`<span class="gap-tag" style="background:${gc}22;color:${gc};">${gl}</span>`;}
     return `<div class="task-card">
       <div class="task-okr-ref">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,55)+'…':'No linked OKR'}</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
@@ -1432,7 +1442,7 @@ function renderLinked(){
       ${t.krLabel?`<div style="font-size:11px;color:#185FA5;margin-bottom:6px;">KR: ${t.krLabel.slice(0,55)}</div>`:''}
       <div class="task-meta">
         <span class="badge badge-gray">${t.owner}</span>
-        <span class="badge ${t.prio==='Alta'?'badge-red':t.prio==='Media'?'badge-amber':'badge-gray'}">${t.prio}</span>
+        <span class="badge ${t.prio==='Alta'?'badge-red':t.prio==='Media'?'badge-amber':'badge-gray'}">${t.prio==='Alta'?'High':t.prio==='Media'?'Medium':'Low'}</span>
         ${t.due?`<span class="badge badge-gray">Due: ${t.due}</span>`:''}
         ${gapHtml}
       </div>
@@ -1441,8 +1451,8 @@ function renderLinked(){
         <div><div class="avance-label">Expected</div><div class="avance-num">${exp!=null?exp+'%':'—'}</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${exp||0}%;background:${ec};"></div></div></div>
       </div>
       <div style="display:flex;gap:6px;margin-top:10px;">
-        <button class="btn" style="font-size:12px;padding:5px 12px;" onclick="editTask('${t.id}')">Editar</button>
-        <button class="btn btn-danger" style="font-size:12px;padding:5px 12px;" onclick="deleteTask('${t.id}')">Eliminar</button>
+        <button class="btn" style="font-size:12px;padding:5px 12px;" onclick="editTask('${t.id}')">Edit</button>
+        <button class="btn btn-danger" style="font-size:12px;padding:5px 12px;" onclick="deleteTask('${t.id}')">Delete</button>
       </div>
     </div>`;}).join('');
 }
@@ -1465,7 +1475,7 @@ function renderTasks(){
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
-        <span class="badge ${t.prio==='Alta'?'badge-red':t.prio==='Media'?'badge-amber':'badge-gray'}">${t.prio}</span>
+        <span class="badge ${t.prio==='Alta'?'badge-red':t.prio==='Media'?'badge-amber':'badge-gray'}">${t.prio==='Alta'?'High':t.prio==='Media'?'Medium':'Low'}</span>
         <span style="font-size:11px;color:#aaa;">${t.owner.split(' ')[0]}</span>
         ${t.due?`<span style="font-size:11px;color:#aaa;">${t.due}</span>`:''}
       </div>
@@ -1678,7 +1688,7 @@ async function quickUpdate(id){
   }
 
   const newExp = getExpected(t.created, t.due);
-  await db.collection('tasks').doc(id).update({
+  await db.collection('tareas').doc(id).update({
     avance: newAvance,
     estado: newEstado,
     expected: newExp,
