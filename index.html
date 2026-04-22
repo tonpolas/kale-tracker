@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,8 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
-.topbar{background:#0F6E56;color:#fff;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;}
+.topbar{background:#0F6E56;color:#fff;padding:10px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;}
+.brand-wordmark{font-size:22px;font-weight:800;letter-spacing:-.5px;color:#fff;font-style:italic;}
 .brand{display:flex;align-items:center;gap:12px;}
 .brand-logo{width:36px;height:36px;border-radius:8px;background:#1D9E75;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#9FE1CB;}
 .brand-name{font-size:16px;font-weight:700;}
@@ -23,7 +24,7 @@ body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
 .fb-ok{background:#E1F5EE;color:#0F6E56;}
 .fb-err{background:#FCEBEB;color:#A32D2D;}
 .fb-load{background:#FFF3CD;color:#BA7517;}
-.tabs-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:0 24px;display:flex;overflow-x:auto;position:sticky;top:60px;z-index:99;}
+.tabs-bar{background:#fff;border-bottom:1px solid #e0e0e0;padding:0 24px;display:flex;overflow-x:auto;position:sticky;top:50px;z-index:99;}
 .tab{padding:13px 15px;font-size:13px;cursor:pointer;border-bottom:3px solid transparent;color:#888;white-space:nowrap;font-weight:600;}
 .tab.active{border-bottom-color:#0F6E56;color:#0F6E56;}
 .tab:hover:not(.active){background:#f9f9f9;}
@@ -48,8 +49,8 @@ body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
 .field-label{font-size:12px;color:#555;margin-bottom:4px;font-weight:700;}
 .field-hint{font-size:11px;color:#aaa;margin-top:3px;}
 .field-row{margin-bottom:12px;}
-input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],select,textarea{width:100%;font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:8px 10px;background:#fff;color:#222;outline:none;}
-input:focus,select:focus,textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],select,textask{width:100%;font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:8px 10px;background:#fff;color:#222;outline:none;}
+input:focus,select:focus,textask:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-grid .field-row{margin-bottom:0;}
 .btn{padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #ccc;background:#fff;color:#333;font-weight:600;}
@@ -99,14 +100,14 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .seg-cons-name{font-size:14px;font-weight:700;color:#222;}
 .seg-cons-meta{font-size:12px;color:#888;margin-top:2px;}
 .seg-cons-badges{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;}
-.seg-tareas-list{background:#f9fafb;border-top:1px solid #eee;}
-.seg-tarea-row{display:flex;align-items:flex-start;gap:10px;padding:10px 18px;border-bottom:1px solid #f0f0f0;}
-.seg-tarea-row:last-child{border-bottom:none;}
-.seg-tarea-alerta{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
-.seg-tarea-info{flex:1;min-width:0;}
-.seg-tarea-name{font-size:13px;font-weight:700;color:#222;}
-.seg-tarea-detail{font-size:11px;color:#888;margin-top:2px;}
-.seg-tarea-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;}
+.seg-tasks-list{background:#f9fafb;border-top:1px solid #eee;}
+.seg-task-row{display:flex;align-items:flex-start;gap:10px;padding:10px 18px;border-bottom:1px solid #f0f0f0;}
+.seg-task-row:last-child{border-bottom:none;}
+.seg-task-alerta{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.seg-task-info{flex:1;min-width:0;}
+.seg-task-name{font-size:13px;font-weight:700;color:#222;}
+.seg-task-detail{font-size:11px;color:#888;margin-top:2px;}
+.seg-task-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px;}
 .seg-msg-block{background:#fff;border-top:1px solid #e8e8e8;padding:14px 18px;}
 .seg-msg-label{font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;}
 .seg-msg-text{background:#f5f7fa;border:1px solid #e0e0e0;border-radius:8px;padding:12px 14px;font-size:13px;color:#333;line-height:1.7;white-space:pre-wrap;font-family:Arial,sans-serif;}
@@ -195,8 +196,8 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .upd-quick-select{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:auto;}
 .upd-quick-select:focus{border-color:#0F6E56;}
 .upd-quick-comment{flex:1;min-width:200px;}
-.upd-quick-comment textarea{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:100%;resize:none;height:36px;}
-.upd-quick-comment textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+.upd-quick-comment textask{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:100%;resize:none;height:36px;}
+.upd-quick-comment textask:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
 .upd-quick-btn{padding:7px 16px;background:#0F6E56;border:none;color:#fff;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:flex-end;}
 .upd-quick-btn:hover{background:#085041;}
 
@@ -217,11 +218,11 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .upd-comment-text{font-size:12px;color:#555;line-height:1.5;}
 
 /* Finalizadas section */
-.upd-finalizadas-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f0faf5;border:1px solid #c8e6d5;border-radius:10px;cursor:pointer;margin-bottom:8px;margin-top:20px;}
-.upd-finalizadas-header:hover{background:#e4f5ec;}
-.upd-finalizadas-title{font-size:13px;font-weight:700;color:#0F6E56;display:flex;align-items:center;gap:8px;}
-.upd-finalizadas-body{display:none;}
-.upd-finalizadas-body.open{display:block;}
+.upd-completed-header{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f0faf5;border:1px solid #c8e6d5;border-radius:10px;cursor:pointer;margin-bottom:8px;margin-top:20px;}
+.upd-completed-header:hover{background:#e4f5ec;}
+.upd-completed-title{font-size:13px;font-weight:700;color:#0F6E56;display:flex;align-items:center;gap:8px;}
+.upd-completed-body{display:none;}
+.upd-completed-body.open{display:block;}
 .upd-fin-card{background:#fff;border:1px solid #d0e8d8;border-radius:10px;padding:12px 14px;margin-bottom:8px;}
 .upd-fin-card-name{font-size:13px;font-weight:700;color:#333;margin-bottom:4px;}
 .upd-fin-card-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px;}
@@ -231,6 +232,149 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .upd-timeline-item::before{content:'';position:absolute;left:-19px;top:8px;width:8px;height:8px;border-radius:50%;background:#0F6E56;border:2px solid #fff;box-shadow:0 0 0 1px #0F6E56;}
 .upd-timeline-date{font-size:10px;color:#aaa;}
 .upd-timeline-text{font-size:11px;color:#555;}
+
+/* ══ DASHBOARD REDESIGN ══════════════════════════════════ */
+.dash-hero{background:linear-gradient(135deg,#0F6E56 0%,#1D9E75 100%);border-radius:14px;padding:20px 24px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.dash-kpi-row{display:flex;align-items:center;gap:0;}
+.dash-kpi{text-align:center;padding:0 20px;}
+.dash-kpi-val{font-size:28px;font-weight:800;color:#fff;line-height:1;}
+.dash-kpi-lbl{font-size:10px;font-weight:600;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+.dash-kpi-sep{width:1px;height:36px;background:rgba(255,255,255,.2);}
+.dash-filter-strip{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.dash-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;outline:none;cursor:pointer;}
+.dash-sel option{background:#0F6E56;color:#fff;}
+.dash-refresh-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.2);color:#fff;cursor:pointer;font-weight:700;}
+.dash-refresh-btn:hover{background:rgba(255,255,255,.3);}
+
+/* Info banner */
+.dash-info-banner{background:#E8F8F2;border:1px solid #9FE1CB;border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;}
+.dash-info-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.dash-info-text{font-size:12px;color:#0A4A39;line-height:1.6;flex:1;}
+.dash-info-text strong{color:#074033;}
+.dash-info-close{background:none;border:none;font-size:14px;color:#9FE1CB;cursor:pointer;padding:0 4px;flex-shrink:0;line-height:1;}
+.dash-info-close:hover{color:#0F6E56;}
+
+/* Collapsible sections */
+.dash-section{background:#fff;border:1px solid #e8e8e8;border-radius:12px;margin-bottom:12px;overflow:hidden;}
+.dash-section-header{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.dash-section-header:hover{background:#f7fdf9;}
+.dash-section-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.dash-section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dash-section-title{font-size:14px;font-weight:700;color:#222;}
+.dash-section-sub{font-size:11px;color:#aaa;}
+.dash-section-right{display:flex;align-items:center;gap:8px;}
+.dash-section-chevron{font-size:12px;color:#0F6E56;font-weight:700;transition:transform .25s;}
+.dash-section-chevron.collapsed{transform:rotate(-90deg);}
+.dash-section-body{padding:0 18px 16px;border-top:1px solid #f0f0f0;}
+.dash-section-body.collapsed{display:none;}
+
+@media(max-width:640px){
+  .dash-hero{flex-direction:column;align-items:flex-start;}
+  .dash-kpi-row{flex-wrap:wrap;gap:8px;}
+  .dash-kpi-sep{display:none;}
+  .dash-kpi{padding:0 12px;}
+}
+
+
+/* ══ PANEL HEROES ════════════════════════════════════════ */
+.panel-hero{border-radius:14px;padding:18px 24px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.panel-hero-left{display:flex;flex-direction:column;gap:4px;}
+.panel-hero-icon{font-size:26px;margin-bottom:4px;line-height:1;}
+.panel-hero-title{font-size:20px;font-weight:800;color:#fff;letter-spacing:-.3px;}
+.panel-hero-sub{font-size:12px;color:rgba(255,255,255,.75);}
+.panel-hero-right{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.panel-hero-btn{font-size:12px;padding:7px 16px;border-radius:8px;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.18);color:#fff;cursor:pointer;font-weight:700;text-decoration:none;display:inline-block;}
+.panel-hero-btn:hover{background:rgba(255,255,255,.3);}
+.panel-hero-btn-solid{background:#fff;color:#0F6E56;border-color:#fff;}
+.panel-hero-btn-solid:hover{background:#f0fdf8;}
+
+/* hero color variants */
+.hero-consultants{background:linear-gradient(135deg,#0F6E56 0%,#1D9E75 100%);}
+.hero-okrs{background:linear-gradient(135deg,#085041 0%,#0F6E56 100%);}
+.hero-link{background:linear-gradient(135deg,#1D9E75 0%,#2EC08A 100%);}
+.hero-tasks{background:linear-gradient(135deg,#0A4A39 0%,#0F6E56 100%);}
+.hero-update{background:linear-gradient(135deg,#074033 0%,#1D9E75 100%);}
+.hero-score{background:linear-gradient(135deg,#0F6E56 0%,#52C4A0 100%);}
+.hero-export{background:linear-gradient(135deg,#085041 0%,#1D9E75 100%);}
+.hero-followup{background:linear-gradient(135deg,#1a1a2e 0%,#A32D2D 100%);}
+
+/* hero stat pills */
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.hero-pill{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:#fff;}
+
+/* ══ TAB SECTION PATTERN (reused everywhere) ═════════════ */
+.tab-section{background:#fff;border:1px solid #e0ede8;border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.tab-section-hdr{display:flex;justify-content:space-between;align-items:center;padding:13px 18px;cursor:pointer;user-select:none;transition:background .15s;}
+.tab-section-hdr:hover{background:#f4fbf7;}
+.tab-section-hdr-left{display:flex;align-items:center;gap:10px;}
+.tab-section-accent{width:3px;height:20px;border-radius:2px;flex-shrink:0;}
+.tab-section-ttl{font-size:13px;font-weight:700;color:#222;}
+.tab-section-meta{font-size:11px;color:#aaa;margin-left:2px;}
+.tab-section-chev{font-size:12px;color:#0F6E56;font-weight:700;transition:transform .22s;}
+.tab-section-chev.closed{transform:rotate(-90deg);}
+.tab-section-body{padding:14px 18px;border-top:1px solid #f0f8f4;}
+.tab-section-body.hidden{display:none;}
+
+/* consultants grid */
+.cons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;}
+
+/* score hero ring */
+.score-hero-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-bottom:0;}
+.score-hero-card{background:#fff;border:1px solid #e0ede8;border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:14px;}
+.score-ring-wrap{position:relative;width:56px;height:56px;flex-shrink:0;}
+.score-ring-svg{transform:rotate(-90deg);}
+.score-ring-val{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#222;}
+.score-hero-info{flex:1;min-width:0;}
+.score-hero-name{font-size:13px;font-weight:700;color:#222;margin-bottom:2px;}
+.score-hero-detail{font-size:11px;color:#888;}
+.score-hero-badge{flex-shrink:0;}
+
+/* export cards redesign */
+.export-grid-new{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.export-card-new{border:1px solid #e0ede8;border-radius:12px;padding:18px 20px;display:flex;align-items:flex-start;gap:14px;transition:box-shadow .15s,border-color .15s;cursor:pointer;}
+.export-card-new:hover{border-color:#0F6E56;box-shadow:0 2px 12px rgba(15,110,86,.1);}
+.export-card-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.export-card-body{flex:1;min-width:0;}
+.export-card-title{font-size:13px;font-weight:700;color:#222;margin-bottom:3px;}
+.export-card-desc{font-size:11px;color:#888;line-height:1.5;margin-bottom:10px;}
+
+/* follow-up hero stats */
+.seg-hero{border-radius:14px;padding:18px 24px;margin-bottom:16px;background:linear-gradient(135deg,#1a1a2e 0%,#A32D2D 100%);}
+.seg-hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.seg-hero-stat{text-align:center;padding:8px 0;border-right:1px solid rgba(255,255,255,.15);}
+.seg-hero-stat:last-child{border-right:none;}
+.seg-hero-val{font-size:26px;font-weight:800;color:#fff;}
+.seg-hero-lbl{font-size:10px;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+.seg-hero-filters{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center;}
+.seg-hero-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;outline:none;}
+.seg-hero-sel option{background:#1a1a2e;color:#fff;}
+.seg-hero-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;cursor:pointer;font-weight:700;}
+.seg-hero-btn:hover{background:rgba(255,255,255,.25);}
+.seg-hero-btn-accent{background:#A32D2D;border-color:#A32D2D;}
+.seg-hero-btn-accent:hover{background:#7d1f1f;}
+
+/* update tasks hero */
+.upd-hero{border-radius:14px;padding:18px 24px;margin-bottom:16px;background:linear-gradient(135deg,#074033 0%,#1D9E75 100%);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;}
+.upd-hero-kpis{display:flex;gap:0;align-items:center;}
+.upd-hero-kpi{text-align:center;padding:0 18px;}
+.upd-hero-kpi-val{font-size:26px;font-weight:800;color:#fff;line-height:1;}
+.upd-hero-kpi-lbl{font-size:10px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+.upd-hero-sep{width:1px;height:36px;background:rgba(255,255,255,.2);}
+.upd-hero-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.upd-hero-sel{font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;outline:none;}
+.upd-hero-sel option{background:#074033;}
+.upd-hero-btn{font-size:12px;padding:6px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.15);color:#fff;cursor:pointer;font-weight:700;}
+.upd-hero-btn:hover{background:rgba(255,255,255,.25);}
+
+@media(max-width:640px){
+  .export-grid-new{grid-template-columns:1fr;}
+  .seg-hero-stats{grid-template-columns:1fr 1fr;}
+  .upd-hero{flex-direction:column;align-items:flex-start;}
+  .upd-hero-kpis{flex-wrap:wrap;gap:8px;}
+  .upd-hero-sep{display:none;}
+  .score-hero-grid{grid-template-columns:1fr;}
+}
+
 </style>
 </head>
 <body>
@@ -240,346 +384,592 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
     <div class="brand-logo">KL</div>
     <div>
       <div class="brand-name">KALÉ</div>
-      <div class="brand-sub">MS Teams · Canal General · OKR & Activity Tracker</div>
+      <div class="brand-sub">MS Teams · General Channel · OKR & Activity Tracker</div>
     </div>
   </div>
   <div class="topbar-right">
-    <span class="fb-badge fb-load" id="fb-badge">Conectando...</span>
-    <button class="topbar-btn" onclick="exportExcel()">Exportar Excel</button>
-    <button class="topbar-btn" onclick="showPanel('export',null)">Reporte</button>
+    <span class="fb-badge fb-load" id="fb-badge">Connecting...</span>
+    <button class="topbar-btn" onclick="exportExcel()">Export Excel</button>
+    <button class="topbar-btn" onclick="showPanel('export',null)">Report</button>
     <a href="tutorial.html" target="_blank" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 13px;border-radius:6px;font-size:12px;font-weight:600;text-decoration:none;">Tutorial</a>
   </div>
 </div>
 
 <div class="tabs-bar">
   <div class="tab active" onclick="showPanel('dashboard',this)">Dashboard</div>
-  <div class="tab" onclick="showPanel('consultores',this)">Consultores</div>
+  <div class="tab" onclick="showPanel('consultores',this)">Consultants</div>
   <div class="tab" onclick="showPanel('okrs',this)">OKRs</div>
-  <div class="tab" onclick="showPanel('link',this)">Vincular tareas</div>
-  <div class="tab" onclick="showPanel('tasks',this)">Panel de tareas</div>
-  <div class="tab tab-update" onclick="showPanel('update',this)">⟳ Actualizar tareas</div>
-  <div class="tab" onclick="showPanel('score',this)">Score de valor</div>
-  <div class="tab" onclick="showPanel('export',this)">Exportar</div>
-  <div class="tab" style="color:#A32D2D;border-bottom-color:transparent;" onclick="showPanel('seguimiento',this)" id="tab-seguimiento">Seguimiento</div>
+  <div class="tab" onclick="showPanel('link',this)">Link tasks</div>
+  <div class="tab" onclick="showPanel('tasks',this)">Task board</div>
+  <div class="tab tab-update" onclick="showPanel('update',this)">⟳ Update tasks</div>
+  <div class="tab" onclick="showPanel('score',this)">Value score</div>
+  <div class="tab" onclick="showPanel('export',this)">Export</div>
+  <div class="tab" style="color:#A32D2D;border-bottom-color:transparent;" onclick="showPanel('seguimiento',this)" id="tab-seguimiento">Follow-up</div>
 </div>
 
 <div class="main">
 
 <!-- DASHBOARD -->
 <div class="panel active" id="panel-dashboard">
-  <div class="metrics">
-    <div class="metric" style="border-top:3px solid #0F6E56;">
-      <div class="metric-label">Consultores</div><div class="metric-value" id="m-cons">—</div><div class="metric-sub">registrados</div>
+
+  <!-- Hero strip: KPIs + filters in one bar -->
+  <div class="dash-hero">
+    <div class="dash-kpi-row">
+      <div class="dash-kpi">
+        <div class="dash-kpi-val" id="m-cons">—</div>
+        <div class="dash-kpi-lbl">Consultants</div>
+      </div>
+      <div class="dash-kpi-sep"></div>
+      <div class="dash-kpi">
+        <div class="dash-kpi-val" id="m-okrs">—</div>
+        <div class="dash-kpi-lbl">Active OKRs</div>
+      </div>
+      <div class="dash-kpi-sep"></div>
+      <div class="dash-kpi">
+        <div class="dash-kpi-val" id="m-tasks">—</div>
+        <div class="dash-kpi-lbl">Linked tasks</div>
+      </div>
+      <div class="dash-kpi-sep"></div>
+      <div class="dash-kpi">
+        <div class="dash-kpi-val" id="m-score">—</div>
+        <div class="dash-kpi-lbl">Avg. score</div>
+      </div>
     </div>
-    <div class="metric" style="border-top:3px solid #185FA5;">
-      <div class="metric-label">OKRs activos</div><div class="metric-value" id="m-okrs">—</div><div class="metric-sub">este periodo</div>
-    </div>
-    <div class="metric" style="border-top:3px solid #BA7517;">
-      <div class="metric-label">Tareas vinculadas</div><div class="metric-value" id="m-tasks">—</div><div class="metric-sub">a un OKR</div>
-    </div>
-    <div class="metric" style="border-top:3px solid #534AB7;">
-      <div class="metric-label">Score promedio</div><div class="metric-value" id="m-score">—</div><div class="metric-sub">de valor</div>
-    </div>
-  </div>
-  <div class="dash-filters">
-    <label>Filtrar por:</label>
-    <select id="dash-filter-cons" onchange="renderDashboard()"><option value="">Todos los consultores</option></select>
-    <select id="dash-filter-okr" onchange="renderDashboard()"><option value="">Todos los OKRs</option></select>
-    <select id="dash-filter-period" onchange="renderDashboard()">
-      <option value="">Todos los periodos</option>
-      <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
-    </select>
-    <button class="btn" style="font-size:12px;padding:5px 13px;" onclick="renderDashboard()">Actualizar</button>
-  </div>
-  <div class="chart-card" style="margin-bottom:14px;">
-    <div class="card-header" style="margin-bottom:6px;">
-      <div><div class="chart-title">Indicador de cumplimiento por OKR</div><div class="chart-sub">Avance promedio de Key Results por objetivo · ordenado de menor a mayor</div></div>
-      <span class="badge badge-blue" id="dash-okr-count">— OKRs</span>
-    </div>
-    <div id="okr-compliance-list"><div class="dash-empty">Sin datos aún</div></div>
-  </div>
-  <div class="charts-grid">
-    <div class="chart-card">
-      <div class="chart-title">Avance real vs esperado</div>
-      <div class="chart-sub">Por consultor · barras comparativas</div>
-      <div class="chart-wrap" style="height:220px;"><canvas id="chart-avance"></canvas></div>
-    </div>
-    <div class="chart-card">
-      <div class="chart-title">Distribución de estados</div>
-      <div class="chart-sub">Tareas por estado actual</div>
-      <div class="chart-wrap" style="height:220px;"><canvas id="chart-estados"></canvas></div>
+    <div class="dash-filter-strip">
+      <select id="dash-filter-cons" onchange="renderDashboard()" class="dash-sel"><option value="">All consultants</option></select>
+      <select id="dash-filter-okr" onchange="renderDashboard()" class="dash-sel"><option value="">All OKRs</option></select>
+      <select id="dash-filter-period" onchange="renderDashboard()" class="dash-sel">
+        <option value="">All periods</option>
+        <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
+      </select>
+      <button class="dash-refresh-btn" onclick="renderDashboard()">↻ Refresh</button>
     </div>
   </div>
-  <div class="charts-grid">
-    <div class="chart-card">
-      <div class="chart-title">Score de valor</div>
-      <div class="chart-sub">Por consultor · meta 80%</div>
-      <div class="chart-wrap" style="height:200px;"><canvas id="chart-score"></canvas></div>
+
+  <!-- How percentages work — info banner (dismissible) -->
+  <div class="dash-info-banner" id="dash-info-banner">
+    <div class="dash-info-icon">💡</div>
+    <div class="dash-info-text">
+      <strong>How percentages work:</strong>
+      OKR KR progress is updated manually via the slider in the OKRs tab.
+      Task progress (%) is entered by each consultant in <em>Link tasks</em> or <em>Update tasks</em>.
+      Expected progress is calculated automatically: days elapsed ÷ total days × 100.
+      The <strong>Value score</strong> = task progress × 60% + KR progress × 40%.
     </div>
-    <div class="chart-card">
-      <div class="chart-title">Tareas por prioridad</div>
-      <div class="chart-sub">Distribución Alta · Media · Baja</div>
-      <div class="chart-wrap" style="height:200px;"><canvas id="chart-prioridad"></canvas></div>
+    <button class="dash-info-close" onclick="document.getElementById('dash-info-banner').style.display='none'">✕</button>
+  </div>
+
+  <!-- Section 1: OKR Compliance (collapsible) -->
+  <div class="dash-section" id="dsec-okr">
+    <div class="dash-section-header" onclick="toggleDashSection('okr')">
+      <div class="dash-section-left">
+        <div class="dash-section-dot" style="background:#0F6E56;"></div>
+        <span class="dash-section-title">OKR Compliance</span>
+        <span class="dash-section-sub">KR progress per objective</span>
+        <span class="badge badge-green" id="dash-okr-count" style="margin-left:6px;">— OKRs</span>
+      </div>
+      <div class="dash-section-right">
+        <span class="dash-section-chevron" id="chev-okr">▲</span>
+      </div>
+    </div>
+    <div class="dash-section-body" id="body-okr">
+      <div id="okr-compliance-list"><div class="dash-empty">No data yet</div></div>
     </div>
   </div>
-  <div class="chart-card" style="margin-bottom:14px;">
-    <div class="card-header" style="margin-bottom:6px;">
-      <div><div class="chart-title">Carga de recursos</div><div class="chart-sub">Tareas activas, avance y score por consultor</div></div>
+
+  <!-- Section 2: Charts row (collapsible) -->
+  <div class="dash-section" id="dsec-charts">
+    <div class="dash-section-header" onclick="toggleDashSection('charts')">
+      <div class="dash-section-left">
+        <div class="dash-section-dot" style="background:#1D9E75;"></div>
+        <span class="dash-section-title">Progress &amp; Status</span>
+        <span class="dash-section-sub">Actual vs expected · status distribution · score · priority</span>
+      </div>
+      <div class="dash-section-right">
+        <span class="dash-section-chevron" id="chev-charts">▲</span>
+      </div>
     </div>
-    <div id="resource-list"><div class="dash-empty">Sin datos aún</div></div>
+    <div class="dash-section-body" id="body-charts">
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">Actual vs expected progress</div>
+          <div class="chart-sub">By consultant · comparative bars</div>
+          <div class="chart-wrap" style="height:200px;"><canvas id="chart-avance"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Status distribution</div>
+          <div class="chart-sub">Tasks by current status</div>
+          <div class="chart-wrap" style="height:200px;"><canvas id="chart-estados"></canvas></div>
+        </div>
+      </div>
+      <div class="charts-grid" style="margin-top:0;">
+        <div class="chart-card">
+          <div class="chart-title">Value score</div>
+          <div class="chart-sub">By consultant · target 80%</div>
+          <div class="chart-wrap" style="height:190px;"><canvas id="chart-score"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Tasks by priority</div>
+          <div class="chart-sub">High · Medium · Low distribution</div>
+          <div class="chart-wrap" style="height:190px;"><canvas id="chart-prioridad"></canvas></div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="charts-grid">
-    <div class="card" style="margin-bottom:0;">
-      <div class="card-header"><span class="card-title">Actividad reciente</span><span class="badge badge-green">en vivo</span></div>
-      <div id="activity-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+
+  <!-- Section 3: Resource load (collapsible) -->
+  <div class="dash-section" id="dsec-resources">
+    <div class="dash-section-header" onclick="toggleDashSection('resources')">
+      <div class="dash-section-left">
+        <div class="dash-section-dot" style="background:#9FE1CB;"></div>
+        <span class="dash-section-title">Resource Load</span>
+        <span class="dash-section-sub">Active tasks, progress and score by consultant</span>
+      </div>
+      <div class="dash-section-right">
+        <span class="dash-section-chevron" id="chev-resources">▲</span>
+      </div>
     </div>
-    <div class="card" style="margin-bottom:0;">
-      <div class="card-header"><span class="card-title">Alertas de desvío</span><span class="badge badge-red" id="alerts-count" style="display:none;"></span></div>
-      <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Cargando...</div>
+    <div class="dash-section-body" id="body-resources">
+      <div id="resource-list"><div class="dash-empty">No data yet</div></div>
     </div>
   </div>
+
+  <!-- Section 4: Activity + Alerts (collapsible) -->
+  <div class="dash-section" id="dsec-activity">
+    <div class="dash-section-header" onclick="toggleDashSection('activity')">
+      <div class="dash-section-left">
+        <div class="dash-section-dot" style="background:#E24B4A;"></div>
+        <span class="dash-section-title">Activity &amp; Alerts</span>
+        <span class="dash-section-sub">Recent events and deviation warnings</span>
+        <span class="badge badge-red" id="alerts-count" style="display:none;margin-left:6px;"></span>
+      </div>
+      <div class="dash-section-right">
+        <span class="dash-section-chevron" id="chev-activity">▲</span>
+      </div>
+    </div>
+    <div class="dash-section-body" id="body-activity">
+      <div class="charts-grid">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header"><span class="card-title">Recent activity</span><span class="badge badge-green">live</span></div>
+          <div id="activity-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Loading...</div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-header"><span class="card-title">Deviation alerts</span></div>
+          <div id="alerts-feed" style="font-size:13px;color:#aaa;padding:4px 0;">Loading...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <!-- CONSULTORES -->
 <div class="panel" id="panel-consultores">
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title">Equipo KALÉ</span>
-      <button class="btn btn-primary" onclick="openConsModal()">+ Nuevo consultor</button>
+  <div class="panel-hero hero-consultants">
+    <div class="panel-hero-left">
+      <div class="panel-hero-icon">👥</div>
+      <div class="panel-hero-title">Consultants</div>
+      <div class="panel-hero-sub">Team members, roles and contact info</div>
     </div>
-    <div id="cons-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+    <div class="panel-hero-right">
+      <button class="panel-hero-btn panel-hero-btn-solid" onclick="openConsModal()">+ New consultant</button>
+    </div>
+  </div>
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('cons-list-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#0F6E56;"></div>
+        <span class="tab-section-ttl">Team roster</span>
+        <span class="tab-section-meta" id="cons-count-lbl"></span>
+      </div>
+      <span class="tab-section-chev" id="chev-cons-list-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-cons-list-sec">
+      <div id="cons-list"><p style="font-size:13px;color:#aaa;">Loading...</p></div>
+    </div>
   </div>
 </div>
 
 <!-- OKRs -->
 <div class="panel" id="panel-okrs">
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title">Objetivos y Key Results</span>
-      <button class="btn btn-primary" onclick="openOKRModal()">+ Nuevo OKR</button>
+  <div class="panel-hero hero-okrs">
+    <div class="panel-hero-left">
+      <div class="panel-hero-icon">🎯</div>
+      <div class="panel-hero-title">OKRs</div>
+      <div class="panel-hero-sub">Objectives and Key Results · update KR progress with the slider</div>
     </div>
-    <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
-      <select id="filter-okr-owner" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;"><option value="">Todos los consultores</option></select>
-      <select id="filter-okr-period" onchange="renderOKRList()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
-        <option value="">Todos los periodos</option>
+    <div class="panel-hero-right">
+      <select id="filter-okr-owner" onchange="renderOKRList()" class="panel-hero-btn" style="cursor:pointer;"><option value="">All consultants</option></select>
+      <select id="filter-okr-period" onchange="renderOKRList()" class="panel-hero-btn" style="cursor:pointer;">
+        <option value="">All periods</option>
         <option>Q1 · 2026</option><option>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option>
       </select>
+      <button class="panel-hero-btn panel-hero-btn-solid" onclick="openOKRModal()">+ New OKR</button>
     </div>
-    <div id="okr-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div>
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('okr-list-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#0F6E56;"></div>
+        <span class="tab-section-ttl">Active objectives</span>
+        <span class="tab-section-meta" id="okr-count-lbl"></span>
+      </div>
+      <span class="tab-section-chev" id="chev-okr-list-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-okr-list-sec">
+      <div id="okr-list"><p style="font-size:13px;color:#aaa;">Loading...</p></div>
+    </div>
   </div>
 </div>
 
 <!-- VINCULAR TAREAS -->
 <div class="panel" id="panel-link">
-  <div class="card">
-    <div class="card-header"><span class="card-title" id="link-form-title">Nueva tarea vinculada</span></div>
-    <div class="field-row"><div class="field-label">Nombre de la tarea</div><input type="text" id="t-name" placeholder="Ej: Análisis de brecha cliente Bancolombia"></div>
+  <div class="panel-hero hero-link">
+    <div class="panel-hero-left">
+      <div class="panel-hero-icon">🔗</div>
+      <div class="panel-hero-title">Link Tasks</div>
+      <div class="panel-hero-sub">Create a task and tie it to an OKR Key Result</div>
+    </div>
+    <div class="panel-hero-right">
+      <div class="hero-pills">
+        <span class="hero-pill">Start date → Due date → Auto expected %</span>
+        <span class="hero-pill">Progress entered by consultant</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- collapsible form -->
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('link-form-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#1D9E75;"></div>
+        <span class="tab-section-ttl" id="link-form-title">New linked task</span>
+      </div>
+      <span class="tab-section-chev" id="chev-link-form-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-link-form-sec">
+  <div class="card" style="border:none;padding:0;margin:0;box-shadow:none;">
+    <div class="card-header" style="display:none;"><span class="card-title" id="link-form-title-hidden">New linked task</span></div>
+    <div class="field-row"><div class="field-label">Task name</div><input type="text" id="t-name" placeholder="E.g.: Gap analysis client Bancolombia"></div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">Consultor</div><select id="t-owner"><option value="">— seleccionar —</option></select></div>
-      <div class="field-row"><div class="field-label">Prioridad</div>
-        <select id="t-prio"><option value="Alta">Alta</option><option value="Media" selected>Media</option><option value="Baja">Baja</option></select>
+      <div class="field-row"><div class="field-label">Consultant</div><select id="t-owner"><option value="">— seleccionar —</option></select></div>
+      <div class="field-row"><div class="field-label">Priority</div>
+        <select id="t-prio"><option value="Alta">High</option><option value="Media" selected>Medium</option><option value="Baja">Low</option></select>
       </div>
     </div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">OKR vinculado</div><select id="t-okr" onchange="populateKRSelect()"><option value="">— seleccionar OKR —</option></select></div>
+      <div class="field-row"><div class="field-label">Linked OKR</div><select id="t-okr" onchange="populateKRSelect()"><option value="">— seleccionar OKR —</option></select></div>
       <div class="field-row"><div class="field-label">Key Result</div><select id="t-kr"><option value="">— seleccionar KR —</option></select></div>
     </div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">Fecha de creación</div><input type="date" id="t-created" oninput="calcExpected()"></div>
-      <div class="field-row"><div class="field-label">Fecha límite</div><input type="date" id="t-due" oninput="calcExpected()"></div>
+      <div class="field-row"><div class="field-label">Start date</div><input type="date" id="t-created" oninput="calcExpected()"></div>
+      <div class="field-row"><div class="field-label">Due date</div><input type="date" id="t-due" oninput="calcExpected()"></div>
     </div>
     <div style="background:#f9fafb;border:1px solid #e8e8e8;border-radius:8px;padding:14px;margin-bottom:12px;">
-      <div class="section-lbl" style="margin-top:0;">Estado y avance</div>
+      <div class="section-lbl" style="margin-top:0;">Status and progress</div>
       <div class="form-grid">
-        <div class="field-row"><div class="field-label">Estado actual</div>
+        <div class="field-row"><div class="field-label">Current status</div>
           <select id="t-estado">
-            <option value="Pendiente Inicio">Pendiente Inicio</option>
-            <option value="En Progreso">En Progreso</option>
-            <option value="Bloqueado">Bloqueado</option>
-            <option value="Finalizada">Finalizada</option>
+            <option value="Pendiente Inicio">Pending Start</option>
+            <option value="En Progreso">In Progress</option>
+            <option value="Bloqueado">Blocked</option>
+            <option value="Finalizada">Completed</option>
           </select>
         </div>
-        <div class="field-row"><div class="field-label">Avance actual (%)</div>
+        <div class="field-row"><div class="field-label">Current progress (%)</div>
           <input type="number" id="t-avance" min="0" max="100" placeholder="0" oninput="calcExpected()">
-          <div class="field-hint">Diligenciado por el consultor</div>
+          <div class="field-hint">Filled in by the consultant</div>
         </div>
       </div>
       <div class="field-row" style="margin-bottom:0;">
-        <div class="field-label">Avance esperado a hoy (automático)</div>
+        <div class="field-label">Expected progress today (automatic)</div>
         <div style="display:flex;align-items:center;gap:10px;margin-top:6px;">
           <div style="flex:1;height:8px;background:#e0e0e0;border-radius:4px;overflow:hidden;">
             <div id="exp-bar" style="height:100%;border-radius:4px;background:#185FA5;width:0%;transition:width .3s;"></div>
           </div>
           <span id="exp-pct" style="font-size:14px;font-weight:700;min-width:38px;color:#222;">—</span>
         </div>
-        <div id="exp-hint" class="field-hint">Completa las fechas para calcular</div>
+        <div id="exp-hint" class="field-hint">Fill in dates to calculate</div>
       </div>
     </div>
     <div id="gap-preview" style="display:none;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;"></div>
     <input type="hidden" id="t-edit-id">
     <div class="btn-row">
-      <button class="btn btn-primary" id="t-save-btn" onclick="saveTask()">Vincular y guardar</button>
-      <button class="btn" onclick="clearTaskForm()">Limpiar</button>
+      <button class="btn btn-primary" id="t-save-btn" onclick="saveTask()">Link and save</button>
+      <button class="btn" onclick="clearTaskForm()">Clear</button>
     </div>
   </div>
-  <div class="section-lbl">Tareas vinculadas</div>
-  <div id="linked-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div></div></div>
+
+  <!-- collapsible linked list -->
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('linked-list-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#0F6E56;"></div>
+        <span class="tab-section-ttl">Linked tasks</span>
+        <span class="tab-section-meta" id="linked-count-lbl"></span>
+      </div>
+      <span class="tab-section-chev" id="chev-linked-list-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-linked-list-sec">
+      <div id="linked-list"><p style="font-size:13px;color:#aaa;">Loading...</p></div>
+    </div>
+  </div>
 </div>
 
 <!-- PANEL DE TAREAS -->
 <div class="panel" id="panel-tasks">
-  <div class="card">
-    <div class="card-header">
-      <span class="card-title">Tareas activas</span>
-      <select id="filter-cons-task" onchange="renderTasks()" style="font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
-        <option value="">Todos los consultores</option>
+  <div class="panel-hero hero-tasks">
+    <div class="panel-hero-left">
+      <div class="panel-hero-icon">📋</div>
+      <div class="panel-hero-title">Task Board</div>
+      <div class="panel-hero-sub">All active tasks at a glance · actual vs expected progress</div>
+    </div>
+    <div class="panel-hero-right">
+      <select id="filter-cons-task" onchange="renderTasks()" class="panel-hero-btn" style="cursor:pointer;">
+        <option value="">All consultants</option>
       </select>
     </div>
-    <div id="task-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  </div>
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('task-list-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#0F6E56;"></div>
+        <span class="tab-section-ttl">Active tasks</span>
+        <span class="tab-section-meta" id="task-count-lbl"></span>
+      </div>
+      <span class="tab-section-chev" id="chev-task-list-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-task-list-sec">
+      <div id="task-list"><p style="font-size:13px;color:#aaa;">Loading...</p></div>
+    </div>
   </div>
 </div>
 
 <!-- ══ ACTUALIZAR TAREAS ══════════════════════════════════ -->
 <div class="panel" id="panel-update">
-
-  <!-- Stats rápidas -->
-  <div class="upd-stats">
-    <div class="upd-stat" style="border-top:3px solid #0F6E56;">
-      <div class="upd-stat-val" id="upd-m-total">—</div>
-      <div class="upd-stat-lbl">Tareas activas</div>
+  <div class="upd-hero">
+    <div class="upd-hero-kpis">
+      <div class="upd-hero-kpi">
+        <div class="upd-hero-kpi-val" id="upd-m-total">—</div>
+        <div class="upd-hero-kpi-lbl">Active</div>
+      </div>
+      <div class="upd-hero-sep"></div>
+      <div class="upd-hero-kpi">
+        <div class="upd-hero-kpi-val" id="upd-m-desvio">—</div>
+        <div class="upd-hero-kpi-lbl">Deviation</div>
+      </div>
+      <div class="upd-hero-sep"></div>
+      <div class="upd-hero-kpi">
+        <div class="upd-hero-kpi-val" id="upd-m-avg">—</div>
+        <div class="upd-hero-kpi-lbl">Avg. progress</div>
+      </div>
+      <div class="upd-hero-sep"></div>
+      <div class="upd-hero-kpi">
+        <div class="upd-hero-kpi-val" id="upd-m-fin">—</div>
+        <div class="upd-hero-kpi-lbl">Completed</div>
+      </div>
     </div>
-    <div class="upd-stat" style="border-top:3px solid #BA7517;">
-      <div class="upd-stat-val" id="upd-m-desvio">—</div>
-      <div class="upd-stat-lbl">Con desvío &gt;20pts</div>
-    </div>
-    <div class="upd-stat" style="border-top:3px solid #185FA5;">
-      <div class="upd-stat-val" id="upd-m-avg">—</div>
-      <div class="upd-stat-lbl">Avance promedio</div>
-    </div>
-    <div class="upd-stat" style="border-top:3px solid #534AB7;">
-      <div class="upd-stat-val" id="upd-m-fin">—</div>
-      <div class="upd-stat-lbl">Finalizadas</div>
+    <div class="upd-hero-filters">
+      <select id="upd-filter-cons" onchange="renderUpdatePanel()" class="upd-hero-sel"><option value="">All consultants</option></select>
+      <select id="upd-filter-estado" onchange="renderUpdatePanel()" class="upd-hero-sel">
+        <option value="">All statuses</option>
+        <option value="Pendiente Inicio">Pending Start</option>
+        <option value="En Progreso">In Progress</option>
+        <option value="Bloqueado">Blocked</option>
+      </select>
+      <select id="upd-filter-prio" onchange="renderUpdatePanel()" class="upd-hero-sel">
+        <option value="">All priorities</option>
+        <option value="Alta">High</option>
+        <option value="Media">Medium</option>
+        <option value="Baja">Low</option>
+      </select>
+      <select id="upd-filter-order" onchange="renderUpdatePanel()" class="upd-hero-sel">
+        <option value="desvio">↓ Highest deviation</option>
+        <option value="due">↓ Due soonest</option>
+        <option value="avance">↓ Lowest progress</option>
+        <option value="owner">↓ By consultant</option>
+      </select>
+      <button class="upd-hero-btn" onclick="renderUpdatePanel()">↻ Refresh</button>
     </div>
   </div>
 
-  <!-- Filtros -->
-  <div class="upd-header">
-    <div class="upd-filter-bar">
-      <select id="upd-filter-cons" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
-        <option value="">Todos los consultores</option>
-      </select>
-      <select id="upd-filter-estado" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
-        <option value="">Todos los estados</option>
-        <option value="Pendiente Inicio">Pendiente Inicio</option>
-        <option value="En Progreso">En Progreso</option>
-        <option value="Bloqueado">Bloqueado</option>
-      </select>
-      <select id="upd-filter-prio" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
-        <option value="">Todas las prioridades</option>
-        <option value="Alta">Alta</option>
-        <option value="Media">Media</option>
-        <option value="Baja">Baja</option>
-      </select>
-      <select id="upd-filter-order" onchange="renderUpdatePanel()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ddd;background:#fff;width:auto;">
-        <option value="desvio">Ordenar: mayor desvío primero</option>
-        <option value="due">Ordenar: vence primero</option>
-        <option value="avance">Ordenar: menor avance primero</option>
-        <option value="owner">Ordenar: por consultor</option>
-      </select>
-      <button class="btn" style="font-size:12px;padding:5px 13px;" onclick="renderUpdatePanel()">Actualizar</button>
-    </div>
-  </div>
+  <!-- Lista de tasks activas -->
+  <div id="upd-task-list"><p style="font-size:13px;color:#aaa;">Loading...</p></div>
 
-  <!-- Lista de tareas activas -->
-  <div id="upd-task-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
-
-  <!-- Sección finalizadas colapsable -->
-  <div id="upd-finalizadas-section" style="display:none;">
-    <div class="upd-finalizadas-header" onclick="toggleFinalizadas()">
-      <div class="upd-finalizadas-title">
+  <!-- Sección completed colapsable -->
+  <div id="upd-completed-section" style="display:none;">
+    <div class="upd-completed-header" onclick="toggleFinalizadas()">
+      <div class="upd-completed-title">
         <span>✓</span>
-        <span>Tareas finalizadas</span>
+        <span>Completed tasks</span>
         <span class="badge badge-green" id="upd-fin-count">0</span>
       </div>
-      <span id="upd-fin-chevron" style="font-size:13px;color:#0F6E56;font-weight:700;">▼ Ver</span>
+      <span id="upd-fin-chevron" style="font-size:13px;color:#0F6E56;font-weight:700;">▼ Show</span>
     </div>
-    <div class="upd-finalizadas-body" id="upd-fin-body"></div>
+    <div class="upd-completed-body" id="upd-fin-body"></div>
   </div>
 
 </div>
 
 <!-- SCORE -->
 <div class="panel" id="panel-score">
-  <div class="card">
-    <div class="card-header"><span class="card-title">Score de valor por consultor</span><span class="badge badge-blue">Q2 · 2026</span></div>
-    <div id="score-list"><p style="font-size:13px;color:#aaa;">Cargando...</p></div>
+  <div class="panel-hero hero-score">
+    <div class="panel-hero-left">
+      <div class="panel-hero-icon">⭐</div>
+      <div class="panel-hero-title">Value Score</div>
+      <div class="panel-hero-sub">Composite performance metric per consultant · target 80%</div>
+    </div>
+    <div class="panel-hero-right">
+      <div class="hero-pills">
+        <span class="hero-pill">Tasks × 60%</span>
+        <span class="hero-pill">KR progress × 40%</span>
+      </div>
+    </div>
   </div>
-  <div class="card">
-    <div class="card-header"><span class="card-title">Fórmula de valor</span></div>
-    <div style="font-size:13px;color:#666;line-height:1.9;">
-      <strong>Score</strong> = (avance real promedio tareas vinculadas) × 60% + (KRs con progreso &gt; 0 ÷ total KRs) × 40%<br>
-      <span style="font-size:11px;color:#aaa;">Desvío &gt; 20 pts entre avance esperado y real activa alerta en el dashboard.</span>
+
+  <!-- score cards -->
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('score-cards-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#0F6E56;"></div>
+        <span class="tab-section-ttl">Score by consultant</span>
+      </div>
+      <span class="tab-section-chev" id="chev-score-cards-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-score-cards-sec">
+      <div id="score-list"><p style="font-size:13px;color:#aaa;">Loading...</p></div>
+    </div>
+  </div>
+
+  <!-- formula -->
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('score-formula-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#9FE1CB;"></div>
+        <span class="tab-section-ttl">Formula &amp; rules</span>
+      </div>
+      <span class="tab-section-chev" id="chev-score-formula-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-score-formula-sec">
+      <div style="font-size:13px;color:#444;line-height:2;background:#f4fbf7;border-radius:8px;padding:14px 16px;">
+        <div style="margin-bottom:8px;"><strong style="color:#0F6E56;">Score</strong> = (average actual progress of linked tasks) × <strong>60%</strong> + (KRs with progress &gt; 0 ÷ total KRs) × <strong>40%</strong></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;">
+          <div style="background:#E1F5EE;border-radius:8px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#0F6E56;">≥ 80%</div><div style="font-size:11px;color:#0F6E56;margin-top:3px;">On target ✓</div></div>
+          <div style="background:#FFF3CD;border-radius:8px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#BA7517;">40–79%</div><div style="font-size:11px;color:#BA7517;margin-top:3px;">Monitor ⚡</div></div>
+          <div style="background:#FCEBEB;border-radius:8px;padding:10px 12px;text-align:center;"><div style="font-size:20px;font-weight:800;color:#A32D2D;">&lt; 40%</div><div style="font-size:11px;color:#A32D2D;margin-top:3px;">At risk ⚠</div></div>
+        </div>
+        <div style="font-size:11px;color:#aaa;margin-top:12px;">Deviation &gt; 20 pts between expected and actual progress triggers an alert on the dashboard.</div>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- EXPORTAR -->
 <div class="panel" id="panel-export">
-  <div class="card">
-    <div class="card-header"><span class="card-title">Distribuir al equipo</span></div>
-    <div class="export-grid">
-      <div class="export-card">
-        <div class="export-icon" style="background:#E6F1FB;">🔗</div>
-        <div class="export-title">Link directo</div>
-        <div class="export-desc">Copia el link para compartir en el canal General de Teams.</div>
-        <button class="btn btn-primary" style="width:100%;margin-top:12px;" onclick="copyLink()">Copiar link</button>
+  <div class="panel-hero hero-export">
+    <div class="panel-hero-left">
+      <div class="panel-hero-icon">📤</div>
+      <div class="panel-hero-title">Export &amp; Share</div>
+      <div class="panel-hero-sub">Distribute reports, links and data to your team</div>
+    </div>
+  </div>
+
+  <div class="tab-section">
+    <div class="tab-section-hdr" onclick="toggleTabSection('export-cards-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#0F6E56;"></div>
+        <span class="tab-section-ttl">Export options</span>
       </div>
-      <div class="export-card">
-        <div class="export-icon" style="background:#E1F5EE;">📊</div>
-        <div class="export-title">Exportar a Excel</div>
-        <div class="export-desc">Descarga un Excel con Consultores, OKRs y Actividades.</div>
-        <button class="btn" style="width:100%;margin-top:12px;background:#185FA5;border-color:#185FA5;color:#fff;" onclick="exportExcel()">Descargar Excel</button>
-      </div>
-      <div class="export-card">
-        <div class="export-icon" style="background:#EEEDFE;">📋</div>
-        <div class="export-title">Reporte semanal</div>
-        <div class="export-desc">Snapshot del estado actual: OKRs, avance y alertas.</div>
-        <button class="btn" style="width:100%;margin-top:12px;background:#534AB7;border-color:#534AB7;color:#fff;" onclick="generateReport()">Generar reporte</button>
-      </div>
-      <div class="export-card">
-        <div class="export-icon" style="background:#FFF3CD;">📖</div>
-        <div class="export-title">Tutorial interactivo</div>
-        <div class="export-desc">Guía paso a paso para crear OKRs y vincular tareas.</div>
-        <a href="tutorial.html" target="_blank" class="btn" style="width:100%;margin-top:12px;background:#BA7517;border-color:#BA7517;color:#fff;display:block;text-align:center;text-decoration:none;">Abrir tutorial</a>
+      <span class="tab-section-chev" id="chev-export-cards-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-export-cards-sec">
+      <div class="export-grid-new">
+        <div class="export-card-new" onclick="copyLink()">
+          <div class="export-card-icon" style="background:#E6F1FB;">🔗</div>
+          <div class="export-card-body">
+            <div class="export-card-title">Direct link</div>
+            <div class="export-card-desc">Copy the link to share in the Teams General channel.</div>
+            <button class="btn btn-primary" style="font-size:12px;padding:6px 14px;">Copy link</button>
+          </div>
+        </div>
+        <div class="export-card-new" onclick="exportExcel()">
+          <div class="export-card-icon" style="background:#E1F5EE;">📊</div>
+          <div class="export-card-body">
+            <div class="export-card-title">Export to Excel</div>
+            <div class="export-card-desc">Download Consultants, OKRs, Activities and History sheets.</div>
+            <button class="btn" style="font-size:12px;padding:6px 14px;background:#185FA5;border-color:#185FA5;color:#fff;">Download Excel</button>
+          </div>
+        </div>
+        <div class="export-card-new" onclick="generateReport()">
+          <div class="export-card-icon" style="background:#EEEDFE;">📋</div>
+          <div class="export-card-body">
+            <div class="export-card-title">Weekly report</div>
+            <div class="export-card-desc">Snapshot of current status: OKRs, progress and alerts.</div>
+            <button class="btn" style="font-size:12px;padding:6px 14px;background:#534AB7;border-color:#534AB7;color:#fff;">Generate report</button>
+          </div>
+        </div>
+        <div class="export-card-new">
+          <div class="export-card-icon" style="background:#FFF3CD;">📖</div>
+          <div class="export-card-body">
+            <div class="export-card-title">Interactive tutorial</div>
+            <div class="export-card-desc">Step-by-step guide to OKRs and tasks. Share with new team members.</div>
+            <a href="tutorial.html" target="_blank" class="btn" style="font-size:12px;padding:6px 14px;background:#BA7517;border-color:#BA7517;color:#fff;text-decoration:none;display:inline-block;">Open tutorial</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div id="report-output" style="display:none;" class="card">
-    <div class="card-header"><span class="card-title">Reporte semanal KALÉ</span><span id="report-date" class="badge badge-gray"></span></div>
-    <div id="report-body"></div>
+
+  <div class="tab-section" id="report-output" style="display:none;">
+    <div class="tab-section-hdr" onclick="toggleTabSection('report-body-sec')">
+      <div class="tab-section-hdr-left">
+        <div class="tab-section-accent" style="background:#534AB7;"></div>
+        <span class="tab-section-ttl">KALÉ Weekly Report</span>
+        <span id="report-date" class="badge badge-gray" style="margin-left:8px;"></span>
+      </div>
+      <span class="tab-section-chev" id="chev-report-body-sec">▼</span>
+    </div>
+    <div class="tab-section-body" id="body-report-body-sec">
+      <div id="report-body"></div>
+    </div>
   </div>
 </div>
 
 <!-- SEGUIMIENTO -->
 <div class="panel" id="panel-seguimiento">
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-    <div class="metric" style="border-left:4px solid #E24B4A;"><div class="metric-label">Tareas atrasadas</div><div class="metric-value" id="seg-total">—</div><div class="metric-sub">desvío o sin actualizar</div></div>
-    <div class="metric" style="border-left:4px solid #BA7517;"><div class="metric-label">Consultores con alerta</div><div class="metric-value" id="seg-cons">—</div><div class="metric-sub">requieren seguimiento</div></div>
-    <div class="metric" style="border-left:4px solid #185FA5;"><div class="metric-label">Desvío promedio</div><div class="metric-value" id="seg-desvio">—</div><div class="metric-sub">pts esperado vs real</div></div>
-    <div class="metric" style="border-left:4px solid #0F6E56;"><div class="metric-label">Última revisión</div><div class="metric-value" style="font-size:16px;" id="seg-fecha">—</div><div class="metric-sub">fecha actual</div></div>
+  <div class="seg-hero">
+    <div class="seg-hero-stats">
+      <div class="seg-hero-stat">
+        <div class="seg-hero-val" id="seg-total">—</div>
+        <div class="seg-hero-lbl">Delayed tasks</div>
+      </div>
+      <div class="seg-hero-stat">
+        <div class="seg-hero-val" id="seg-cons">—</div>
+        <div class="seg-hero-lbl">With alerts</div>
+      </div>
+      <div class="seg-hero-stat">
+        <div class="seg-hero-val" id="seg-desvio">—</div>
+        <div class="seg-hero-lbl">Avg. deviation</div>
+      </div>
+      <div class="seg-hero-stat">
+        <div class="seg-hero-val" style="font-size:16px;" id="seg-fecha">—</div>
+        <div class="seg-hero-lbl">Last review</div>
+      </div>
+    </div>
+    <div class="seg-hero-filters">
+      <select id="seg-filter-cons" onchange="renderSeguimiento()" class="seg-hero-sel"><option value="">All consultants</option></select>
+      <select id="seg-filter-tipo" onchange="renderSeguimiento()" class="seg-hero-sel">
+        <option value="">All delay types</option>
+        <option value="desvio">Deviation only &gt; 20 pts</option>
+        <option value="inactiva">Not updated &gt; 3 days only</option>
+        <option value="ambos">Both criteria</option>
+      </select>
+      <button class="seg-hero-btn" onclick="renderSeguimiento()">↻ Refresh</button>
+      <button class="seg-hero-btn seg-hero-btn-accent" onclick="generarTodosLosMensajes()">⬇ All messages</button>
+    </div>
   </div>
-  <div style="display:flex;gap:10px;align-items:center;margin-bottom:16px;flex-wrap:wrap;">
-    <select id="seg-filter-cons" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;"><option value="">Todos los consultores</option></select>
-    <select id="seg-filter-tipo" onchange="renderSeguimiento()" style="font-size:12px;padding:6px 10px;border-radius:6px;border:1px solid #ccc;width:auto;">
-      <option value="">Todos los tipos de atraso</option>
-      <option value="desvio">Solo desvío &gt; 20 pts</option>
-      <option value="inactiva">Solo sin actualizar &gt; 3 días</option>
-      <option value="ambos">Ambos criterios</option>
-    </select>
-    <button class="btn" style="font-size:12px;padding:6px 14px;" onclick="renderSeguimiento()">Actualizar</button>
-    <button class="btn" style="font-size:12px;padding:6px 14px;background:#534AB7;border-color:#534AB7;color:#fff;" onclick="generarTodosLosMensajes()">Generar todos los mensajes</button>
-  </div>
-  <div id="seg-cards"><p style="font-size:13px;color:#aaa;">Cargando seguimiento...</p></div>
+  <div id="seg-cards"><p style="font-size:13px;color:#aaa;">Loading follow-up...</p></div>
 </div>
 
 </div><!-- /main -->
@@ -588,21 +978,21 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 <div class="modal-bg" id="modal-cons-bg">
   <div class="modal">
     <div class="modal-title" id="modal-cons-title">Nuevo consultor</div>
-    <div class="field-row"><div class="field-label">Nombre completo</div><input type="text" id="c-name" placeholder="Ej: Andrés Mora"></div>
-    <div class="field-row"><div class="field-label">Correo electrónico</div><input type="email" id="c-email" placeholder="andres@empresa.com"></div>
+    <div class="field-row"><div class="field-label">Full name</div><input type="text" id="c-name" placeholder="E.g.: John Smith"></div>
+    <div class="field-row"><div class="field-label">Email address</div><input type="email" id="c-email" placeholder="andres@empresa.com"></div>
     <div class="field-row"><div class="field-label">WhatsApp</div><input type="tel" id="c-wa" placeholder="+57 300 000 0000"></div>
-    <div class="field-row"><div class="field-label">Rol</div>
+    <div class="field-row"><div class="field-label">Role</div>
       <select id="c-rol">
-        <option value="Consultor Senior">Consultor Senior</option>
-        <option value="Consultor">Consultor</option>
-        <option value="Consultor Junior">Consultor Junior</option>
+        <option value="Consultor Senior">Senior Consultant</option>
+        <option value="Consultor">Consultant</option>
+        <option value="Consultor Junior">Junior Consultant</option>
         <option value="Admin">Admin</option>
       </select>
     </div>
     <input type="hidden" id="c-edit-id">
     <div class="btn-row">
-      <button class="btn btn-primary" onclick="saveCons()">Guardar</button>
-      <button class="btn" onclick="closeConsModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveCons()">Save</button>
+      <button class="btn" onclick="closeConsModal()">Cancel</button>
     </div>
   </div>
 </div>
@@ -611,10 +1001,10 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 <div class="modal-bg" id="modal-okr-bg">
   <div class="modal">
     <div class="modal-title" id="modal-okr-title">Nuevo OKR</div>
-    <div class="field-row"><div class="field-label">Objetivo</div><input type="text" id="okr-obj" placeholder="Ej: Incrementar satisfacción del cliente"></div>
+    <div class="field-row"><div class="field-label">Objective</div><input type="text" id="okr-obj" placeholder="E.g.: Increase customer satisfaction"></div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">Consultor responsable</div><select id="okr-owner"><option value="">— seleccionar —</option></select></div>
-      <div class="field-row"><div class="field-label">Periodo</div>
+      <div class="field-row"><div class="field-label">Responsible consultant</div><select id="okr-owner"><option value="">— seleccionar —</option></select></div>
+      <div class="field-row"><div class="field-label">Period</div>
         <select id="okr-period"><option>Q1 · 2026</option><option selected>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option></select>
       </div>
     </div>
@@ -625,16 +1015,16 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
         <div><div class="field-label">Meta %</div><input type="number" placeholder="100" min="0" max="100"></div>
       </div>
     </div>
-    <button class="add-btn" onclick="addKRInput()">+ Agregar otro Key Result</button>
+    <button class="add-btn" onclick="addKRInput()">+ Add another Key Result</button>
     <input type="hidden" id="okr-edit-id">
     <div class="btn-row">
-      <button class="btn btn-primary" onclick="saveOKR()">Guardar OKR</button>
-      <button class="btn" onclick="closeOKRModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveOKR()">Save OKR</button>
+      <button class="btn" onclick="closeOKRModal()">Cancel</button>
     </div>
   </div>
 </div>
 
-<div class="saving-toast" id="toast">Guardado en Firebase ✓</div>
+<div class="saving-toast" id="toast">Saved to Firebase ✓</div>
 
 <script>
 // ══ FIREBASE CONFIG ══════════════════════════════════════
@@ -663,15 +1053,15 @@ function avatarBg(n){return AV_COLORS[n.charCodeAt(0)%AV_COLORS.length];}
 function avatarTx(n){return TX_COLORS[n.charCodeAt(0)%TX_COLORS.length];}
 function initials(n){return n.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();}
 
-function showToast(msg='Guardado ✓'){
+function showToast(msg='Saved ✓'){
   const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block';
   setTimeout(()=>t.style.display='none',2500);
 }
 
-const loaded = { consultores:false, okrs:false, tareas:false };
+const loaded = { consultores:false, okrs:false, tasks:false };
 
 function tryRenderDashboard(){
-  if(!loaded.consultores || !loaded.okrs || !loaded.tareas) return;
+  if(!loaded.consultores || !loaded.okrs || !loaded.tasks) return;
   updateMetrics();
   if(document.getElementById('panel-dashboard').classList.contains('active')) renderDashboard();
   else { renderScore(); renderAlerts(); }
@@ -679,7 +1069,7 @@ function tryRenderDashboard(){
 
 function initListeners(){
   const badge=document.getElementById('fb-badge');
-  badge.className='fb-badge fb-ok'; badge.textContent='Firebase conectado';
+  badge.className='fb-badge fb-ok'; badge.textContent='Firebase connected';
 
   db.collection('consultores').orderBy('name').onSnapshot(snap=>{
     S.consultores=snap.docs.map(d=>({id:d.id,...d.data()}));
@@ -695,9 +1085,9 @@ function initListeners(){
     tryRenderDashboard();
   });
 
-  db.collection('tareas').orderBy('createdAt','desc').onSnapshot(snap=>{
+  db.collection('tasks').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
-    loaded.tareas=true;
+    loaded.tasks=true;
     renderLinked(); renderTasks();
     tryRenderDashboard();
     if(document.getElementById('panel-update').classList.contains('active')) renderUpdatePanel();
@@ -705,7 +1095,7 @@ function initListeners(){
 
   db.collection('actividad').orderBy('ts','desc').limit(20).onSnapshot(snap=>{
     const el=document.getElementById('activity-feed');
-    if(!snap.docs.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin actividad aún.</p>';return;}
+    if(!snap.docs.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">No activity yet.</p>';return;}
     el.innerHTML=snap.docs.map(d=>{
       const a=d.data();
       const t=a.ts?.toDate?a.ts.toDate():new Date();
@@ -740,7 +1130,7 @@ function populateConsSelect(elId){
   const cur=sel.value;
   // Filtros usan "Todos", formularios usan "— seleccionar —"
   const isFilter=['upd-filter-cons','filter-cons-task','filter-okr-owner','seg-filter-cons','dash-filter-cons'].includes(elId);
-  sel.innerHTML=isFilter?'<option value="">Todos los consultores</option>':'<option value="">— seleccionar —</option>';
+  sel.innerHTML=isFilter?'<option value="">All consultants</option>':'<option value="">— seleccionar —</option>';
   S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});
   sel.value=cur||'';
 }
@@ -750,10 +1140,10 @@ function refreshAllConsSelects(){
   if(sel){const cur=sel.value;sel.innerHTML='<option value="">— seleccionar —</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});sel.value=cur||'';}
   // also populate seg-filter-cons without the "— seleccionar —" default
   const segSel=document.getElementById('seg-filter-cons');
-  if(segSel){const cur=segSel.value;segSel.innerHTML='<option value="">Todos los consultores</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;segSel.appendChild(op);});segSel.value=cur||'';}
+  if(segSel){const cur=segSel.value;segSel.innerHTML='<option value="">All consultants</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;segSel.appendChild(op);});segSel.value=cur||'';}
   // upd filter as "Todos"
   const updSel=document.getElementById('upd-filter-cons');
-  if(updSel){const cur=updSel.value;updSel.innerHTML='<option value="">Todos los consultores</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;updSel.appendChild(op);});updSel.value=cur||'';}
+  if(updSel){const cur=updSel.value;updSel.innerHTML='<option value="">All consultants</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;updSel.appendChild(op);});updSel.value=cur||'';}
 }
 function updateMetrics(){
   document.getElementById('m-cons').textContent=S.consultores.length;
@@ -764,7 +1154,7 @@ function updateMetrics(){
 // ══ CONSULTORES ═══════════════════════════════════════════
 function openConsModal(id=null){
   const e=id?S.consultores.find(c=>c.id===id):null;
-  document.getElementById('modal-cons-title').textContent=e?'Editar consultor':'Nuevo consultor';
+  document.getElementById('modal-cons-title').textContent=e?'Edit consultant':'New consultant';
   document.getElementById('c-name').value=e?e.name:'';
   document.getElementById('c-email').value=e?e.email:'';
   document.getElementById('c-wa').value=e?e.wa:'';
@@ -780,24 +1170,24 @@ async function saveCons(){
   const wa=document.getElementById('c-wa').value.trim();
   const rol=document.getElementById('c-rol').value;
   const editId=document.getElementById('c-edit-id').value;
-  if(!name){alert('El nombre es obligatorio.');return;}
+  if(!name){alert('Name is required.');return;}
   const data={name,email,wa,rol,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
   if(editId){await db.collection('consultores').doc(editId).update(data);logActivity(`Consultor actualizado: ${name}`);}
   else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('consultores').add(data);logActivity(`Consultor creado: ${name} · ${rol}`);}
-  closeConsModal(); showToast('Consultor guardado ✓');
+  closeConsModal(); showToast('Consultant saved ✓');
 }
 
 function deleteCons(id){
   const c=S.consultores.find(x=>x.id===id); if(!c) return;
-  if(!confirm(`¿Eliminar a "${c.name}"?`)) return;
+  if(!confirm(`Delete "${c.name}"?`)) return;
   db.collection('consultores').doc(id).delete();
-  logActivity(`Consultor eliminado: ${c.name}`);
-  showToast('Consultor eliminado');
+  logActivity(`Consultant deleted: ${c.name}`);
+  showToast('Consultant deleted');
 }
 
 function renderConsList(){
   const el=document.getElementById('cons-list');
-  if(!S.consultores.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Aún no hay consultores.</p>';return;}
+  if(!S.consultores.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">No consultants yet.</p>';return;}
   el.innerHTML=S.consultores.map(c=>`
     <div class="cons-card">
       <div class="cons-avatar" style="background:${avatarBg(c.name)};color:${avatarTx(c.name)};">${initials(c.name)}</div>
@@ -819,7 +1209,7 @@ function renderConsList(){
 let krCount=1;
 function openOKRModal(id=null){
   const e=id?S.okrs.find(o=>o.id===id):null;
-  document.getElementById('modal-okr-title').textContent=e?'Editar OKR':'Nuevo OKR';
+  document.getElementById('modal-okr-title').textContent=e?'Edit OKR':'New OKR';
   document.getElementById('okr-obj').value=e?e.obj:'';
   document.getElementById('okr-period').value=e?e.period:'Q2 · 2026';
   document.getElementById('okr-edit-id').value=e?e.id:'';
@@ -848,7 +1238,7 @@ async function saveOKR(){
   const owner=document.getElementById('okr-owner').value;
   const period=document.getElementById('okr-period').value;
   const editId=document.getElementById('okr-edit-id').value;
-  if(!obj||!owner){alert('Completa el objetivo y el consultor.');return;}
+  if(!obj||!owner){alert('Complete the objective and consultant fields.');return;}
   const krs=[];
   document.querySelectorAll('#kr-inputs .form-grid').forEach(row=>{
     const ins=row.querySelectorAll('input');
@@ -857,19 +1247,19 @@ async function saveOKR(){
       krs.push({label:ins[0].value.trim(),target:parseInt(ins[1]?.value)||100,progress:prev?prev.progress:0});
     }
   });
-  if(!krs.length){alert('Agrega al menos un Key Result.');return;}
+  if(!krs.length){alert('Add at least one Key Result.');return;}
   const data={obj,owner,period,krs,updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
   if(editId){await db.collection('okrs').doc(editId).update(data);logActivity(`OKR actualizado: "${obj.slice(0,40)}" — ${owner}`);}
   else{data.createdAt=firebase.firestore.FieldValue.serverTimestamp();await db.collection('okrs').add(data);logActivity(`OKR creado: "${obj.slice(0,40)}" — ${owner}`);}
-  closeOKRModal(); showToast('OKR guardado ✓');
+  closeOKRModal(); showToast('OKR saved ✓');
 }
 
 async function deleteOKR(id){
   const o=S.okrs.find(x=>x.id===id); if(!o) return;
-  if(!confirm(`¿Eliminar el OKR "${o.obj.slice(0,50)}"?`)) return;
+  if(!confirm(`Delete OKR "${o.obj.slice(0,50)}"?`)) return;
   await db.collection('okrs').doc(id).delete();
-  logActivity(`OKR eliminado: "${o.obj.slice(0,35)}"`);
-  showToast('OKR eliminado');
+  logActivity(`OKR deleted: "${o.obj.slice(0,35)}"`);
+  showToast('OKR deleted');
 }
 
 async function updateKR(oid,ki,val){
@@ -890,7 +1280,7 @@ function renderOKRList(){
   let list=S.okrs;
   if(fo) list=list.filter(o=>o.owner===fo);
   if(fp) list=list.filter(o=>o.period===fp);
-  if(!list.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin OKRs para mostrar.</p>';return;}
+  if(!list.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">No OKRs to display.</p>';return;}
   el.innerHTML=list.map(o=>`
     <div class="okr-card">
       <div class="okr-card-header">
@@ -935,12 +1325,12 @@ function calcExpected(){
   expPct.textContent=expected+'%';
   expBar.style.width=expected+'%';
   expBar.style.background=expected>=70?'#1D9E75':expected>=40?'#BA7517':'#378ADD';
-  document.getElementById('exp-hint').textContent='Días transcurridos ÷ días totales × 100';
+  document.getElementById('exp-hint').textContent='Days elapsed ÷ total days × 100';
   const gap=expected-avance;
   gapDiv.style.display='block';
-  if(gap>20){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FCEBEB;border:1px solid #f0a0a0;color:#A32D2D;';gapDiv.textContent='Desvío: '+gap+' pts — tarea retrasada.';}
-  else if(gap>0){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FFF3CD;border:1px solid #f0c040;color:#BA7517;';gapDiv.textContent='Desvío leve: '+gap+' pts. Revisar pronto.';}
-  else{gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#E1F5EE;border:1px solid #9FE1CB;color:#0F6E56;';gapDiv.textContent='En tiempo. Avance real ≥ esperado.';}
+  if(gap>20){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FCEBEB;border:1px solid #f0a0a0;color:#A32D2D;';gapDiv.textContent='Deviation: '+gap+' pts — task delayed.';}
+  else if(gap>0){gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#FFF3CD;border:1px solid #f0c040;color:#BA7517;';gapDiv.textContent='Minor deviation: '+gap+' pts. Review soon.';}
+  else{gapDiv.style.cssText='display:block;padding:9px 13px;border-radius:7px;margin-bottom:12px;font-size:12px;font-weight:600;background:#E1F5EE;border:1px solid #9FE1CB;color:#0F6E56;';gapDiv.textContent='On track. Actual progress ≥ expected.';}
 }
 
 function populateOKRDropdown(){
@@ -965,8 +1355,8 @@ function getExpected(c,d){
 function editTask(id){
   const t=S.tasks.find(x=>x.id===id); if(!t) return;
   showPanel('link',document.querySelector('.tab:nth-child(4)'));
-  document.getElementById('link-form-title').textContent='Editar tarea';
-  document.getElementById('t-save-btn').textContent='Guardar cambios';
+  document.getElementById('link-form-title').textContent='Edit task';
+  document.getElementById('t-save-btn').textContent='Save changes';
   document.getElementById('t-edit-id').value=id;
   document.getElementById('t-name').value=t.name;
   document.getElementById('t-prio').value=t.prio;
@@ -985,16 +1375,16 @@ function editTask(id){
 
 async function deleteTask(id){
   const t=S.tasks.find(x=>x.id===id); if(!t) return;
-  if(!confirm(`¿Eliminar la tarea "${t.name}"?`)) return;
-  await db.collection('tareas').doc(id).delete();
-  logActivity(`Tarea eliminada: "${t.name.slice(0,35)}"`);
-  showToast('Tarea eliminada');
+  if(!confirm(`Delete task "${t.name}"?`)) return;
+  await db.collection('tasks').doc(id).delete();
+  logActivity(`Task deleted: "${t.name.slice(0,35)}"`);
+  showToast('Task deleted');
 }
 
 async function saveTask(){
   const name=document.getElementById('t-name').value.trim();
   const owner=document.getElementById('t-owner').value;
-  if(!name||!owner){alert('Completa nombre y consultor.');return;}
+  if(!name||!owner){alert('Complete name and consultant fields.');return;}
   const okrId=document.getElementById('t-okr').value;
   const krIdx=document.getElementById('t-kr').value;
   const okr=S.okrs.find(x=>x.id===okrId);
@@ -1014,27 +1404,27 @@ async function saveTask(){
     updatedAt:firebase.firestore.FieldValue.serverTimestamp()
   };
   if(editId){
-    await db.collection('tareas').doc(editId).update(data);
+    await db.collection('tasks').doc(editId).update(data);
     logActivity(`Tarea actualizada: "${name.slice(0,35)}" · ${estado}`);
   } else {
     data.createdAt=firebase.firestore.FieldValue.serverTimestamp();
-    await db.collection('tareas').add(data);
+    await db.collection('tasks').add(data);
     logActivity(`Tarea creada: "${name.slice(0,35)}" — ${owner} · ${estado}`);
   }
-  clearTaskForm(); showToast('Tarea guardada ✓');
+  clearTaskForm(); showToast('Task saved ✓');
 }
 
 function renderLinked(){
   const el=document.getElementById('linked-list');
-  if(!S.tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Aún no hay tareas vinculadas.</p>';return;}
+  if(!S.tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">No linked tasks yet.</p>';return;}
   el.innerHTML=S.tasks.map(t=>{
     const est=ESTADO_CFG[t.estado]||ESTADO_CFG['Pendiente Inicio'];
     const exp=t.expected; const gap=exp!==null&&exp!==undefined?exp-t.avance:null;
     const ac=t.avance>=70?'#1D9E75':t.avance>=40?'#BA7517':'#378ADD';
     const ec=exp!=null?(exp>=70?'#1D9E75':exp>=40?'#BA7517':'#378ADD'):'#ccc';
-    let gapHtml=''; if(gap!==null){const gc=gap>20?'#A32D2D':gap>0?'#BA7517':'#0F6E56';const gl=gap>20?'Retrasada '+gap+' pts':gap>0?'Desvío '+gap+' pts':'En tiempo';gapHtml=`<span class="gap-tag" style="background:${gc}22;color:${gc};">${gl}</span>`;}
+    let gapHtml=''; if(gap!==null){const gc=gap>20?'#A32D2D':gap>0?'#BA7517':'#0F6E56';const gl=gap>20?'Delayed '+gap+' pts':gap>0?'Deviation '+gap+' pts':'En tiempo';gapHtml=`<span class="gap-tag" style="background:${gc}22;color:${gc};">${gl}</span>`;}
     return `<div class="task-card">
-      <div class="task-okr-ref">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,55)+'…':'Sin OKR vinculado'}</div>
+      <div class="task-okr-ref">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,55)+'…':'No linked OKR'}</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;">
         <div class="task-name">${t.name}</div>
         <span class="badge ${est.cls}" style="margin-left:8px;flex-shrink:0;">${t.estado}</span>
@@ -1043,12 +1433,12 @@ function renderLinked(){
       <div class="task-meta">
         <span class="badge badge-gray">${t.owner}</span>
         <span class="badge ${t.prio==='Alta'?'badge-red':t.prio==='Media'?'badge-amber':'badge-gray'}">${t.prio}</span>
-        ${t.due?`<span class="badge badge-gray">Límite: ${t.due}</span>`:''}
+        ${t.due?`<span class="badge badge-gray">Due: ${t.due}</span>`:''}
         ${gapHtml}
       </div>
       <div class="avance-row">
-        <div><div class="avance-label">Avance real</div><div class="avance-num">${t.avance}%</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${t.avance}%;background:${ac};"></div></div></div>
-        <div><div class="avance-label">Avance esperado</div><div class="avance-num">${exp!=null?exp+'%':'—'}</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${exp||0}%;background:${ec};"></div></div></div>
+        <div><div class="avance-label">Actual</div><div class="avance-num">${t.avance}%</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${t.avance}%;background:${ac};"></div></div></div>
+        <div><div class="avance-label">Expected</div><div class="avance-num">${exp!=null?exp+'%':'—'}</div><div class="avance-bar-wrap"><div class="avance-bar" style="width:${exp||0}%;background:${ec};"></div></div></div>
       </div>
       <div style="display:flex;gap:6px;margin-top:10px;">
         <button class="btn" style="font-size:12px;padding:5px 12px;" onclick="editTask('${t.id}')">Editar</button>
@@ -1061,17 +1451,17 @@ function renderTasks(){
   const filter=document.getElementById('filter-cons-task')?.value||'';
   const tasks=filter?S.tasks.filter(t=>t.owner===filter):S.tasks;
   const el=document.getElementById('task-list');
-  if(!tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin tareas para mostrar.</p>';return;}
+  if(!tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">No tasks to display.</p>';return;}
   el.innerHTML=tasks.map(t=>{
     const est=ESTADO_CFG[t.estado]||ESTADO_CFG['Pendiente Inicio'];
     return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #f0f0f0;">
       <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:700;color:#222;">${t.name}</div>
-        <div style="font-size:11px;color:#185FA5;margin-top:2px;">${t.krLabel?'KR: '+t.krLabel.slice(0,45):t.okrLabel?'OKR: '+t.okrLabel.slice(0,45):'Sin OKR'}</div>
+        <div style="font-size:11px;color:#185FA5;margin-top:2px;">${t.krLabel?'KR: '+t.krLabel.slice(0,45):t.okrLabel?'OKR: '+t.okrLabel.slice(0,45):'No OKR'}</div>
         <div style="display:flex;gap:5px;margin-top:5px;flex-wrap:wrap;">
           <span class="badge ${est.cls}">${t.estado}</span>
-          <span class="badge badge-gray">${t.avance}% real</span>
-          ${t.expected!=null?`<span class="badge badge-gray">${t.expected}% esp.</span>`:''}
+          <span class="badge badge-gray">${t.avance}% actual</span>
+          ${t.expected!=null?`<span class="badge badge-gray">${t.expected}% exp.</span>`:''}
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;">
@@ -1092,8 +1482,8 @@ function clearTaskForm(){
   document.getElementById('exp-bar').style.width='0%';
   document.getElementById('gap-preview').style.display='none';
   document.getElementById('t-kr').innerHTML='<option value="">— seleccionar KR —</option>';
-  document.getElementById('link-form-title').textContent='Nueva tarea vinculada';
-  document.getElementById('t-save-btn').textContent='Vincular y guardar';
+  document.getElementById('link-form-title').textContent='New linked task';
+  document.getElementById('t-save-btn').textContent='Link and save';
 }
 
 // ══ ACTUALIZAR TAREAS ═════════════════════════════════════
@@ -1104,7 +1494,7 @@ function renderUpdatePanel(){
   const fo = document.getElementById('upd-filter-order')?.value||'desvio';
 
   const activas = S.tasks.filter(t=>t.estado!=='Finalizada');
-  const finalizadas = S.tasks.filter(t=>t.estado==='Finalizada');
+  const completed = S.tasks.filter(t=>t.estado==='Finalizada');
 
   // update top stats (all tasks, no filter)
   const totalActivas = activas.length;
@@ -1113,7 +1503,7 @@ function renderUpdatePanel(){
   document.getElementById('upd-m-total').textContent = totalActivas;
   document.getElementById('upd-m-desvio').textContent = conDesvio;
   document.getElementById('upd-m-avg').textContent = avgAvance+'%';
-  document.getElementById('upd-m-fin').textContent = finalizadas.length;
+  document.getElementById('upd-m-fin').textContent = completed.length;
 
   // apply filters
   let filtered = activas;
@@ -1129,18 +1519,18 @@ function renderUpdatePanel(){
 
   const el = document.getElementById('upd-task-list');
   if(!filtered.length){
-    el.innerHTML='<div style="text-align:center;padding:40px;font-size:13px;color:#aaa;">No hay tareas activas con los filtros seleccionados.</div>';
+    el.innerHTML='<div style="text-align:center;padding:40px;font-size:13px;color:#aaa;">No active tasks match the selected filters.</div>';
   } else {
     el.innerHTML = filtered.map(t=>renderUpdCard(t)).join('');
   }
 
   // Finalizadas section
-  const finSec = document.getElementById('upd-finalizadas-section');
+  const finSec = document.getElementById('upd-completed-section');
   const finCount = document.getElementById('upd-fin-count');
-  if(finalizadas.length > 0){
+  if(completed.length > 0){
     finSec.style.display='block';
-    finCount.textContent = finalizadas.length;
-    renderFinalizadas(finalizadas.filter(t=>!fc||t.owner===fc));
+    finCount.textContent = completed.length;
+    renderFinalizadas(completed.filter(t=>!fc||t.owner===fc));
   } else {
     finSec.style.display='none';
   }
@@ -1157,7 +1547,7 @@ function renderUpdCard(t){
   if(gap !== null){
     if(gap > 20){
       indicatorColor='#E24B4A';
-      desvioHtml=`<span class="upd-desvio-pill" style="background:#FCEBEB;color:#A32D2D;">⚠ Desvío ${gap} pts</span>`;
+      desvioHtml=`<span class="upd-desvio-pill" style="background:#FCEBEB;color:#A32D2D;">⚠ Deviation ${gap} pts</span>`;
     } else if(gap > 0){
       indicatorColor='#BA7517';
       desvioHtml=`<span class="upd-desvio-pill" style="background:#FFF3CD;color:#BA7517;">↓ ${gap} pts</span>`;
@@ -1197,7 +1587,7 @@ function renderUpdCard(t){
       <div class="upd-task-indicator" style="background:${indicatorColor};"></div>
       <div class="upd-task-main">
         <div class="upd-task-name">${t.name}</div>
-        <div class="upd-task-okr">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,60):t.krLabel?'KR: '+t.krLabel.slice(0,60):'Sin OKR vinculado'}</div>
+        <div class="upd-task-okr">${t.okrLabel?'OKR: '+t.okrLabel.slice(0,60):t.krLabel?'KR: '+t.krLabel.slice(0,60):'No linked OKR'}</div>
         <div class="upd-task-badges">
           <span class="badge ${est.cls}">${t.estado}</span>
           <span class="badge badge-gray">${t.owner}</span>
@@ -1207,12 +1597,12 @@ function renderUpdCard(t){
         </div>
         <div class="upd-avance-block">
           <div class="upd-avance-col">
-            <div class="upd-avance-col-lbl">Avance real</div>
+            <div class="upd-avance-col-lbl">Actual progress</div>
             <div class="upd-avance-col-val" id="upd-av-${t.id}">${t.avance}%</div>
             <div class="upd-avance-col-bar"><div class="upd-avance-col-fill" id="upd-ab-${t.id}" style="width:${t.avance}%;background:${ac};"></div></div>
           </div>
           <div class="upd-avance-col">
-            <div class="upd-avance-col-lbl">Avance esperado</div>
+            <div class="upd-avance-col-lbl">Expected progress</div>
             <div class="upd-avance-col-val" style="color:#888;">${exp!=null?exp+'%':'—'}</div>
             <div class="upd-avance-col-bar"><div class="upd-avance-col-fill" style="width:${exp||0}%;background:${ec};opacity:.6;"></div></div>
           </div>
@@ -1223,35 +1613,35 @@ function renderUpdCard(t){
     <!-- Quick update row -->
     <div class="upd-quick">
       <div class="upd-quick-field">
-        <span class="upd-quick-lbl">Avance %</span>
+        <span class="upd-quick-lbl">Progress %</span>
         <input type="number" class="upd-quick-input" id="qi-av-${t.id}" value="${t.avance}" min="0" max="100" placeholder="0">
       </div>
       <div class="upd-quick-field">
         <span class="upd-quick-lbl">Estado</span>
         <select class="upd-quick-select" id="qi-est-${t.id}">
-          <option value="Pendiente Inicio"${t.estado==='Pendiente Inicio'?' selected':''}>Pendiente Inicio</option>
-          <option value="En Progreso"${t.estado==='En Progreso'?' selected':''}>En Progreso</option>
-          <option value="Bloqueado"${t.estado==='Bloqueado'?' selected':''}>Bloqueado</option>
-          <option value="Finalizada"${t.estado==='Finalizada'?' selected':''}>Finalizada</option>
+          <option value="Pendiente Inicio"${t.estado==='Pendiente Inicio'?' selected':''}>Pending Start</option>
+          <option value="En Progreso"${t.estado==='En Progreso'?' selected':''}>In Progress</option>
+          <option value="Bloqueado"${t.estado==='Bloqueado'?' selected':''}>Blocked</option>
+          <option value="Finalizada"${t.estado==='Finalizada'?' selected':''}>Completed</option>
         </select>
       </div>
       <div class="upd-quick-comment upd-quick-field">
-        <span class="upd-quick-lbl">Comentario / nota de avance</span>
-        <textarea id="qi-txt-${t.id}" placeholder="Ej: Se completó la reunión con el cliente. Pendiente validación..."></textarea>
+        <span class="upd-quick-lbl">Comment / progress note</span>
+        <textask id="qi-txt-${t.id}" placeholder="E.g.: Client meeting completed. Pending validation..."></textask>
       </div>
-      <button class="upd-quick-btn" onclick="quickUpdate('${t.id}')">Guardar</button>
+      <button class="upd-quick-btn" onclick="quickUpdate('${t.id}')">Save</button>
     </div>
 
     <!-- History -->
     <div class="upd-history">
       <div class="upd-history-toggle" onclick="toggleHistory('${t.id}')">
         <span id="upd-hist-chev-${t.id}">▶</span>
-        <span>Historial</span>
+        <span>History</span>
         ${comments.length?`<span class="badge badge-gray" style="font-size:10px;">${comments.length}</span>`:''}
-        ${lastComment?`<span style="font-size:11px;color:#aaa;margin-left:4px;">Último: ${new Date(lastComment.ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short'})} — ${lastComment.texto?lastComment.texto.slice(0,40)+'…':lastComment.cambio}</span>`:''}
+        ${lastComment?`<span style="font-size:11px;color:#aaa;margin-left:4px;">Last: ${new Date(lastComment.ts).toLocaleDateString('es-CO',{day:'2-digit',month:'short'})} — ${lastComment.texto?lastComment.texto.slice(0,40)+'…':lastComment.cambio}</span>`:''}
       </div>
       <div class="upd-history-list" id="upd-hist-${t.id}">
-        ${historyHtml || '<p style="font-size:12px;color:#aaa;padding:8px 0;">Sin comentarios aún.</p>'}
+        ${historyHtml || '<p style="font-size:12px;color:#aaa;padding:8px 0;">No comments yet.</p>'}
       </div>
     </div>
   </div>`;
@@ -1288,7 +1678,7 @@ async function quickUpdate(id){
   }
 
   const newExp = getExpected(t.created, t.due);
-  await db.collection('tareas').doc(id).update({
+  await db.collection('tasks').doc(id).update({
     avance: newAvance,
     estado: newEstado,
     expected: newExp,
@@ -1300,7 +1690,7 @@ async function quickUpdate(id){
     ? `"${t.name.slice(0,30)}" → ${newEstado} ${newAvance}% · "${newText.slice(0,40)}"`
     : `"${t.name.slice(0,30)}" → ${newEstado} ${newAvance}%`;
   logActivity(msg);
-  showToast('Actualizado ✓');
+  showToast('Updated ✓');
 
   // clear comment box
   const txtEl = document.getElementById('qi-txt-'+id);
@@ -1309,7 +1699,7 @@ async function quickUpdate(id){
 
 function renderFinalizadas(tasks){
   const el = document.getElementById('upd-fin-body');
-  if(!tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;padding:10px 0;">No hay tareas finalizadas con los filtros actuales.</p>';return;}
+  if(!tasks.length){el.innerHTML='<p style="font-size:13px;color:#aaa;padding:10px 0;">No completed tasks match the current filters.</p>';return;}
   el.innerHTML = tasks.map(t=>{
     const comentarios = t.comentarios||[];
     const timeline = comentarios.map(c=>{
@@ -1327,7 +1717,7 @@ function renderFinalizadas(tasks){
         <span class="badge badge-green">✓ Finalizada</span>
         <span class="badge badge-gray">${t.owner}</span>
         <span class="badge badge-gray">${t.avance}%</span>
-        ${t.due?`<span class="badge badge-gray">Límite: ${t.due}</span>`:''}
+        ${t.due?`<span class="badge badge-gray">Due: ${t.due}</span>`:''}
         ${t.okrLabel?`<span class="badge badge-blue" style="font-size:10px;">OKR vinculada</span>`:''}
       </div>
       ${lastComment&&lastComment.texto?`<div class="upd-fin-comment">💬 "${lastComment.texto}"</div>`:''}
@@ -1336,20 +1726,20 @@ function renderFinalizadas(tasks){
   }).join('');
 }
 
-let finalizadasOpen = false;
+let completedOpen = false;
 function toggleFinalizadas(){
-  finalizadasOpen = !finalizadasOpen;
+  completedOpen = !completedOpen;
   const body = document.getElementById('upd-fin-body');
   const chev = document.getElementById('upd-fin-chevron');
-  body.classList.toggle('open', finalizadasOpen);
-  chev.textContent = finalizadasOpen ? '▲ Ocultar' : '▼ Ver';
+  body.classList.toggle('open', completedOpen);
+  chev.textContent = completedOpen ? '▲ Hide' : '▼ Show';
 }
 
 // ══ SCORE ════════════════════════════════════════════════
 function renderScore(){
   const el=document.getElementById('score-list');
   const owners=[...new Set(S.tasks.map(t=>t.owner))];
-  if(!owners.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Registra tareas para ver el score.</p>';return;}
+  if(!owners.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Add tasks to see the score.</p>';return;}
   const rows=owners.map(owner=>{
     const ot=S.tasks.filter(t=>t.owner===owner);
     const linked=ot.filter(t=>t.okrId);
@@ -1366,7 +1756,7 @@ function renderScore(){
       <div style="width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;background:${avatarBg(r.owner)};color:${avatarTx(r.owner)};">${initials(r.owner)}</div>
       <div style="flex:1;min-width:0;">
         <div style="font-size:13px;font-weight:700;color:#222;">${r.owner}</div>
-        <div style="font-size:11px;color:#888;">${r.ot.length} tareas · ${r.linked.length} vinculadas · avance ${r.avgA}% · OKR ${r.okrS}%</div>
+        <div style="font-size:11px;color:#888;">${r.ot.length} tasks · ${r.linked.length} linked · avance ${r.avgA}% · OKR ${r.okrS}%</div>
         <div class="score-bar-wrap"><div class="score-bar-fill" style="width:${r.score}%;background:${r.color};"></div></div>
       </div>
       <span class="badge ${r.score>=70?'badge-green':r.score>=40?'badge-amber':'badge-red'}">${r.score}%</span>
@@ -1380,39 +1770,39 @@ function renderAlerts(){
   const badge=document.getElementById('alerts-count');
   const alertas=S.tasks.filter(t=>t.expected!=null&&(t.expected-t.avance)>20&&t.estado!=='Finalizada');
   if(badge){ if(alertas.length){badge.textContent=alertas.length+' alerta'+(alertas.length>1?'s':'');badge.style.display='inline-block';}else{badge.style.display='none';} }
-  if(!alertas.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">Sin alertas activas.</p>';return;}
+  if(!alertas.length){el.innerHTML='<p style="font-size:13px;color:#aaa;">No active alerts.</p>';return;}
   el.innerHTML=alertas.map(t=>`
     <div style="padding:7px 0;border-bottom:1px solid #f5f5f5;font-size:13px;">
       <span style="color:#A32D2D;font-weight:700;">${t.name.slice(0,40)}</span>
-      <span style="color:#888;"> — ${t.owner} — Desvío: ${t.expected-t.avance} pts (esp. ${t.expected}%, real ${t.avance}%)</span>
+      <span style="color:#888;"> — ${t.owner} — Deviation: ${t.expected-t.avance} pts (esp. ${t.expected}%, real ${t.avance}%)</span>
     </div>`).join('');
 }
 
 // ══ EXPORT ═══════════════════════════════════════════════
 function copyLink(){
-  navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copiado.')).catch(()=>prompt('Copia este link:',window.location.href));
+  navigator.clipboard.writeText(window.location.href).then(()=>alert('Link copiado.')).catch(()=>prompt('Copy this link:',window.location.href));
 }
 
 function exportExcel(){
-  if(typeof XLSX==='undefined'){alert('Librería no disponible.');return;}
+  if(typeof XLSX==='undefined'){alert('Library not available.');return;}
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([
     ['ID','Nombre','Email','WhatsApp','Rol'],
     ...S.consultores.map(c=>[c.id,c.name,c.email,c.wa,c.rol])
-  ]),'Consultores');
-  const okrRows=[['ID OKR','Objetivo','Consultor','Periodo','KR','Meta %','Avance %']];
+  ]),'Consultants');
+  const okrRows=[['ID OKR','Objetivo','Consultor','Periodo','KR','Meta %','Progress %']];
   S.okrs.forEach(o=>(o.krs||[]).forEach(kr=>okrRows.push([o.id,o.obj,o.owner,o.period,kr.label,kr.target,kr.progress||0])));
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(okrRows),'OKRs');
   XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet([
-    ['ID','Nombre','Consultor','OKR','KR','Prioridad','Estado','Avance %','Esperado %','Creación','Límite'],
+    ['ID','Nombre','Consultor','OKR','KR','Prioridad','Estado','Progress %','Expected %','Creación','Due'],
     ...S.tasks.map(t=>[t.id,t.name,t.owner,t.okrLabel||'',t.krLabel||'',t.prio,t.estado,t.avance,t.expected||'',t.created,t.due])
-  ]),'Actividades');
+  ]),'Activities');
   // Export comments/history
   const histRows=[['Tarea','Consultor','Fecha','Cambio','Comentario']];
   S.tasks.forEach(t=>(t.comentarios||[]).forEach(c=>histRows.push([t.name,c.autor||'',c.ts?new Date(c.ts).toLocaleString('es-CO'):'',c.cambio||'',c.texto||''])));
-  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(histRows),'Historial');
+  XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(histRows),'History');
   XLSX.writeFile(wb,`KALE_Export_${new Date().toISOString().slice(0,10)}.xlsx`);
-  logActivity('Excel exportado');
+  logActivity('Excel exported');
 }
 
 function generateReport(){
@@ -1420,7 +1810,7 @@ function generateReport(){
   document.getElementById('report-date').textContent=today;
   const owners=[...new Set(S.tasks.map(t=>t.owner))];
   let body='<div style="font-size:13px;color:#555;line-height:1.9;">';
-  body+=`<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee;"><strong>Consultores:</strong> ${S.consultores.length} · <strong>OKRs:</strong> ${S.okrs.length} · <strong>Tareas vinculadas:</strong> ${S.tasks.filter(t=>t.okrId).length}</div>`;
+  body+=`<div style="margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #eee;"><strong>Consultants:</strong> ${S.consultores.length} · <strong>OKRs:</strong> ${S.okrs.length} · <strong>Linked tasks:</strong> ${S.tasks.filter(t=>t.okrId).length}</div>`;
   if(owners.length){
     owners.forEach(owner=>{
       const ot=S.tasks.filter(t=>t.owner===owner);
@@ -1432,12 +1822,12 @@ function generateReport(){
       const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
       const score=Math.round(avgA*0.6+okrS*0.4);
       const sc=score>=70?'#0F6E56':score>=40?'#BA7517':'#A32D2D';
-      body+=`<div style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>${owner}</strong> — ${ot.length} tareas · avance ${avgA}% · score <span style="color:${sc};font-weight:700;">${score}%</span>${alerts.length?` · <span style="color:#A32D2D;">${alerts.length} alerta(s)</span>`:''}</div>`;
+      body+=`<div style="padding:8px 0;border-bottom:1px solid #f0f0f0;"><strong>${owner}</strong> — ${ot.length} tasks · avance ${avgA}% · score <span style="color:${sc};font-weight:700;">${score}%</span>${alerts.length?` · <span style="color:#A32D2D;">${alerts.length} alerta(s)</span>`:''}</div>`;
     });
-  } else { body+='<div style="color:#aaa;">Sin datos aún.</div>'; }
+  } else { body+='<div style="color:#aaa;">No data yet.</div>'; }
   body+='</div>';
   document.getElementById('report-body').innerHTML=body;
-  document.getElementById('report-output').style.display='block';
+  document.getElementById('report-output').style.display='block'; if(document.getElementById('body-report-body-sec').classList.contains('hidden')){toggleTabSection('report-body-sec');}
   document.getElementById('report-output').scrollIntoView({behavior:'smooth'});
 }
 
@@ -1457,8 +1847,8 @@ function getDashData(){
 function populateDashFilters(){
   const cs=document.getElementById('dash-filter-cons');
   const co=document.getElementById('dash-filter-okr');
-  if(cs){const v=cs.value;cs.innerHTML='<option value="">Todos los consultores</option>';S.consultores.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;cs.appendChild(o);});cs.value=v||'';}
-  if(co){const v=co.value;co.innerHTML='<option value="">Todos los OKRs</option>';S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>50?o.obj.slice(0,50)+'…':o.obj;co.appendChild(op);});co.value=v||'';}
+  if(cs){const v=cs.value;cs.innerHTML='<option value="">All consultants</option>';S.consultores.forEach(c=>{const o=document.createElement('option');o.value=c.name;o.textContent=c.name;cs.appendChild(o);});cs.value=v||'';}
+  if(co){const v=co.value;co.innerHTML='<option value="">All OKRs</option>';S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>50?o.obj.slice(0,50)+'…':o.obj;co.appendChild(op);});co.value=v||'';}
 }
 function renderDashboard(){
   populateDashFilters();
@@ -1475,7 +1865,7 @@ function renderDashboard(){
 function renderOKRCompliance(okrs,tasks){
   const el=document.getElementById('okr-compliance-list');
   const badge=document.getElementById('dash-okr-count');
-  if(!okrs.length){el.innerHTML='<div class="dash-empty">Sin OKRs registrados</div>';badge.textContent='0 OKRs';return;}
+  if(!okrs.length){el.innerHTML='<div class="dash-empty">No OKRs registrados</div>';badge.textContent='0 OKRs';return;}
   badge.textContent=okrs.length+' OKR'+(okrs.length!==1?'s':'');
   const rows=okrs.map(o=>{
     const krs=o.krs||[];
@@ -1488,33 +1878,33 @@ function renderOKRCompliance(okrs,tasks){
     const c=o.compliance;
     const color=c>=80?'#1D9E75':c>=50?'#BA7517':'#E24B4A';
     const cls=c>=80?'badge-green':c>=50?'badge-amber':'badge-red';
-    const label=c>=80?'En meta':c>=50?'En progreso':'En riesgo';
+    const label=c>=80?'On target':c>=50?'In progress':'At risk';
     const krsDetail=o.krs.map(kr=>`<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:11px;color:#666;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${kr.label}</span><div style="width:80px;height:4px;background:#eee;border-radius:2px;overflow:hidden;flex-shrink:0;"><div style="height:100%;border-radius:2px;background:${(kr.progress||0)>=70?'#1D9E75':(kr.progress||0)>=40?'#BA7517':'#E24B4A'};width:${kr.progress||0}%;"></div></div><span style="font-size:11px;font-weight:700;color:#222;width:28px;text-align:right;flex-shrink:0;">${kr.progress||0}%</span></div>`).join('');
-    return `<div class="okr-comp-row"><div class="okr-comp-info"><div class="okr-comp-title" title="${o.obj}">${o.obj}</div><div style="font-size:11px;color:#888;margin-top:2px;">${o.owner} · ${o.period} · ${o.krs.length} KR${o.krs.length!==1?'s':''} · ${o.linkedTasks.length} tarea${o.linkedTasks.length!==1?'s':''}</div><div style="margin-top:8px;">${krsDetail}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;padding-left:14px;"><span style="font-size:22px;font-weight:700;color:${color};">${c}%</span><span class="badge ${cls}">${label}</span>${o.avgTask!==null?`<span style="font-size:11px;color:#aaa;">Tareas: ${o.avgTask}%</span>`:''}</div></div>`;
+    return `<div class="okr-comp-row"><div class="okr-comp-info"><div class="okr-comp-title" title="${o.obj}">${o.obj}</div><div style="font-size:11px;color:#888;margin-top:2px;">${o.owner} · ${o.period} · ${o.krs.length} KR${o.krs.length!==1?'s':''} · ${o.linkedTasks.length} task${o.linkedTasks.length!==1?'s':''}</div><div style="margin-top:8px;">${krsDetail}</div></div><div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;padding-left:14px;"><span style="font-size:22px;font-weight:700;color:${color};">${c}%</span><span class="badge ${cls}">${label}</span>${o.avgTask!==null?`<span style="font-size:11px;color:#aaa;">Tareas: ${o.avgTask}%</span>`:''}</div></div>`;
   }).join('')}</div>`;
 }
 function renderChartAvance(tasks){
   destroyChart('avance');
   const ctx=document.getElementById('chart-avance')?.getContext('2d');if(!ctx)return;
   const owners=[...new Set(tasks.filter(t=>t.okrId).map(t=>t.owner))].filter(Boolean);
-  if(!owners.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  if(!owners.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">No data</div>';return;}
   const real=owners.map(o=>{const t=tasks.filter(x=>x.owner===o&&x.okrId);return t.length?Math.round(t.reduce((a,x)=>a+x.avance,0)/t.length):0;});
   const esp=owners.map(o=>{const t=tasks.filter(x=>x.owner===o&&x.okrId&&x.expected!=null);return t.length?Math.round(t.reduce((a,x)=>a+(x.expected||0),0)/t.length):0;});
-  dashCharts['avance']=new Chart(ctx,{type:'bar',data:{labels:owners.map(n=>n.split(' ')[0]),datasets:[{label:'Avance real %',data:real,backgroundColor:'#1D9E75',borderRadius:4},{label:'Avance esperado %',data:esp,backgroundColor:'#B5D4F4',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}});
+  dashCharts['avance']=new Chart(ctx,{type:'bar',data:{labels:owners.map(n=>n.split(' ')[0]),datasets:[{label:'Actual progress %',data:real,backgroundColor:'#1D9E75',borderRadius:4},{label:'Expected progress %',data:esp,backgroundColor:'#B5D4F4',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:11},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}});
 }
 function renderChartEstados(tasks){
   destroyChart('estados');
   const ctx=document.getElementById('chart-estados')?.getContext('2d');if(!ctx)return;
   const estados=['Pendiente Inicio','En Progreso','Bloqueado','Finalizada'];
   const counts=estados.map(e=>tasks.filter(t=>t.estado===e).length);
-  if(!tasks.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  if(!tasks.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">No data</div>';return;}
   dashCharts['estados']=new Chart(ctx,{type:'doughnut',data:{labels:estados,datasets:[{data:counts,backgroundColor:['#D3D1C7','#85B7EB','#F09595','#5DCAA5'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}});
 }
 function renderChartScore(tasks){
   destroyChart('score');
   const ctx=document.getElementById('chart-score')?.getContext('2d');if(!ctx)return;
   const owners=[...new Set(tasks.map(t=>t.owner))].filter(Boolean);
-  if(!owners.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  if(!owners.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">No data</div>';return;}
   const scores=owners.map(owner=>{const ot=tasks.filter(t=>t.owner===owner);const linked=ot.filter(t=>t.okrId);const avgA=linked.length?Math.round(linked.reduce((a,t)=>a+t.avance,0)/linked.length):0;const oo=S.okrs.filter(o=>o.owner===owner);const allKRs=oo.flatMap(o=>o.krs||[]);const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;return Math.round(avgA*0.6+okrS*0.4);});
   const colors=scores.map(s=>s>=70?'#1D9E75':s>=40?'#EF9F27':'#E24B4A');
   dashCharts['score']=new Chart(ctx,{type:'bar',data:{labels:owners.map(n=>n.split(' ')[0]),datasets:[{label:'Score %',data:scores,backgroundColor:colors,borderRadius:6},{label:'Meta 80%',data:owners.map(()=>80),type:'line',borderColor:'#534AB7',borderDash:[4,4],borderWidth:2,pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{font:{size:10},boxWidth:12}}},scales:{y:{beginAtZero:true,max:100,ticks:{font:{size:10}}},x:{ticks:{font:{size:11}}}}}});
@@ -1522,13 +1912,13 @@ function renderChartScore(tasks){
 function renderChartPrioridad(tasks){
   destroyChart('prioridad');
   const ctx=document.getElementById('chart-prioridad')?.getContext('2d');if(!ctx)return;
-  if(!tasks.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">Sin datos</div>';return;}
+  if(!tasks.length){ctx.canvas.parentNode.innerHTML='<div class="dash-empty">No data</div>';return;}
   dashCharts['prioridad']=new Chart(ctx,{type:'pie',data:{labels:['Alta','Media','Baja'],datasets:[{data:[tasks.filter(t=>t.prio==='Alta').length,tasks.filter(t=>t.prio==='Media').length,tasks.filter(t=>t.prio==='Baja').length],backgroundColor:['#F09595','#FAC775','#9FE1CB'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:8}}}}});
 }
 function renderResourceList(tasks){
   const el=document.getElementById('resource-list');
   const owners=S.consultores.map(c=>c.name);
-  if(!owners.length){el.innerHTML='<div class="dash-empty">Sin consultores registrados</div>';return;}
+  if(!owners.length){el.innerHTML='<div class="dash-empty">No consultants registered</div>';return;}
   el.innerHTML=`<div class="resource-grid">${owners.map(owner=>{
     const cons=S.consultores.find(c=>c.name===owner);
     const ot=tasks.filter(t=>t.owner===owner);
@@ -1540,10 +1930,10 @@ function renderResourceList(tasks){
     const okrS=allKRs.length?Math.round((allKRs.filter(k=>(k.progress||0)>0).length/allKRs.length)*100):0;
     const score=Math.round(avgA*0.6+okrS*0.4);
     const sc=score>=70?'#1D9E75':score>=40?'#BA7517':'#E24B4A';
-    const bloqueadas=ot.filter(t=>t.estado==='Bloqueado').length;
-    const finalizadas=ot.filter(t=>t.estado==='Finalizada').length;
+    const blockeds=ot.filter(t=>t.estado==='Bloqueado').length;
+    const completed=ot.filter(t=>t.estado==='Finalizada').length;
     const bg=avatarBg(owner);const tx=avatarTx(owner);
-    return `<div class="resource-row"><div class="resource-av" style="background:${bg};color:${tx};">${initials(owner)}</div><div class="resource-info"><div class="resource-name">${owner}</div><div class="resource-detail">${cons?.rol?`<span class="badge badge-gray" style="margin-right:4px;">${cons.rol}</span>`:''} ${ot.length} tareas · ${linked.length} vinculadas · ${finalizadas} finalizadas${bloqueadas?` · <span style="color:#A32D2D;">${bloqueadas} bloqueada${bloqueadas>1?'s':''}</span>`:''}</div></div><div class="resource-bars"><div class="resource-bar-row"><span class="resource-bar-label">Real</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgA}%;background:#1D9E75;"></div></div><span class="resource-bar-val" style="color:#1D9E75;">${avgA}%</span></div><div class="resource-bar-row"><span class="resource-bar-label">Esperado</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgE}%;background:#378ADD;"></div></div><span class="resource-bar-val" style="color:#378ADD;">${avgE}%</span></div><div class="resource-bar-row"><span class="resource-bar-label">Score</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${score}%;background:${sc};"></div></div><span class="resource-bar-val" style="color:${sc};font-weight:700;">${score}%</span></div></div></div>`;
+    return `<div class="resource-row"><div class="resource-av" style="background:${bg};color:${tx};">${initials(owner)}</div><div class="resource-info"><div class="resource-name">${owner}</div><div class="resource-detail">${cons?.rol?`<span class="badge badge-gray" style="margin-right:4px;">${cons.rol}</span>`:''} ${ot.length} tasks · ${linked.length} linked · ${completed} completed${blockeds?` · <span style="color:#A32D2D;">${blockeds} blocked${blockeds>1?'s':''}</span>`:''}</div></div><div class="resource-bars"><div class="resource-bar-row"><span class="resource-bar-label">Actual</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgA}%;background:#1D9E75;"></div></div><span class="resource-bar-val" style="color:#1D9E75;">${avgA}%</span></div><div class="resource-bar-row"><span class="resource-bar-label">Expected</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${avgE}%;background:#378ADD;"></div></div><span class="resource-bar-val" style="color:#378ADD;">${avgE}%</span></div><div class="resource-bar-row"><span class="resource-bar-label">Score</span><div class="resource-bar-bg"><div class="resource-bar-fill" style="width:${score}%;background:${sc};"></div></div><span class="resource-bar-val" style="color:${sc};font-weight:700;">${score}%</span></div></div></div>`;
   }).join('')}</div>`;
 }
 
@@ -1556,11 +1946,11 @@ function clasificarTarea(t){
   const dias=diasSinActualizar(t);
   const desvio=(t.expected!=null&&t.avance!=null)?t.expected-t.avance:null;
   const tieneDesvio=desvio!==null&&desvio>DESVIO_UMBRAL;
-  const inactiva=dias>DIAS_INACTIVA;
+  const inactive=dias>DIAS_INACTIVA;
   if(t.estado==='Finalizada')return null;
-  if(tieneDesvio&&inactiva)return{tipo:'ambos',desvio,dias,color:'#A32D2D'};
+  if(tieneDesvio&&inactive)return{tipo:'ambos',desvio,dias,color:'#A32D2D'};
   if(tieneDesvio)return{tipo:'desvio',desvio,dias,color:'#BA7517'};
-  if(inactiva)return{tipo:'inactiva',desvio,dias,color:'#185FA5'};
+  if(inactive)return{tipo:'inactive',desvio,dias,color:'#185FA5'};
   return null;
 }
 function renderSeguimiento(){
@@ -1574,60 +1964,60 @@ function renderSeguimiento(){
   document.getElementById('seg-desvio').textContent=avgDesvio>0?'+'+avgDesvio:avgDesvio;
   document.getElementById('seg-fecha').textContent=new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short'});
   const el=document.getElementById('seg-cards');
-  if(!atrasadas.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;"><div style="font-size:32px;margin-bottom:12px;">✓</div><div style="font-size:15px;font-weight:700;color:#0F6E56;">Todo al día</div><div style="font-size:13px;color:#aaa;margin-top:6px;">No hay tareas atrasadas ni inactivas.</div></div>`;return;}
+  if(!atrasadas.length){el.innerHTML=`<div style="text-align:center;padding:40px 20px;"><div style="font-size:32px;margin-bottom:12px;">✓</div><div style="font-size:15px;font-weight:700;color:#0F6E56;">All up to date</div><div style="font-size:13px;color:#aaa;margin-top:6px;">No hay tasks atrasadas ni inactives.</div></div>`;return;}
   el.innerHTML=owners.map(owner=>{
-    const tareas=atrasadas.filter(t=>t.owner===owner);
+    const tasks=atrasadas.filter(t=>t.owner===owner);
     const cons=S.consultores.find(c=>c.name===owner);
-    const criticas=tareas.filter(t=>t._cls.tipo==='ambos').length;
-    const desvio_only=tareas.filter(t=>t._cls.tipo==='desvio').length;
-    const inactiva_only=tareas.filter(t=>t._cls.tipo==='inactiva').length;
-    const msg=generarMensaje(owner,tareas,cons);
+    const criticas=tasks.filter(t=>t._cls.tipo==='ambos').length;
+    const desvio_only=tasks.filter(t=>t._cls.tipo==='desvio').length;
+    const inactive_only=tasks.filter(t=>t._cls.tipo==='inactive').length;
+    const msg=generarMensaje(owner,tasks,cons);
     const bg=avatarBg(owner);const tx=avatarTx(owner);const ini=initials(owner);
     return `<div class="seg-cons-block">
       <div class="seg-cons-header">
         <div class="seg-cons-avatar" style="background:${bg};color:${tx};">${ini}</div>
         <div class="seg-cons-info"><div class="seg-cons-name">${owner}</div><div class="seg-cons-meta">${cons?.email?`<span>${cons.email}</span>`:''}${cons?.wa?`<span style="margin-left:10px;">WA: ${cons.wa}</span>`:''}</div></div>
-        <div class="seg-cons-badges">${criticas?`<span class="badge badge-red">${criticas} crítica${criticas>1?'s':''}</span>`:''}${desvio_only?`<span class="badge badge-amber">${desvio_only} desvío</span>`:''}${inactiva_only?`<span class="badge badge-blue">${inactiva_only} inactiva${inactiva_only>1?'s':''}</span>`:''}<span class="badge badge-gray">${tareas.length} total</span></div>
+        <div class="seg-cons-badges">${criticas?`<span class="badge badge-red">${criticas} critical${criticas>1?'s':''}</span>`:''}${desvio_only?`<span class="badge badge-amber">${desvio_only} deviation</span>`:''}${inactive_only?`<span class="badge badge-blue">${inactive_only} inactive${inactive_only>1?'s':''}</span>`:''}<span class="badge badge-gray">${tasks.length} total</span></div>
       </div>
-      <div class="seg-tareas-list">
-        ${tareas.map(t=>{const c=t._cls;const tipotxt=c.tipo==='ambos'?'Desvío + inactiva':c.tipo==='desvio'?'Desvío de avance':'Sin actualizar';const detalle=[c.desvio!=null?`Esperado ${t.expected}% · Real ${t.avance}% · Desvío ${c.desvio} pts`:'',c.dias<999?`Última actualización hace ${c.dias} día${c.dias!==1?'s':''}`:'Sin registro',t.due?`Límite: ${t.due}`:''].filter(Boolean).join(' · ');return `<div class="seg-tarea-row"><div class="seg-tarea-alerta" style="background:${c.color};"></div><div class="seg-tarea-info"><div class="seg-tarea-name">${t.name}</div><div class="seg-tarea-detail">${detalle}</div><div class="seg-tarea-badges"><span class="badge ${c.tipo==='ambos'?'badge-red':c.tipo==='desvio'?'badge-amber':'badge-blue'}">${tipotxt}</span><span class="badge badge-gray">${t.estado}</span>${t.okrLabel?`<span class="badge badge-gray" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">OKR: ${t.okrLabel.slice(0,35)}</span>`:''}</div></div></div>`;}).join('')}
+      <div class="seg-tasks-list">
+        ${tasks.map(t=>{const c=t._cls;const tipotxt=c.tipo==='ambos'?'Deviation + inactive':c.tipo==='desvio'?'Deviation de avance':'Not updated';const detalle=[c.desvio!=null?`Expected ${t.expected}% · Actual ${t.avance}% · Deviation ${c.desvio} pts`:'',c.dias<999?`Última actualización hace ${c.dias} día${c.dias!==1?'s':''}`:'No record',t.due?`Due: ${t.due}`:''].filter(Boolean).join(' · ');return `<div class="seg-task-row"><div class="seg-task-alerta" style="background:${c.color};"></div><div class="seg-task-info"><div class="seg-task-name">${t.name}</div><div class="seg-task-detail">${detalle}</div><div class="seg-task-badges"><span class="badge ${c.tipo==='ambos'?'badge-red':c.tipo==='desvio'?'badge-amber':'badge-blue'}">${tipotxt}</span><span class="badge badge-gray">${t.estado}</span>${t.okrLabel?`<span class="badge badge-gray" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">OKR: ${t.okrLabel.slice(0,35)}</span>`:''}</div></div></div>`;}).join('')}
       </div>
       <div class="seg-msg-block">
-        <div class="seg-msg-label"><span>Mensaje para ${owner.split(' ')[0]}</span><button class="seg-copy-btn" onclick="copiarMensaje(this,'${owner}')">Copiar mensaje</button></div>
+        <div class="seg-msg-label"><span>Message for ${owner.split(' ')[0]}</span><button class="seg-copy-btn" onclick="copiarMensaje(this,'${owner}')">Copy message</button></div>
         <div class="seg-msg-text" id="msg-${owner.replace(/\s+/g,'_')}">${msg}</div>
       </div>
     </div>`;
   }).join('');
 }
-function generarMensaje(owner,tareas,cons){
+function generarMensaje(owner,tasks,cons){
   const nombre=owner.split(' ')[0];
   const hoy=new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
-  const criticas=tareas.filter(t=>t._cls.tipo==='ambos');
-  const desvio=tareas.filter(t=>t._cls.tipo==='desvio');
-  const inactivas=tareas.filter(t=>t._cls.tipo==='inactiva');
-  let msg=`Hola ${nombre}, buen día 👋\n\nEs ${hoy}. Revisando el panel KALÉ, encontré que tienes ${tareas.length} tarea${tareas.length>1?'s':''} que necesita${tareas.length>1?'n':''} atención:\n\n`;
-  if(criticas.length){msg+=`🔴 *CRÍTICAS — Desvío alto y sin actualizar:*\n`;criticas.forEach(t=>{msg+=`• ${t.name}\n  Avance esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n  Sin actualizar hace ${t._cls.dias} día${t._cls.dias!==1?'s':''}\n${t.due?`  Límite: ${t.due}\n`:''}\n`;});}
-  if(desvio.length){msg+=`🟡 *DESVÍO DE AVANCE:*\n`;desvio.forEach(t=>{msg+=`• ${t.name}\n  Esperado: ${t.expected}% · Real: ${t.avance}% · Desvío: ${t._cls.desvio} pts\n${t.due?`  Límite: ${t.due}\n`:''}\n`;});}
-  if(inactivas.length){msg+=`🔵 *SIN ACTUALIZAR (${DIAS_INACTIVA}+ días):*\n`;inactivas.forEach(t=>{msg+=`• ${t.name} — ${t._cls.dias} día${t._cls.dias!==1?'s':''} sin actualizar\n${t.due?`  Límite: ${t.due}\n`:''}`;}); msg+='\n';}
-  msg+=`Por favor actualiza tu avance y estado en el panel:\n👉 ${PANEL_URL}\n\nCualquier duda me cuentas. ¡Gracias!`;
+  const criticas=tasks.filter(t=>t._cls.tipo==='ambos');
+  const desvio=tasks.filter(t=>t._cls.tipo==='desvio');
+  const inactives=tasks.filter(t=>t._cls.tipo==='inactive');
+  let msg=`Hola ${nombre}, buen día 👋\n\nEs ${hoy}. Reviewing the KALÉ board, I found you have ${tasks.length} task${tasks.length>1?'s':''} que necesita${tasks.length>1?'n':''} atención:\n\n`;
+  if(criticas.length){msg+=`🔴 *CRÍTICAS — Deviation alto y sin actualizar:*\n`;criticas.forEach(t=>{msg+=`• ${t.name}\n  Expected progress: ${t.expected}% · Actual: ${t.avance}% · Deviation: ${t._cls.desvio} pts\n  Sin actualizar hace ${t._cls.dias} día${t._cls.dias!==1?'s':''}\n${t.due?`  Due: ${t.due}\n`:''}\n`;});}
+  if(desvio.length){msg+=`🟡 *DESVÍO DE AVANCE:*\n`;desvio.forEach(t=>{msg+=`• ${t.name}\n  Expected: ${t.expected}% · Actual: ${t.avance}% · Deviation: ${t._cls.desvio} pts\n${t.due?`  Due: ${t.due}\n`:''}\n`;});}
+  if(inactives.length){msg+=`🔵 *SIN ACTUALIZAR (${DIAS_INACTIVA}+ días):*\n`;inactives.forEach(t=>{msg+=`• ${t.name} — ${t._cls.dias} día${t._cls.dias!==1?'s':''} sin actualizar\n${t.due?`  Due: ${t.due}\n`:''}`;}); msg+='\n';}
+  msg+=`Please update your progress and status on the board:\n👉 ${PANEL_URL}\n\nAny questions, let me know. Thanks!`;
   return msg;
 }
 function copiarMensaje(btn,owner){
   const key=owner.replace(/\s+/g,'_');
   const el=document.getElementById('msg-'+key);if(!el)return;
-  navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='¡Copiado!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copiar mensaje';btn.classList.remove('copied');},2500);}).catch(()=>{prompt('Copia el mensaje:',el.textContent);});
+  navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy message';btn.classList.remove('copied');},2500);}).catch(()=>{prompt('Copia el mensaje:',el.textContent);});
 }
 function generarTodosLosMensajes(){
   const filterCons=document.getElementById('seg-filter-cons')?.value||'';
   const atrasadas=S.tasks.map(t=>({...t,_cls:clasificarTarea(t)})).filter(t=>t._cls!==null).filter(t=>!filterCons||t.owner===filterCons);
-  if(!atrasadas.length){alert('No hay tareas atrasadas en este momento.');return;}
+  if(!atrasadas.length){alert('No hay tasks atrasadas en este momento.');return;}
   const owners=[...new Set(atrasadas.map(t=>t.owner))];
   let todos='';
-  owners.forEach(owner=>{const cons=S.consultores.find(c=>c.name===owner);const tareas=atrasadas.filter(t=>t.owner===owner);todos+=`${'═'.repeat(50)}\nMENSAJE PARA: ${owner.toUpperCase()}${cons?.wa?` (WA: ${cons.wa})`:''}\n${'═'.repeat(50)}\n\n${generarMensaje(owner,tareas,cons)}\n\n`;});
+  owners.forEach(owner=>{const cons=S.consultores.find(c=>c.name===owner);const tasks=atrasadas.filter(t=>t.owner===owner);todos+=`${'═'.repeat(50)}\nMENSAJE PARA: ${owner.toUpperCase()}${cons?.wa?` (WA: ${cons.wa})`:''}\n${'═'.repeat(50)}\n\n${generarMensaje(owner,tasks,cons)}\n\n`;});
   const blob=new Blob([todos],{type:'text/plain'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=`KALE_Seguimiento_${new Date().toISOString().slice(0,10)}.txt`;a.click();URL.revokeObjectURL(url);
-  logActivity(`Seguimiento generado: ${owners.length} consultor${owners.length>1?'es':''} con alertas`);
+  logActivity(`Seguimiento generado: ${owners.length} consultant${owners.length>1?'s':''} with alerts`);
 }
 
 // ══ MODAL CLOSE ═════════════════════════════════════════
@@ -1637,7 +2027,7 @@ document.getElementById('modal-okr-bg').addEventListener('click',e=>{if(e.target
 // ══ INIT ════════════════════════════════════════════════
 window.addEventListener('load',()=>{
   try{initListeners();}
-  catch(e){const b=document.getElementById('fb-badge');b.className='fb-badge fb-err';b.textContent='Error Firebase';console.error(e);}
+  catch(e){const b=document.getElementById('fb-badge');b.className='fb-badge fb-err';b.textContent='Firebase error';console.error(e);}
 });
 </script>
 </body>
