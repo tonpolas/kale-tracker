@@ -49,8 +49,8 @@ body{font-family:Arial,sans-serif;background:#f5f7fa;color:#222;}
 .field-label{font-size:12px;color:#555;margin-bottom:4px;font-weight:700;}
 .field-hint{font-size:11px;color:#aaa;margin-top:3px;}
 .field-row{margin-bottom:12px;}
-input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],select,textask{width:100%;font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:8px 10px;background:#fff;color:#222;outline:none;}
-input:focus,select:focus,textask:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+input[type=text],input[type=date],input[type=number],input[type=email],input[type=tel],select,textarea{width:100%;font-size:13px;border:1px solid #d0d0d0;border-radius:6px;padding:8px 10px;background:#fff;color:#222;outline:none;}
+input:focus,select:focus,textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-grid .field-row{margin-bottom:0;}
 .btn{padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:1px solid #ccc;background:#fff;color:#333;font-weight:600;}
@@ -648,8 +648,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
       <span class="tab-section-chev" id="chev-link-form-sec">▼</span>
     </div>
     <div class="tab-section-body" id="body-link-form-sec">
-  <div class="card" style="border:none;padding:0;margin:0;box-shadow:none;">
-    <div class="card-header" style="display:none;"><span class="card-title" id="link-form-title-hidden">New linked task</span></div>
+  <div style="padding-top:4px;">
     <div class="field-row"><div class="field-label">Task name</div><input type="text" id="t-name" placeholder="E.g.: Gap analysis client Bancolombia"></div>
     <div class="form-grid">
       <div class="field-row"><div class="field-label">Consultant</div><select id="t-owner"><option value="">— seleccionar —</option></select></div>
@@ -1074,7 +1073,7 @@ function initListeners(){
   db.collection('consultores').orderBy('name').onSnapshot(snap=>{
     S.consultores=snap.docs.map(d=>({id:d.id,...d.data()}));
     loaded.consultores=true;
-    renderConsList(); refreshAllConsSelects();
+    renderConsList(); refreshAllConsSelects(); updateCountLabels();
     tryRenderDashboard();
   });
 
@@ -2021,6 +2020,44 @@ function generarTodosLosMensajes(){
 }
 
 // ══ MODAL CLOSE ═════════════════════════════════════════
+
+// ══ TAB SECTION COLLAPSIBLES ═════════════════════════════
+function toggleTabSection(id){
+  const body = document.getElementById('body-'+id);
+  const chev = document.getElementById('chev-'+id);
+  if(!body) return;
+  const nowHidden = body.classList.toggle('hidden');
+  if(chev) chev.classList.toggle('closed', nowHidden);
+}
+
+// ══ DASHBOARD COLLAPSIBLE SECTIONS ═══════════════════════
+const dashSectionState = {okr:true, charts:true, resources:true, activity:true};
+function toggleDashSection(id){
+  dashSectionState[id] = !dashSectionState[id];
+  const body = document.getElementById('body-'+id);
+  const chev = document.getElementById('chev-'+id);
+  if(!body) return;
+  if(dashSectionState[id]){
+    body.classList.remove('collapsed');
+    chev.classList.remove('collapsed');
+  } else {
+    body.classList.add('collapsed');
+    chev.classList.add('collapsed');
+  }
+}
+
+// ══ COUNT LABELS ══════════════════════════════════════════
+function updateCountLabels(){
+  const cc=document.getElementById('cons-count-lbl');
+  if(cc) cc.textContent=S.consultores.length?'· '+S.consultores.length+' member'+(S.consultores.length!==1?'s':''):'';
+  const oc=document.getElementById('okr-count-lbl');
+  if(oc) oc.textContent=S.okrs.length?'· '+S.okrs.length+' OKR'+(S.okrs.length!==1?'s':''):'';
+  const lc=document.getElementById('linked-count-lbl');
+  if(lc){const n=S.tasks.length;lc.textContent=n?'· '+n+' task'+(n!==1?'s':''):'';}
+  const tc=document.getElementById('task-count-lbl');
+  if(tc){const n=S.tasks.filter(t=>t.estado!=='Finalizada').length;tc.textContent=n?'· '+n+' task'+(n!==1?'s':''):'';}
+}
+
 document.getElementById('modal-cons-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeConsModal();});
 document.getElementById('modal-okr-bg').addEventListener('click',e=>{if(e.target===e.currentTarget)closeOKRModal();});
 
