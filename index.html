@@ -196,8 +196,8 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
 .upd-quick-select{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:auto;}
 .upd-quick-select:focus{border-color:#0F6E56;}
 .upd-quick-comment{flex:1;min-width:200px;}
-.upd-quick-comment textask{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:100%;resize:none;height:36px;}
-.upd-quick-comment textask:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
+.upd-quick-comment textarea{font-size:12px;border:1px solid #d0d0d0;border-radius:6px;padding:6px 10px;background:#fff;color:#222;outline:none;width:100%;resize:none;height:36px;}
+.upd-quick-comment textarea:focus{border-color:#0F6E56;box-shadow:0 0 0 2px rgba(15,110,86,.12);}
 .upd-quick-btn{padding:7px 16px;background:#0F6E56;border:none;color:#fff;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;align-self:flex-end;}
 .upd-quick-btn:hover{background:#085041;}
 
@@ -1627,7 +1627,7 @@ function renderUpdCard(t){
         <input type="number" class="upd-quick-input" id="qi-av-${t.id}" value="${t.avance}" min="0" max="100" placeholder="0">
       </div>
       <div class="upd-quick-field">
-        <span class="upd-quick-lbl">Estado</span>
+        <span class="upd-quick-lbl">Status</span>
         <select class="upd-quick-select" id="qi-est-${t.id}">
           <option value="Pendiente Inicio"${t.estado==='Pendiente Inicio'?' selected':''}>Pending Start</option>
           <option value="En Progreso"${t.estado==='En Progreso'?' selected':''}>In Progress</option>
@@ -1637,7 +1637,7 @@ function renderUpdCard(t){
       </div>
       <div class="upd-quick-comment upd-quick-field">
         <span class="upd-quick-lbl">Comment / progress note</span>
-        <textask id="qi-txt-${t.id}" placeholder="E.g.: Client meeting completed. Pending validation..."></textask>
+        <textarea id="qi-txt-${t.id}" placeholder="E.g.: Client meeting completed. Pending validation..."></textarea>
       </div>
       <button class="upd-quick-btn" onclick="quickUpdate('${t.id}')">Save</button>
     </div>
@@ -1705,6 +1705,8 @@ async function quickUpdate(id){
   // clear comment box
   const txtEl = document.getElementById('qi-txt-'+id);
   if(txtEl) txtEl.value='';
+  // re-render update panel to reflect changes
+  renderUpdatePanel();
 }
 
 function renderFinalizadas(tasks){
