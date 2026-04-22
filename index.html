@@ -651,21 +651,21 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
   <div style="padding-top:4px;">
     <div class="field-row"><div class="field-label">Task name</div><input type="text" id="t-name" placeholder="E.g.: Gap analysis client Bancolombia"></div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">Consultant</div><select id="t-owner"><option value="">— seleccionar —</option></select></div>
+      <div class="field-row"><div class="field-label">Consultant</div><select id="t-owner"><option value="">— select —</option></select></div>
       <div class="field-row"><div class="field-label">Priority</div>
         <select id="t-prio"><option value="Alta">High</option><option value="Media" selected>Medium</option><option value="Baja">Low</option></select>
       </div>
     </div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">Linked OKR</div><select id="t-okr" onchange="populateKRSelect()"><option value="">— seleccionar OKR —</option></select></div>
-      <div class="field-row"><div class="field-label">Key Result</div><select id="t-kr"><option value="">— seleccionar KR —</option></select></div>
+      <div class="field-row"><div class="field-label">Linked OKR</div><select id="t-okr" onchange="populateKRSelect()"><option value="">— select OKR —</option></select></div>
+      <div class="field-row"><div class="field-label">Key Result</div><select id="t-kr"><option value="">— select KR —</option></select></div>
     </div>
     <div class="form-grid">
       <div class="field-row"><div class="field-label">Start date</div><input type="date" id="t-created" oninput="calcExpected()"></div>
       <div class="field-row"><div class="field-label">Due date</div><input type="date" id="t-due" oninput="calcExpected()"></div>
     </div>
     <div style="background:#f9fafb;border:1px solid #e8e8e8;border-radius:8px;padding:14px;margin-bottom:12px;">
-      <div class="section-lbl" style="margin-top:0;">Status and progress</div>
+      <div style="font-size:11px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px;">STATUS AND PROGRESS</div>
       <div class="form-grid">
         <div class="field-row"><div class="field-label">Current status</div>
           <select id="t-estado">
@@ -698,7 +698,8 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
       <button class="btn" onclick="clearTaskForm()">Clear</button>
     </div>
   </div>
-  </div></div></div>
+    </div>
+  </div>
 
   <!-- collapsible linked list -->
   <div class="tab-section">
@@ -1002,7 +1003,7 @@ input[type=range]{width:80px;flex-shrink:0;cursor:pointer;}
     <div class="modal-title" id="modal-okr-title">Nuevo OKR</div>
     <div class="field-row"><div class="field-label">Objective</div><input type="text" id="okr-obj" placeholder="E.g.: Increase customer satisfaction"></div>
     <div class="form-grid">
-      <div class="field-row"><div class="field-label">Responsible consultant</div><select id="okr-owner"><option value="">— seleccionar —</option></select></div>
+      <div class="field-row"><div class="field-label">Responsible consultant</div><select id="okr-owner"><option value="">— select —</option></select></div>
       <div class="field-row"><div class="field-label">Period</div>
         <select id="okr-period"><option>Q1 · 2026</option><option selected>Q2 · 2026</option><option>Q3 · 2026</option><option>Q4 · 2026</option></select>
       </div>
@@ -1127,17 +1128,17 @@ function showPanel(id,el){
 function populateConsSelect(elId){
   const sel=document.getElementById(elId); if(!sel) return;
   const cur=sel.value;
-  // Filtros usan "Todos", formularios usan "— seleccionar —"
+  // Filtros usan "Todos", formularios usan "— select —"
   const isFilter=['upd-filter-cons','filter-cons-task','filter-okr-owner','seg-filter-cons','dash-filter-cons'].includes(elId);
-  sel.innerHTML=isFilter?'<option value="">All consultants</option>':'<option value="">— seleccionar —</option>';
+  sel.innerHTML=isFilter?'<option value="">All consultants</option>':'<option value="">— select —</option>';
   S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});
   sel.value=cur||'';
 }
 function refreshAllConsSelects(){
   ['t-owner','filter-cons-task','filter-okr-owner','upd-filter-cons'].forEach(id=>populateConsSelect(id));
   const sel=document.getElementById('okr-owner');
-  if(sel){const cur=sel.value;sel.innerHTML='<option value="">— seleccionar —</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});sel.value=cur||'';}
-  // also populate seg-filter-cons without the "— seleccionar —" default
+  if(sel){const cur=sel.value;sel.innerHTML='<option value="">— select —</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});sel.value=cur||'';}
+  // also populate seg-filter-cons without the "— select —" default
   const segSel=document.getElementById('seg-filter-cons');
   if(segSel){const cur=segSel.value;segSel.innerHTML='<option value="">All consultants</option>';S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;segSel.appendChild(op);});segSel.value=cur||'';}
   // upd filter as "Todos"
@@ -1213,7 +1214,7 @@ function openOKRModal(id=null){
   document.getElementById('okr-period').value=e?e.period:'Q2 · 2026';
   document.getElementById('okr-edit-id').value=e?e.id:'';
   const sel=document.getElementById('okr-owner');
-  sel.innerHTML='<option value="">— seleccionar —</option>';
+  sel.innerHTML='<option value="">— select —</option>';
   S.consultores.forEach(c=>{const op=document.createElement('option');op.value=c.name;op.textContent=c.name;sel.appendChild(op);});
   sel.value=e?e.owner:'';
   const kc=document.getElementById('kr-inputs'); kc.innerHTML=''; krCount=0;
@@ -1334,14 +1335,14 @@ function calcExpected(){
 
 function populateOKRDropdown(){
   const sel=document.getElementById('t-okr'); const cur=sel.value;
-  sel.innerHTML='<option value="">— seleccionar OKR —</option>';
+  sel.innerHTML='<option value="">— select OKR —</option>';
   S.okrs.forEach(o=>{const op=document.createElement('option');op.value=o.id;op.textContent=o.obj.length>55?o.obj.slice(0,55)+'…':o.obj;sel.appendChild(op);});
   sel.value=cur||'';
 }
 function populateKRSelect(){
   const okrId=document.getElementById('t-okr').value;
   const krSel=document.getElementById('t-kr');
-  krSel.innerHTML='<option value="">— seleccionar KR —</option>';
+  krSel.innerHTML='<option value="">— select KR —</option>';
   const o=S.okrs.find(x=>x.id===okrId);
   if(o)(o.krs||[]).forEach((kr,i)=>{const op=document.createElement('option');op.value=i;op.textContent=kr.label.length>50?kr.label.slice(0,50)+'…':kr.label;krSel.appendChild(op);});
 }
@@ -1480,7 +1481,7 @@ function clearTaskForm(){
   document.getElementById('exp-pct').textContent='—';
   document.getElementById('exp-bar').style.width='0%';
   document.getElementById('gap-preview').style.display='none';
-  document.getElementById('t-kr').innerHTML='<option value="">— seleccionar KR —</option>';
+  document.getElementById('t-kr').innerHTML='<option value="">— select KR —</option>';
   document.getElementById('link-form-title').textContent='New linked task';
   document.getElementById('t-save-btn').textContent='Link and save';
 }
