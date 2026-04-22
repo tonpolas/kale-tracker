@@ -1097,11 +1097,12 @@ function initListeners(){
 
   db.collection('tareas').orderBy('createdAt','desc').onSnapshot(snap=>{
     S.tasks=snap.docs.map(d=>({id:d.id,...d.data()}));
-    loaded.tasks=true;
-    renderLinked(); renderTasks();
+    loaded.tareas=true;
+    console.log('[KALE] tareas:', S.tasks.length);
+    renderLinked(); renderTasks(); updateCountLabels();
     tryRenderDashboard();
     if(document.getElementById('panel-update').classList.contains('active')) renderUpdatePanel();
-  });
+  }, err=>{ console.error('[KALE] tareas error:', err.message); });
 
   db.collection('actividad').orderBy('ts','desc').limit(20).onSnapshot(snap=>{
     const el=document.getElementById('activity-feed');
@@ -1665,18 +1666,25 @@ function toggleHistory(id){
 }
 
 async function quickUpdate(id){
-  const t = S.tasks.find(x=>x.id===id); if(!t) return;
-  const newAvance = Math.min(100,Math.max(0,parseInt(document.getElementById('qi-av-'+id)?.value)||0));
-  const newEstado = document.getElementById('qi-est-'+id)?.value || t.estado;
-  const newText = document.getElementById('qi-txt-'+id)?.value.trim() || '';
+  const t = S.tasks.find(x=>x.id===id);
+  if(!t){ alert('Task not found: '+id); return; }
 
-  // build change description
+  const avEl  = document.getElementById('qi-av-'+id);
+  const estEl = document.getElementById('qi-est-'+id);
+  const txtEl = document.getElementById('qi-txt-'+id);
+
+  if(!avEl||!estEl){ alert('UI elements not found for id: '+id); return; }
+
+  const newAvance = Math.min(100, Math.max(0, parseInt(avEl.value)||0));
+  const newEstado = estEl.value || t.estado;
+  const newText   = txtEl ? txtEl.value.trim() : '';
+
+  // build change log
   const changes = [];
-  if(newAvance !== t.avance) changes.push(`Avance: ${t.avance}% → ${newAvance}%`);
-  if(newEstado !== t.estado) changes.push(`Estado: ${t.estado} → ${newEstado}`);
+  if(newAvance !== t.avance) changes.push('Progress: '+t.avance+'% → '+newAvance+'%');
+  if(newEstado !== t.estado) changes.push('Status: '+t.estado+' → '+newEstado);
   const cambio = changes.join(' · ');
 
-  // build comment entry
   const comentarios = [...(t.comentarios||[])];
   if(cambio || newText){
     comentarios.push({
@@ -1688,25 +1696,22 @@ async function quickUpdate(id){
   }
 
   const newExp = getExpected(t.created, t.due);
-  await db.collection('tareas').doc(id).update({
-    avance: newAvance,
-    estado: newEstado,
-    expected: newExp,
-    comentarios,
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  });
 
-  const msg = newText
-    ? `"${t.name.slice(0,30)}" → ${newEstado} ${newAvance}% · "${newText.slice(0,40)}"`
-    : `"${t.name.slice(0,30)}" → ${newEstado} ${newAvance}%`;
-  logActivity(msg);
-  showToast('Updated ✓');
-
-  // clear comment box
-  const txtEl = document.getElementById('qi-txt-'+id);
-  if(txtEl) txtEl.value='';
-  // re-render update panel to reflect changes
-  renderUpdatePanel();
+  try {
+    await db.collection('tareas').doc(id).update({
+      avance: newAvance,
+      estado: newEstado,
+      expected: newExp,
+      comentarios,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    logActivity('"'+ t.name.slice(0,30) +'" → '+newEstado+' '+newAvance+'%'+(newText?' · "'+newText.slice(0,40)+'"':''));
+    showToast('Saved ✓');
+    if(txtEl) txtEl.value='';
+  } catch(err){
+    console.error('quickUpdate error:', err);
+    alert('Error saving: '+err.message+'. Check Firestore rules.');
+  }
 }
 
 function renderFinalizadas(tasks){
